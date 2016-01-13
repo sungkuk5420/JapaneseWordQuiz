@@ -92,7 +92,7 @@ function wordShuffleChange(){
 function quizWordShuffleChange(){
     $("#pt-word-text-quiz").text(wordArr[0]);
     $(".pt-left-word-div #pt-word-text-quiz-answer").text(wordArr[0]);
-    
+
     var quizWidth = $("#pt-word-text-quiz").width()/2;
     var quizHeight = $("#pt-word-text-quiz").height()/2;
     var width = $("#pt-word-text-quiz-answer").width()/2;
