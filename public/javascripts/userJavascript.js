@@ -23,6 +23,28 @@ function wordTextShow(thisObj){
     $(thisObj).parent().find('#pt-word-text-quiz-answer').hide();
 }
 
+function clickWord(data){
+    //data{
+    //    self : this;
+    //}
+    console.log(data.self);
+    var thisWord = $(data.self).find('.pt-word-text').text()
+    var quizAnswer = $("#pt-word-text-quiz-answer").text();
+    var quizBackgroundColor = $(".pt-left-word-div").css("background-color");
+    console.log(quizBackgroundColor);
+
+    if(thisWord == quizAnswer){
+        wordShuffleChange();
+        $('.pt-right-word-div').find('.pt-word-text').css({
+            color : quizBackgroundColor
+        });
+    }else{
+        $(data.self).find('.pt-word-text').css({
+            color : "red"
+        });
+    }
+}
+
 
 function GetData(cell,row){
     //익플
@@ -79,7 +101,7 @@ function wordShuffleChange(){
     //console.log(wordArr);
     shuffle(wordArr);
     quizWordShuffleChange();
-    for(var i=1 ; i<7 ; i++){
+    for(var i=1 ; i<5 ; i++){
         $("#pt-word-text-"+i).text(wordArr[i]);
         var width = $("#pt-word-text-"+i).width()/2;
         $("#pt-word-text-"+i).css({
@@ -90,8 +112,8 @@ function wordShuffleChange(){
 }
 
 function quizWordShuffleChange(){
-    $("#pt-word-text-quiz").text(wordArr[0]);
-    $(".pt-left-word-div #pt-word-text-quiz-answer").text(wordArr[0]);
+    $("#pt-word-text-quiz").text(wordArr[1]);
+    $(".pt-left-word-div #pt-word-text-quiz-answer").text(wordArr[1]);
 
     var quizWidth = $("#pt-word-text-quiz").width()/2;
     var quizHeight = $("#pt-word-text-quiz").height()/2;

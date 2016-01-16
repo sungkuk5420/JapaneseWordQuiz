@@ -5,12 +5,24 @@
     width: 100%;
     height: 100%;
 }
-#pt-word-text-quiz-answer ,.pt-word-text{
+#pt-word-text-quiz-answer{
     position: absolute;
     top : calc(50% - 17px);
     left : calc(50% - 12px);
     font-size : 24px;
-    color : #18bc9c !important;
+    /*color : #18bc9c !important;*/
+    opacity: 0.8;
+    /*color : #636363  ;*/
+    color: #262626;
+}
+.pt-word-text{
+    position: absolute;
+    top : calc(50% - 17px);
+    left : calc(50% - 12px);
+    font-size : 24px;
+    /*color : #18bc9c !important;*/
+    color : #94B8D2;
+    opacity: 0.8;
 }
 .pt-word-text:hover {
 
@@ -26,27 +38,38 @@
 
 
 .pt-left-word-div .pt-word-text{
-    color : #18bc9c !important;
+    /*color : #18bc9c !important;*/
+
+    color : #262626;
 }
 .pt-left-word-div{
     font-size:50pt !important;
     height:600px;
-    border: 1px solid #ddd;
+    background-color: #94B8D2;
+}
+
+.pt-right-word-div:hover{
+    /*cursor : pointer;*/
+    /*color:white;*/
 }
 .pt-right-word-div{
     height: 300px;
-    border: 1px solid #ddd;
+    cursor : pointer;
+    background-color : #262626;
 }
 @media (max-width: 768px) {
-
+    .container{
+        padding:0px;
+    }
     .pt-left-word-div{
         font-size:50pt !important;
         height:120px;
-        border: 1px solid #ddd;
     }
     .pt-right-word-div{
         height: 50px;
-        border: 1px solid #ddd;
+        background-color : #262626;
+        color : #94B8D2;
+        cursor : pointer;
     }
 }
 @media (min-width: 992px) {
