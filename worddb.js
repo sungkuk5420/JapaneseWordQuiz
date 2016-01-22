@@ -16,14 +16,14 @@ client.query('USE ' + DATABASE);
 
 var mysqlUtil = module.exports = {
 
-   seletTable : function (book, res) {
+   seletTable : function (data, res) {
        console.log("gogo");
        client.query('SELECT * FROM japenWord', function (error, result, fields) {
            if (error) {
                console.log(error);
                console.log('쿼리 문장에 오류가 있습니다.');
            } else {
-               console.log(result);
+               res.json(result)
            }
        });
       //client.query(
