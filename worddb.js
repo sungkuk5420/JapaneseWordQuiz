@@ -4,10 +4,10 @@ var mysql = require('mysql')
     , word_TABLE = 'japenWord'
     , NUM = 1
     , client = mysql.createConnection({
-    host: 'localhost'
+    host: '52.34.253.229'
     , port: '3306'
-    , user: 'root'
-    , password: '168520'
+    , user: 'sungkuk.kim'
+    , password: '165112'
 });
 client.connect();
 client.query('USE ' + DATABASE);
