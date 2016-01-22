@@ -132,3 +132,24 @@ function quizWordShuffleChange(){
         position: "absolute"
     });
 }
+
+function searchWordApi(wordText){
+    var data = {
+        key: lastTidDate,  //string
+        query : '독도',  //string
+        display : 5
+    };
+    $.ajax({
+        type: "GET",
+        url: 'http://openapi.naver.com/search?key={key}&query={query}&target=encyc&display={display}'.replace('key',data.key).replace('query',data.query).replace('display',data.display),
+        success: function (msg) {
+            if (msg.codeno == 2000) {
+
+            }
+        }, error: function (xhr, status, error) {
+            if (window.console) {
+                console.log(error);
+            }
+        }
+    });
+}
