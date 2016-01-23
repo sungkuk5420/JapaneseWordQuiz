@@ -7,14 +7,25 @@ var wordDB = require('../worddb');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: "" });
+  wordDB.seletTable({},res);
 });
 
-router.get('/book', function (req, res) {
+router.get('/word', function (req, res) {
   console.log("!!");
 });
 
+router.post('/wordAdd', function (req, res) {
+  var cookie = eval('(' + JSON.stringify(req.cookies) + ')');
+  var bodyKeys = Object.keys(req.body);
+  //console.log(cookie);
+  //console.log(bodyKeys);
+  //console.log(req.body);
+  wordDB.addWord(bodyKeys,res);
+  //console.log(req);
+});
+
 router.get('/words',function(req,res){
-  wordDB.seletTable({},res);
+
+
 });
 module.exports = router;

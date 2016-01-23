@@ -8,7 +8,10 @@ wordArr = [
     "해야해",
     "愛"
 ]
-$(document).ready(function () {
+$(document).ready(function (aa,bb) {
+    console.log(aa,bb);
+    console.log( $('#pt-server-side-data').find('.word').text() );
+    console.log( $('#pt-server-side-data').find('.mean').text() );
     wordShuffleChange();
     GetData();
 });
@@ -152,4 +155,15 @@ function searchWordApi(wordText){
             }
         }
     });
+}
+
+
+function wordAddPageShow(){
+    $('.pt-word-add-page').show();
+    $('.pt-word-page').hide();
+}
+
+function quizShow(){
+    $('.pt-word-add-page').hide();
+    $('.pt-word-page').show();
 }
