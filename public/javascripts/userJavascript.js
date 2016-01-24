@@ -1,4 +1,5 @@
 var wordArr = new Array();
+var meanArr = new Array();
 wordArr = [
     "오요메상",
     "이",
@@ -9,11 +10,12 @@ wordArr = [
     "愛"
 ]
 $(document).ready(function (aa,bb) {
-    console.log(aa,bb);
-    console.log( $('#pt-server-side-data').find('.word').text() );
-    console.log( $('#pt-server-side-data').find('.mean').text() );
+    var wordArray, meanArray = [];
+    wordArr = $('#pt-server-side-data').find('.word').text().split(';;');
+    meanArr = $('#pt-server-side-data').find('.mean').text().split(';;');
+
     wordShuffleChange();
-    GetData();
+    //GetData();
 });
 
 function wordTextHide(thisObj){
@@ -138,13 +140,14 @@ function quizWordShuffleChange(){
 
 function searchWordApi(wordText){
     var data = {
-        key: lastTidDate,  //string
+        key: 'e1652f47915fe53fbd0dad08bce67291',  //string
         query : '독도',  //string
         display : 5
     };
     $.ajax({
-        type: "GET",
-        url: 'http://openapi.naver.com/search?key={key}&query={query}&target=encyc&display={display}'.replace('key',data.key).replace('query',data.query).replace('display',data.display),
+        type: "POST",
+        dataType:'json',
+        url: 'http://openapi.naver.com/search?key={key}&query=독도&target=encyc&display={display}'.replace('{key}',data.key).replace('{query}',data.query).replace('{display}',data.display),
         success: function (msg) {
             if (msg.codeno == 2000) {
 
