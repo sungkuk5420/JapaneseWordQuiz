@@ -9,6 +9,7 @@ wordArr = [
     "해야해",
     "愛"
 ]
+
 $(document).ready(function (aa,bb) {
     var wordArray, meanArray = [];
     wordArr = $('#pt-server-side-data').find('.word').text().split(';;');
@@ -140,13 +141,15 @@ function quizWordShuffleChange(){
 
 function searchWordApi(wordText){
     var data = {
-        key: 'e1652f47915fe53fbd0dad08bce67291',  //string
+        key: 'f21efcf55fc26dbdfa2c9c117025992f',  //string
         query : '독도',  //string
         display : 5
     };
     $.ajax({
         type: "POST",
         dataType:'json',
+        useDefaultXhrHeader: false,
+        crossDomain: true,
         url: 'http://openapi.naver.com/search?key={key}&query=독도&target=encyc&display={display}'.replace('{key}',data.key).replace('{query}',data.query).replace('{display}',data.display),
         success: function (msg) {
             if (msg.codeno == 2000) {
