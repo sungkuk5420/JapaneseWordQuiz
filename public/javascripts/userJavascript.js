@@ -144,7 +144,7 @@ function searchWordApi(wordText){
         key: 'f8ddeac295d59909f677e7414b772a7e',  //string
         query : '愛'
     };
-    var url = "http://apis.daum.net/search/web?output=json&apikey={apiKey}&q={query}&callback=?".replace('{apiKey}', data.key).replace('{query}', data.query);
+    var url = "https://glosbe.com/gapi/translate?from=jpn&dest=kor&format=json&pretty=true&phrase={query}".replace('{apiKey}', data.key).replace('{query}', data.query);
     console.log(url);
     $.getJSON(url,function(data) {
         alert(data.channel.item[0].title);
@@ -155,6 +155,29 @@ function searchWordApi(wordText){
     });
 }
 
+function searchWordApiaa(wordText){
+    var data = {
+        key: 'f21efcf55fc26dbdfa2c9c117025992f',  //string
+        query : '愛',  //string
+        display : 5
+    };
+    $.ajax({
+        type: "GET",
+        dataType:'json',
+        useDefaultXhrHeader: false,
+        crossDomain: true,
+        url: "https://glosbe.com/gapi/translate?from=jpn&dest=kor&format=json&pretty=true&phrase={query}".replace('{apiKey}', data.key).replace('{query}', data.query),
+        success: function (msg) {
+            if (msg.codeno == 2000) {
+
+            }
+        }, error: function (xhr, status, error) {
+            if (window.console) {
+                console.log(error);
+            }
+        }
+    });
+}
 
 function wordAddPageShow(){
     $('.pt-word-add-page').show();
