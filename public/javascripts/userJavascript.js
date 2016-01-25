@@ -141,25 +141,17 @@ function quizWordShuffleChange(){
 
 function searchWordApi(wordText){
     var data = {
-        key: 'f21efcf55fc26dbdfa2c9c117025992f',  //string
-        query : '독도',  //string
-        display : 5
+        key: 'f8ddeac295d59909f677e7414b772a7e',  //string
+        query : '愛'
     };
-    $.ajax({
-        type: "POST",
-        dataType:'json',
-        useDefaultXhrHeader: false,
-        crossDomain: true,
-        url: 'http://openapi.naver.com/search?key={key}&query=독도&target=encyc&display={display}'.replace('{key}',data.key).replace('{query}',data.query).replace('{display}',data.display),
-        success: function (msg) {
-            if (msg.codeno == 2000) {
-
-            }
-        }, error: function (xhr, status, error) {
-            if (window.console) {
-                console.log(error);
-            }
-        }
+    var url = "http://apis.daum.net/search/web?output=json&apikey={apiKey}&q={query}&callback=?".replace('{apiKey}', data.key).replace('{query}', data.query);
+    console.log(url);
+    $.getJSON(url,function(data) {
+        alert(data.channel.item[0].title);
+    }).error(function(XMLHttpRequest, textStatus, errorThrown)
+    {
+        alert(textStatus);
+    }).complete(function(){
     });
 }
 
