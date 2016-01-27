@@ -34,7 +34,9 @@ var mysqlUtil = module.exports = {
         var meanText = data.mean;
         client.query('SELECT * FROM japenWord', function (error, result, fields) {
             if (!error) {
-                var wordLen = result.length+1;
+                console.log(result);
+                console.log(result[result.length-1].num);
+                var wordLen = result[result.length-1].num+1;
                 client.query('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}" )'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
                     if (error) {
                         console.log(error);

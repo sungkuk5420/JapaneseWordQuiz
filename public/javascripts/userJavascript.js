@@ -1,5 +1,7 @@
 var wordArr = new Array();
 var meanArr = new Array();
+var wordArrObj ="";
+var meanArrObj ="";
 wordArr = [
     "오요메상",
     "이",
@@ -10,10 +12,11 @@ wordArr = [
     "愛"
 ]
 
+wordObjArr = new Array();
+
 $(document).ready(function (aa,bb) {
-    var wordArray, meanArray = [];
-    wordArr = $('#pt-server-side-data').find('.word').text().split(';;');
-    meanArr = $('#pt-server-side-data').find('.mean').text().split(';;');
+    wordArrObj = ($('#pt-server-side-data').find('.word').text().split(';;'));
+    meanArrObj = ($('#pt-server-side-data').find('.mean').text().split(';;'));
 
     wordShuffleChange();
     //GetData();
@@ -30,15 +33,9 @@ function wordTextShow(thisObj){
 }
 
 function clickWord(data){
-    //data{
-    //    self : this;
-    //}
-    console.log(data.self);
-    var thisWord = $(data.self).find('.pt-word-text').text()
+    var thisWord = $(data.self).find('.pt-word-text').text();
     var quizAnswer = $("#pt-word-text-quiz-answer").text();
     var quizBackgroundColor = $(".pt-left-word-div").css("background-color");
-    console.log(quizBackgroundColor);
-
     if(thisWord == quizAnswer){
         wordShuffleChange();
         $('.pt-right-word-div').find('.pt-word-text').css({
@@ -51,37 +48,6 @@ function clickWord(data){
     }
 }
 
-
-function GetData(cell,row){
-    //익플
-    var iedetect = 0;
-    if(window.ActiveXObject || "ActiveXObject" in window)
-    {
-        iedetect = 1;
-    }
-    console.log( (typeof ActiveXObject ) );
-    if(iedetect === 1){
-        var excel = new ActiveXObject("Excel.Application");
-        //var excel_file = excel.Workbooks.Open("C:/Users/sungkuk/Documents/카카오톡 받은 파일/일본어/일본어/일본어/ccc.xlsx");
-        var excel_file = excel.Workbooks.Open("C:/Users/김/Documents/project/일본어/ccc.xlsx");
-        var excel_sheet = excel.Worksheets("Sheet1");
-        //var data = excel_sheet.Cells(cell,row).Value;
-        //console.log(data);
-
-        var result = "";
-        var i = 1;
-        while(result != undefined){
-            result = excel_sheet.Cells(i,2).Value;
-            wordArr.push(result);
-            i++;
-        }
-        wordShuffleChange();
-    }
-
-
-
-
-}
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -103,12 +69,23 @@ function shuffle(array) {
 }
 
 function wordShuffleChange(){
-
-    //console.log(wordArr);
+    wordArr = [];
+    meanArr = [];
+    wordArr = $('#pt-server-side-data').find('.word').text().split(';;');
+    meanArr = $('#pt-server-side-data').find('.mean').text().split(';;');
     shuffle(wordArr);
+    shuffle(meanArr);
     quizWordShuffleChange();
+    var quizAnswer = $(".pt-left-word-div #pt-word-text-quiz-answer").text();
+    var test_random_num = Math.floor(Math.random()*4) + 1;
+    console.log( meanArr);
+    console.log( test_random_num);
+    console.log( meanArr.indexOf(quizAnswer));
+    console.log( quizAnswer);
+    if(  ( (test_random_num == 0 ) || (meanArr.indexOf(quizAnswer)== 0) ) || ( meanArr.indexOf(quizAnswer) == test_random_num) )
+    meanArr[test_random_num] = quizAnswer;
     for(var i=1 ; i<5 ; i++){
-        $("#pt-word-text-"+i).text(wordArr[i]);
+        $("#pt-word-text-"+i).text(meanArr[i]);
         var width = $("#pt-word-text-"+i).width()/2;
         $("#pt-word-text-"+i).css({
             left: "calc(50% - "+ width +"px)"
@@ -119,7 +96,7 @@ function wordShuffleChange(){
 
 function quizWordShuffleChange(){
     $("#pt-word-text-quiz").text(wordArr[1]);
-    $(".pt-left-word-div #pt-word-text-quiz-answer").text(wordArr[1]);
+    $(".pt-left-word-div #pt-word-text-quiz-answer").text(meanArrObj[wordArrObj.indexOf(wordArr[1])]);
 
     var quizWidth = $("#pt-word-text-quiz").width()/2;
     var quizHeight = $("#pt-word-text-quiz").height()/2;
@@ -137,14 +114,6 @@ function quizWordShuffleChange(){
         top:"calc(50% - "+ height +"px)",
         position: "absolute"
     });
-}
-
-function test(){
-    var data = {};
-    data.title = "title";
-    data.message = "message";
-
-
 }
 
 function searchWordApi(wordText){
@@ -183,8 +152,7 @@ function searchWordApi(wordText){
                 type: 'POST',
                 data: JSON.stringify(meanData),
                 contentType: 'application/json',
-                url: 'http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000/wordAdd',
-                //url: 'http://localhost:3000/wordAdd',
+                url: 'http://localhost:3000/wordAdd',
                 success: function(data) {
                     console.log('success');
                 }
@@ -228,8 +196,7 @@ function wordDelete(thisObj){
         type: 'POST',
         data: JSON.stringify(meanData),
         contentType: 'application/json',
-        url: 'http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000/wordDelete',
-        //url: 'http://localhost:3000/wordDelete',
+        url: 'http://localhost:3000/wordDelete',
         success: function(data) {
             console.log('success');
         }
