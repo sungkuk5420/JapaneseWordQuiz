@@ -1,9 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var wordDB = require('../worddb');
+var request = require('request');
+var qs = require('querystring');
 
-
-//client.end();
+/* DEFAULT_API_PROXY */
+router.use('/api', function (req, res) {
+  var options = {
+    method : req.method,
+    url : 'https://glosbe.com/gapi/translate?' + qs.stringify(req.query),
+    json : req.body,
+    pool: {maxSockets: 100}
+  };
+  req.pipe(request(options)).pipe(res);
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

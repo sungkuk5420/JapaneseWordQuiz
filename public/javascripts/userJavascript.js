@@ -163,14 +163,17 @@ function searchWordApiaa(wordText){
     };
     $.ajax({
         type: "GET",
+        data : {
+            from : 'jpn',
+            dest : 'kor',
+            format : 'json',
+            pretty : 'true',
+            phrase : data.query
+        },
         dataType:'json',
-        useDefaultXhrHeader: false,
-        crossDomain: true,
-        url: "https://glosbe.com/gapi/translate?from=jpn&dest=kor&format=json&pretty=true&phrase={query}".replace('{apiKey}', data.key).replace('{query}', data.query),
+        url: "/api",
         success: function (msg) {
-            if (msg.codeno == 2000) {
-
-            }
+            console.log(msg);
         }, error: function (xhr, status, error) {
             if (window.console) {
                 console.log(error);
