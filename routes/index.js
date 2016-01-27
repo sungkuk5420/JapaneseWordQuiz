@@ -25,8 +25,13 @@ router.get('/word', function (req, res) {
 });
 
 router.post('/wordAdd', function (req, res) {
-  console.log(req.body);
+  //console.log(req.body);
   wordDB.addWord(req.body,res);
+});
+
+router.post('/wordDelete', function (req, res) {
+  console.log(req.body);
+  wordDB.deleteWord(req.body,res);
 });
 
 router.get('/words',function(req,res){

@@ -82,3 +82,8 @@
         width: 1170px;
     }
 }
+
+.btn-hover:hover{
+    background-color: #6B8CAB;
+    color: white;
+}

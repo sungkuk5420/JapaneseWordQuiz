@@ -49,23 +49,19 @@ var mysqlUtil = module.exports = {
                 console.log('쿼리 문장에 오류가 있습니다.');
             }
         });
+    },
 
-
-        //client.query(
-        //    'SELECT * FROM ' + book_TABLE + ' WHERE name = ?'
-        //  , [book.name]
-        //  , function (err, results, fields) {
-        //      if (err) {
-        //          throw err;
-        //      }
-        //      if (results.length > 0) {
-        //          res.render('bookAddFail', {
-        //              title: 'bookAddFail'
-        //          });
-        //      } else {
-        //          mysqlUtil.hasBookName(book, res);
-        //      }
-        //  });
+    deleteWord : function (data, res) {
+        console.log(data);
+        var thisTrNumber = data.number;
+        client.query('delete FROM japenWord where num={num}'.replace('{num}',thisTrNumber), function (error, result, fields) {
+            if (!error) {
+                console.log("삭제완료");
+            } else {
+                console.log(error);
+                console.log('쿼리 문장에 오류가 있습니다.');
+            }
+        });
     }
 
 };

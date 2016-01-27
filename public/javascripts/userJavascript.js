@@ -205,3 +205,31 @@ function quizShow(){
     $('.pt-word-add-page').hide();
     $('.pt-word-page').show();
 }
+
+function wordDelete(thisObj){
+    console.log(thisObj);
+    var thisWordNumber = parseInt( $(thisObj).closest('tr').find('td:first-child +td').text() );
+    var thisWord = $(thisObj).closest('tr').find('td:first-child + td + td').text();
+    var thisWordMean = $(thisObj).closest('tr').find('td:first-child + td + td + td').text();
+
+    if( thisWordNumber.toString() == 'NaN'){
+        alert('단어를 삭제하지 못했습니다.');
+        return false;
+    }
+    var meanData = {
+        number : thisWordNumber,
+        word : thisWord,
+        mean : thisWordMean
+    };
+    console.log('단어 삭제 성공',meanData);
+    $(thisObj).closest('tr').remove();
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(meanData),
+        contentType: 'application/json',
+        url: 'http://localhost:3000/wordDelete',
+        success: function(data) {
+            console.log('success');
+        }
+    });
+}
