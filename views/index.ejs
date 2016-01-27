@@ -8,10 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title><%= wordObj %></title>
   <link href="/stylesheets/bootstrap.css" rel="stylesheet">
   <link href="/stylesheets/style.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top" class="index">
@@ -80,6 +82,28 @@
               <button type="submit" class="btn btn-default">追加</button>
             </td>
           </tr>
+        </table>
+        <table class="table table-striped table-bordered table-hover">
+          <tr>
+            <th>#</th>
+            <th>단어</th>
+            <th>뜻</th>
+            <th>삭제</th>
+          </tr>
+          <tbody>
+          <%
+          for(var i=0;i< wordObj.length ; i++){
+          %>
+          <tr>
+            <th scope="row"><%= i%></th>
+            <td><%=wordObj[i].word %></td>
+            <td><%=wordObj[i].mean %></td>
+            <td></td>
+          </tr>
+          <%
+          }
+          %>
+          </tbody>
         </table>
       </div>
 
