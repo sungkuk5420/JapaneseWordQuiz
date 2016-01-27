@@ -183,7 +183,8 @@ function searchWordApi(wordText){
                 type: 'POST',
                 data: JSON.stringify(meanData),
                 contentType: 'application/json',
-                url: 'http://localhost:3000/wordAdd',
+                url: 'http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000/wordAdd',
+                //url: 'http://localhost:3000/wordAdd',
                 success: function(data) {
                     console.log('success');
                 }
@@ -227,7 +228,8 @@ function wordDelete(thisObj){
         type: 'POST',
         data: JSON.stringify(meanData),
         contentType: 'application/json',
-        url: 'http://localhost:3000/wordDelete',
+        url: 'http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000/wordDelete',
+        //url: 'http://localhost:3000/wordDelete',
         success: function(data) {
             console.log('success');
         }
