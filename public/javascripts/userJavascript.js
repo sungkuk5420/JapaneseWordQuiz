@@ -15,6 +15,24 @@ wordArr = [
 wordObjArr = new Array();
 
 $(document).ready(function (aa,bb) {
+	
+	$(document).keydown(function(e){
+		console.log(e.keyCode);
+		switch(e.keyCode){
+			case 97: 
+				$('#pt-word-text-0').closest('.pt-right-word-div')[0].onmouseup();
+			break;
+			case 98: 
+				$('#pt-word-text-1').closest('.pt-right-word-div')[0].onmouseup();
+			break;
+			case 99: 
+				$('#pt-word-text-2').closest('.pt-right-word-div')[0].onmouseup();
+			break;			
+			case 100: 
+				$('#pt-word-text-3').closest('.pt-right-word-div')[0].onmouseup();
+			break;
+		}
+	});
     wordArrObj = ($('#pt-server-side-data').find('.word').text().split(';;'));
     meanArrObj = ($('#pt-server-side-data').find('.mean').text().split(';;'));
 
@@ -77,14 +95,12 @@ function wordShuffleChange(){
     shuffle(meanArr);
     quizWordShuffleChange();
     var quizAnswer = $(".pt-left-word-div #pt-word-text-quiz-answer").text();
-    var test_random_num = Math.floor(Math.random()*4) + 1;
-    console.log( meanArr);
-    console.log( test_random_num);
-    console.log( meanArr.indexOf(quizAnswer));
-    console.log( quizAnswer);
-    if(  ( (test_random_num == 0 ) || (meanArr.indexOf(quizAnswer)== 0) ) || ( meanArr.indexOf(quizAnswer) == test_random_num) )
-    meanArr[test_random_num] = quizAnswer;
-    for(var i=1 ; i<5 ; i++){
+    var test_random_num = Math.floor(Math.random()*4);
+    if(  meanArr.indexOf(quizAnswer) > 3 ){
+        meanArr[test_random_num] = quizAnswer;
+		console.log(meanArr[test_random_num] + '에넣음')
+	}
+    for(var i=0 ; i<4 ; i++){
         $("#pt-word-text-"+i).text(meanArr[i]);
         var width = $("#pt-word-text-"+i).width()/2;
         $("#pt-word-text-"+i).css({
@@ -95,8 +111,8 @@ function wordShuffleChange(){
 }
 
 function quizWordShuffleChange(){
-    $("#pt-word-text-quiz").text(wordArr[1]);
-    $(".pt-left-word-div #pt-word-text-quiz-answer").text(meanArrObj[wordArrObj.indexOf(wordArr[1])]);
+    $("#pt-word-text-quiz").text(wordArr[0]);
+    $(".pt-left-word-div #pt-word-text-quiz-answer").text(meanArrObj[wordArrObj.indexOf(wordArr[0])]);
 
     var quizWidth = $("#pt-word-text-quiz").width()/2;
     var quizHeight = $("#pt-word-text-quiz").height()/2;
