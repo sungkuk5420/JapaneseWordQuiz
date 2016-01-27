@@ -139,27 +139,17 @@ function quizWordShuffleChange(){
     });
 }
 
-function searchWordApi(wordText){
-    var data = {
-        key: 'f8ddeac295d59909f677e7414b772a7e',  //string
-        query : '愛'
-    };
-    var url = "https://glosbe.com/gapi/translate?from=jpn&dest=kor&format=json&pretty=true&phrase={query}".replace('{apiKey}', data.key).replace('{query}', data.query);
-    console.log(url);
-    $.getJSON(url,function(data) {
-        alert(data.channel.item[0].title);
-    }).error(function(XMLHttpRequest, textStatus, errorThrown)
-    {
-        alert(textStatus);
-    }).complete(function(){
-    });
+function test(){
+    var data = {};
+    data.title = "title";
+    data.message = "message";
+
+
 }
 
-function searchWordApiaa(wordText){
+function searchWordApi(wordText){
     var data = {
-        key: 'f21efcf55fc26dbdfa2c9c117025992f',  //string
-        query : '愛',  //string
-        display : 5
+        query : wordText //string
     };
     $.ajax({
         type: "GET",
@@ -172,8 +162,32 @@ function searchWordApiaa(wordText){
         },
         dataType:'json',
         url: "/api",
-        success: function (msg) {
-            console.log(msg);
+        success: function (res) {
+            var meanArr = new Array();
+
+            for(var i= 0,len = res.tuc.length; i<len ; i++){
+                meanArr.push( res.tuc[i].phrase.text );
+            }
+            console.log(meanArr);
+            console.log(wordText);
+            if( meanArr.length == 0){
+                alert('해당 단어의 뜻을 찾을 수 없습니다.');
+                return false;
+            }
+            var meanData = {
+                word : wordText,
+                mean : meanArr[0]
+            };
+            console.log('단어 등록 성공',meanData);
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(meanData),
+                contentType: 'application/json',
+                url: 'http://localhost:3000/wordAdd',
+                success: function(data) {
+                    console.log('success');
+                }
+            });
         }, error: function (xhr, status, error) {
             if (window.console) {
                 console.log(error);

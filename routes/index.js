@@ -25,13 +25,8 @@ router.get('/word', function (req, res) {
 });
 
 router.post('/wordAdd', function (req, res) {
-  var cookie = eval('(' + JSON.stringify(req.cookies) + ')');
-  var bodyKeys = Object.keys(req.body);
-  //console.log(cookie);
-  //console.log(bodyKeys);
-  //console.log(req.body);
-  wordDB.addWord(bodyKeys,res);
-  //console.log(req);
+  console.log(req.body);
+  wordDB.addWord(req.body,res);
 });
 
 router.get('/words',function(req,res){

@@ -29,12 +29,13 @@ var mysqlUtil = module.exports = {
        });
   },
     addWord : function (data, res) {
-        console.log(data.word);
+        console.log(data);
         var wordText = data.word;
+        var meanText = data.mean;
         client.query('SELECT * FROM japenWord', function (error, result, fields) {
             if (!error) {
                 var wordLen = result.length+1;
-                client.query('insert into japenWord values( {wordLen}, "{wordText}", "몰라 뜻몰라" )'.replace('{wordLen}', wordLen).replace('{wordText}', wordText), function (error, result, fields) {
+                client.query('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}" )'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');

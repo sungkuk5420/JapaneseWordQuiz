@@ -66,7 +66,7 @@
 
   <div class="pt-word-add-page" style=" display : none;">
 
-    <form role="form" class="form-inline" method='post' action='/wordAdd?title=wordAdd'>
+    <form role="form" class="form-inline" method='post' action='#' onsubmit="if( this.word.value.replace(/ /gi, '') != '' ) { searchWordApi(this.word.value); } return false;">
       <div class="form-group">
         <table class="table">
           <tr>
