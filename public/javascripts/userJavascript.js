@@ -153,36 +153,7 @@ function searchWordApi(wordText){
         dataType:'json',
         url: "/api",
         success: function (res) {
-            var meanArr = new Array();
 
-            for(var i= 0,len = res.tuc.length; i<len ; i++){
-                meanArr.push( res.tuc[i].phrase.text );
-            }
-            console.log(meanArr);
-            console.log(wordText);
-            if( meanArr.length == 0){
-                alert('해당 단어의 뜻을 찾을 수 없습니다.');
-                return false;
-            }
-            var meanData = {
-                word : wordText,
-                mean : meanArr[0]
-            };
-
-            $.ajax({
-                type: 'POST',
-                data: JSON.stringify(meanData),
-                contentType: 'application/json',
-                url: 'http://localhost:3000/wordAdd',
-                success: function(data) {
-                    console.log('success');
-                }
-            });
-            socket.on('addWord',function(data){
-                console.log('등록완료'+meanData);
-                console.log('메세지 받앗음!'+data.msg);
-                $('.pt-word-add-form')[0].value = '';
-            });
         }, error: function (xhr, status, error) {
             if (window.console) {
                 console.log(error);
