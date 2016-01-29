@@ -1,3 +1,5 @@
+var socket = io.connect('http://localhost:3000');
+
 var wordArr = new Array();
 var meanArr = new Array();
 var wordArrObj ="";
@@ -15,7 +17,10 @@ wordArr = [
 wordObjArr = new Array();
 
 $(document).ready(function (aa,bb) {
-	
+
+    socket.on('toclient',function(data){
+        console.log('메세지 받앗음!'+data.msg);
+    });
 	$(document).keydown(function(e){
 		console.log(e.keyCode);
 		switch(e.keyCode){
@@ -163,7 +168,7 @@ function searchWordApi(wordText){
                 word : wordText,
                 mean : meanArr[0]
             };
-            console.log('단어 등록 성공',meanData);
+
             $.ajax({
                 type: 'POST',
                 data: JSON.stringify(meanData),
@@ -172,6 +177,11 @@ function searchWordApi(wordText){
                 success: function(data) {
                     console.log('success');
                 }
+            });
+            socket.on('addWord',function(data){
+                console.log('등록완료'+meanData);
+                console.log('메세지 받앗음!'+data.msg);
+                $('.pt-word-add-form')[0].value = '';
             });
         }, error: function (xhr, status, error) {
             if (window.console) {
@@ -206,8 +216,6 @@ function wordDelete(thisObj){
         word : thisWord,
         mean : thisWordMean
     };
-    console.log('단어 삭제 성공',meanData);
-    $(thisObj).closest('tr').remove();
     $.ajax({
         type: 'POST',
         data: JSON.stringify(meanData),
@@ -215,6 +223,17 @@ function wordDelete(thisObj){
         url: 'http://localhost:3000/wordDelete',
         success: function(data) {
             console.log('success');
+        }
+    });
+    socket.on('deleteWord',function(data){
+        console.log('삭제완료'+meanData);
+        console.log('메세지 받앗음!'+ JSON.parse(JSON.stringify(data)));
+        var $wordTableTr = $('.pt-word-table').find('tr');
+
+        for(var i= 1,len = $wordTableTr.length+1; i<len ; i++){
+            if(parseInt($wordTableTr.eq(i).find('td:first-child +td').text()) == JSON.parse(JSON.stringify(data)).number){
+                $wordTableTr.eq(i).remove();
+            }
         }
     });
 }

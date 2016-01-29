@@ -71,6 +71,9 @@
         color : #94B8D2;
         cursor : pointer;
     }
+    .pt-word-delete-btn{
+        width: 100%;
+    }
 }
 @media (min-width: 992px) {
     .container {
@@ -86,4 +89,7 @@
 .btn-hover:hover{
     background-color: #6B8CAB;
     color: white;
+}
+.pt-word-delete-btn{
+    50%;
 }

@@ -13,7 +13,7 @@
   <title><%= wordObj %></title>
   <link href="/stylesheets/bootstrap.css" rel="stylesheet">
   <link href="/stylesheets/style.css" rel="stylesheet">
-
+  <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body id="page-top" class="index">
@@ -76,7 +76,7 @@
               <div style="display : inline-block; font-size : 22px; padding: 5px 5px 0px 0px;">単語</div>
             </td>
             <td>
-              <input type="text" class="form-control" required="requlred" name='word' placeholder="単語を入力してください">
+              <input type="text" class="pt-word-add-form form-control" required="requlred" name='word' placeholder="単語を入力してください">
             </td>
             <td>
               <button type="submit" class="btn btn-default">追加</button>
@@ -85,7 +85,7 @@
         </table>
       </div>
     </form>
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-striped table-bordered table-hover pt-word-table">
           <tr>
             <th>#</th>
             <th>단어</th>
@@ -102,7 +102,7 @@
             <td><%=wordObj[i].word %></td>
             <td><%=wordObj[i].mean %></td>
             <td>
-              <button class="form-control btn-hover" style="width:50%; margin : auto;" onclick="wordDelete(this);"> 삭제 </button>
+              <button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>
             </td>
           </tr>
           <%

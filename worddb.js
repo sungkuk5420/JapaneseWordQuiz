@@ -26,7 +26,7 @@ var mysqlUtil = module.exports = {
                res.render('index', { title : "aaa",wordObj: result });
 
            }
-       });
+       })
   },
     addWord : function (data, res) {
         console.log(data);
@@ -35,14 +35,15 @@ var mysqlUtil = module.exports = {
         client.query('SELECT * FROM japenWord', function (error, result, fields) {
             if (!error) {
                 console.log(result);
-                console.log(result[result.length-1].num);
-                var wordLen = result[result.length-1].num+1;
+                console.log(result[result.length-1]);
+                var wordLen = result[result.length-1] == undefined ? 1 : result[result.length-1].num+1;
+                console.log(wordLen);
                 client.query('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}" )'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');
                     } else {
-                        console.log("등록완료");
+                        io.sockets.emit('addWord',{msg:'등록완료'});
                         //res.json(result)
                     }
                 });
@@ -58,7 +59,7 @@ var mysqlUtil = module.exports = {
         var thisTrNumber = data.number;
         client.query('delete FROM japenWord where num={num}'.replace('{num}',thisTrNumber), function (error, result, fields) {
             if (!error) {
-                console.log("삭제완료");
+                io.sockets.emit('deleteWord',{msg:'삭제완료', number : data.number});
             } else {
                 console.log(error);
                 console.log('쿼리 문장에 오류가 있습니다.');
