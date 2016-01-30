@@ -1,5 +1,5 @@
-//var socket = io.connect('http://localhost:3000');
-var socket = io.connect('http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000');
+var socket = io.connect('http://localhost:8000');
+//var socket = io.connect('http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000');
 
 var wordArr = new Array();
 var meanArr = new Array();
@@ -143,7 +143,7 @@ function searchWordApi(wordText){
         query : wordText //string
     };
     $.ajax({
-        type: "GET",
+        type: "POST",
         data : {
             from : 'jpn',
             dest : 'kor',
@@ -154,7 +154,7 @@ function searchWordApi(wordText){
         dataType:'json',
         url: "/api",
         success: function (res) {
-
+            console.log(res);
         }, error: function (xhr, status, error) {
             if (window.console) {
                 console.log(error);
