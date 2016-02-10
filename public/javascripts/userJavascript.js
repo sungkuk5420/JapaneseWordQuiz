@@ -156,7 +156,11 @@ function searchWordApi(wordText){
             var meanArr = new Array();
 
             for(var i= 0,len = res.tuc.length; i<len ; i++){
-                meanArr.push( res.tuc[i].phrase.text );
+                if(res.tuc[i].phrase != undefined){
+                    meanArr.push("aaa");
+                }else{
+                    meanArr.push( res.tuc[i].phrase.text );
+                }
             }
             console.log(meanArr);
             console.log(wordText);
@@ -180,7 +184,19 @@ function searchWordApi(wordText){
             });
             socket.on('addWord',function(data){
                 console.log('등록완료'+meanData);
-                console.log('메세지 받앗음!'+data.msg);
+                result = JSON.parse(JSON.stringify(data.msg));
+                var dom = '<tr>'
+                    dom += '<td scope="row">{affectedRows}</td>'
+                    dom += '<td style="display : none;">{insertId}</td>'
+                    dom += '<td>恋</td>'
+                    dom += '<td>사랑</td>'
+                    dom += '<td>'
+                    dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
+                    dom += '</td>'
+                    dom += '</tr>'
+                var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
+                console.log(replaceHTML);
+                $('.pt-word-table').find('tr:last').after(replaceHTML);
                 $('.pt-word-add-form')[0].value = '';
             });
         }, error: function (xhr, status, error) {

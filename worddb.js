@@ -43,7 +43,9 @@ var mysqlUtil = module.exports = {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');
                     } else {
-                        io.sockets.emit('addWord',{msg:'등록완료'});
+                        result.word = wordText;
+                        result.mean = meanText;
+                        io.sockets.emit('addWord',{msg:result});
                         //res.json(result)
                     }
                 });
