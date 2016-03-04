@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:8000');
+var socket = io.connect('http://localhost:3000');
 //var socket = io.connect('http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000');
 
 var wordArr = new Array();
@@ -206,6 +206,45 @@ function searchWordApi(wordText){
             }
         }
     });
+}
+
+function addWordApi(wordText,meanText){
+
+    var wordData = {
+        word : wordText,
+        mean : meanText
+    };
+
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(wordData),
+        contentType: 'application/json',
+        url: 'http://localhost:3000/wordAdd',
+        success: function(data) {
+            console.log('success');
+        }
+    });
+    socket.on('addWord',function(data){
+        console.log('등록완료'+wordData);
+        result = JSON.parse(JSON.stringify(data.msg));
+        var dom = '<tr>'
+        dom += '<td scope="row">{affectedRows}</td>'
+        dom += '<td style="display : none;">{insertId}</td>'
+        dom += '<td>{word}</td>'
+        dom += '<td>{mean}</td>'
+        dom += '<td>'
+        dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
+        dom += '</td>'
+        dom += '</tr>'
+        var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean)
+            .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
+        console.log(replaceHTML);
+        $('.pt-word-table').find('tr:last').after(replaceHTML);
+        $('.pt-word-add-form')[0].value = '';
+        $('.pt-mean-add-form')[0].value = '';
+        $('.pt-word-add-form').focus();
+    });
+
 }
 
 function wordAddPageShow(){

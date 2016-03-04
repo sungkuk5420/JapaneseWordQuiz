@@ -68,7 +68,8 @@
 
   <div class="pt-word-add-page" style=" display : none;">
 
-    <form role="form" class="form-inline" method='post' action='#' onsubmit="if( this.word.value.replace(/ /gi, '') != '' ) { searchWordApi(this.word.value); } return false;">
+    <form role="form" class="form-inline" method='post' action='#' onsubmit="if( (this.word.value.replace(/ /gi, '') != '') && ( this.mean.value.replace(/ /gi, '') != '' ) ) {
+    addWordApi(this.word.value,this.mean.value); } return false;">
       <div class="form-group">
         <table class="table">
           <tr>
@@ -77,6 +78,9 @@
             </td>
             <td>
               <input type="text" class="pt-word-add-form form-control" required="requlred" name='word' placeholder="単語を入力してください">
+            </td>
+            <td>
+              <input type="text" class="pt-mean-add-form form-control" required="requlred" name='mean' placeholder="単語を入力してください">
             </td>
             <td>
               <button type="submit" class="btn btn-default">追加</button>
