@@ -38,7 +38,7 @@ var mysqlUtil = module.exports = {
                 console.log(result[result.length-1]);
                 var wordLen = result[result.length-1] == undefined ? 1 : result[result.length-1].num+1;
                 console.log(wordLen);
-                client.query('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}" )'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
+                client.query('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}", 1 )'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');

@@ -210,6 +210,21 @@ function searchWordApi(wordText){
 
 function addWordApi(wordText,meanText){
 
+    var $wordList = $('.pt-word-table').find('tr').find('td:first-child+td+td+td');
+    var isHaveWord = false;
+    for(var i= 0,len = $wordList.length ; i < len ; i++){
+        if($wordList.eq(i).text()==wordText){
+            isHaveWord = true;
+        }
+    }
+    $('.pt-word-add-form')[0].value = '';
+    $('.pt-mean-add-form')[0].value = '';
+    if(isHaveWord){
+        alert('['+ wordText +']'+'이미 있는 단어입니다.');
+
+        $('.pt-word-add-form').focus();
+        return false;
+    }
     var wordData = {
         word : wordText,
         mean : meanText
@@ -224,19 +239,21 @@ function addWordApi(wordText,meanText){
             console.log('success');
         }
     });
+    socket.removeListener('addWord');
     socket.on('addWord',function(data){
         console.log('등록완료'+wordData);
         result = JSON.parse(JSON.stringify(data.msg));
         var dom = '<tr>'
         dom += '<td scope="row">{affectedRows}</td>'
         dom += '<td style="display : none;">{insertId}</td>'
+        dom += '<td >{level}</td>'
         dom += '<td>{word}</td>'
         dom += '<td>{mean}</td>'
         dom += '<td>'
         dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
         dom += '</td>'
         dom += '</tr>'
-        var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean)
+        var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
             .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
         console.log(replaceHTML);
         $('.pt-word-table').find('tr:last').after(replaceHTML);
@@ -281,6 +298,7 @@ function wordDelete(thisObj){
             console.log('success');
         }
     });
+    socket.removeListener('deleteWord');
     socket.on('deleteWord',function(data){
         console.log('삭제완료'+meanData);
         console.log('메세지 받앗음!'+ JSON.parse(JSON.stringify(data)));
