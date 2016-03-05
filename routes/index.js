@@ -57,8 +57,14 @@ router.post('/wordDelete', function (req, res) {
   wordDB.deleteWord(req.body,res);
 });
 
-router.get('/words',function(req,res){
-
-
+router.post('/updateMean', function (req, res) {
+  console.log(req.body);
+  wordDB.updateMean(req.body,res);
 });
+
+router.post('/levelWordViews', function (req, res) {
+  console.log(req.body);
+  wordDB.levelWordViews(req.body,res);
+});
+
 module.exports = router;

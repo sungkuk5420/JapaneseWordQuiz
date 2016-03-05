@@ -23,6 +23,7 @@ var mysqlUtil = module.exports = {
                console.log(error);
                console.log('쿼리 문장에 오류가 있습니다.');
            } else {
+               console.log(result);
                res.render('index', { title : "aaa",wordObj: result });
 
            }
@@ -67,6 +68,41 @@ var mysqlUtil = module.exports = {
             } else {
                 console.log(error);
                 console.log('쿼리 문장에 오류가 있습니다.');
+            }
+        });
+    },
+
+    updateMean : function (data, res) {
+        var thisTrNumber = data.number;
+        console.log(thisTrNumber);
+        var mean = data.mean;
+        console.log("update japenWord set mean='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber));
+        client.query("update japenWord set mean='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber), function (error, result, fields) {
+            if (error) {
+                console.log(error);
+                console.log('쿼리 문장에 오류가 있습니다.');
+            } else {
+                console.log(result);
+                result.number = thisTrNumber;
+                result.mean = mean;
+                io.sockets.emit('updateMean',{msg:result});
+                res.json(result);
+                res.end();
+            }
+        });
+    } ,
+    levelWordViews : function (data, res) {
+        var selectLevel = data.level;
+        console.log('SELECT * FROM japenWord where level = {level}'.replace('{level}',selectLevel));
+        client.query('SELECT * FROM japenWord where level = {level}'.replace('{level}',selectLevel), function (error, result, fields) {
+            if (error) {
+                console.log(error);
+                console.log('쿼리 문장에 오류가 있습니다.');
+            } else {
+                console.log(result);
+                io.sockets.emit('levelWordViews',{msg:result});
+                res.json(result);
+                res.end();
             }
         });
     }

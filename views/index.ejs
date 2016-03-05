@@ -38,18 +38,21 @@
         <ul class="nav navbar-nav">
           <li class="active"><a href="javascript: wordAddPageShow();">単語入力<span class="sr-only">(current)</span></a></li>
           <li><a href="javascript: quizShow();">単語クイズ</a></li>
-          <!--<li class="dropdown">-->
-            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">메뉴 <span class="caret"></span></a>-->
-            <!--<ul class="dropdown-menu" role="menu">-->
-              <!--<li><a href="#">단어 퀴즈</a></li>-->
-              <!--<li><a href="#">단어 입력</a></li>-->
-              <!--<li><a href="#">준비 중</a></li>-->
-              <!--<li class="divider"></li>-->
-              <!--<li><a href="#">준비 중</a></li>-->
-              <!--<li class="divider"></li>-->
-              <!--<li><a href="#">준비 중</a></li>-->
-            <!--</ul>-->
-          <!--</li>-->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">level <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                <div class="btn-group" role="group" aria-label="..." style="margin:auto; display:table; margin-top:8px">
+                  <button type="button" class="btn btn-default" onclick="showLevelWordView(1);">1</button>
+                  <button type="button" class="btn btn-default" onclick="showLevelWordView(2);">2</button>
+                  <button type="button" class="btn btn-default" onclick="showLevelWordView(3);">3</button>
+                  <button type="button" class="btn btn-default" onclick="showLevelWordView(4);">4</button>
+                  <button type="button" class="btn btn-default" onclick="showLevelWordView(5);">5</button>
+                </div>
+              </li>
+
+            </ul>
+          </li>
         </ul>
         <!--<form class="navbar-form navbar-left" role="search">-->
           <!--<div class="form-group">-->
@@ -65,37 +68,46 @@
     <div class="col-lg-12 text-center" onclick="wordShuffleChange();">
       <h2>単語帳</h2>
     </div>
-
   <div class="pt-word-add-page" style=" display : none;">
 
-    <form role="form" class="form-inline" method='post' action='#' onsubmit="if( (this.word.value.replace(/ /gi, '') != '') && ( this.mean.value.replace(/ /gi, '') != '' ) ) {
-    addWordApi(this.word.value,this.mean.value); } return false;">
+
       <div class="form-group">
         <table class="table">
           <tr>
+            <form role="form" class="form-inline" method='post' action='#' onsubmit="if( (this.word.value.replace(/ /gi, '') != '') ) {
+              addWordApi(this.word.value,this.mean.value); } return false;">
+              <td>
+                <div style="display : inline-block; font-size : 22px; padding: 5px 5px 0px 0px;">単語</div>
+              </td>
+              <td>
+                <input type="text" class="pt-word-add-form form-control" required="requlred" name='word' placeholder="単語を入力してください">
+              </td>
+              <td>
+                <input type="text" class="pt-mean-add-form form-control"  name='mean' placeholder="意味を入力してください">
+              </td>
+              <td>
+                <button type="submit" class="btn btn-default">追加</button>
+              </td>
+            </form>
             <td>
-              <div style="display : inline-block; font-size : 22px; padding: 5px 5px 0px 0px;">単語</div>
+              <button class="btn btn-default hide" onclick="insertMode();" >편집</button>
             </td>
             <td>
-              <input type="text" class="pt-word-add-form form-control" required="requlred" name='word' placeholder="単語を入力してください">
-            </td>
-            <td>
-              <input type="text" class="pt-mean-add-form form-control" required="requlred" name='mean' placeholder="単語を入力してください">
-            </td>
-            <td>
-              <button type="submit" class="btn btn-default">追加</button>
+              <button class="btn btn-default hide" onclick="deleteMode();">삭제</button>
             </td>
           </tr>
         </table>
       </div>
-    </form>
+
+
+
         <table class="table table-striped table-bordered table-hover pt-word-table">
           <tr>
             <th>#</th>
             <th>레벨</th>
             <th>단어</th>
             <th>뜻</th>
-            <th>삭제</th>
+            <th style="display:none;">삭제</th>
           </tr>
           <tbody>
           <%
@@ -103,12 +115,12 @@
           %>
           <tr>
             <td scope="row"><%= i+1%></td>
-            <td style="display : none;"><%=wordObj[i].num %></td>
+            <td class="hide"><%=wordObj[i].num %></td>
             <td ><%=wordObj[i].level %></td>
             <td><%=wordObj[i].word %></td>
             <td><%=wordObj[i].mean %></td>
-            <td>
-              <button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>
+            <td >
+              <button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>
             </td>
           </tr>
           <%
@@ -172,6 +184,7 @@
   <%
   for(var i=0;i< wordObj.length ; i++){
   %>
+  <div class="number"> <%=wordObj[i].num %>;;</div>
   <div class="word"> <%=wordObj[i].word %>;;</div>
   <div class="mean"> <%=wordObj[i].mean %>;;</div>
   <%

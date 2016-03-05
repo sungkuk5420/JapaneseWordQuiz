@@ -3,8 +3,10 @@ var socket = io.connect('http://localhost:3000');
 
 var wordArr = new Array();
 var meanArr = new Array();
+var numberObj ="";
 var wordArrObj ="";
 var meanArrObj ="";
+var dbWordArr =new Array();
 wordArr = [
     "오요메상",
     "이",
@@ -19,9 +21,6 @@ wordObjArr = new Array();
 
 $(document).ready(function (aa,bb) {
 
-    socket.on('toclient',function(data){
-        console.log('메세지 받앗음!'+data.msg);
-    });
 	$(document).keydown(function(e){
 		console.log(e.keyCode);
 		switch(e.keyCode){
@@ -39,8 +38,19 @@ $(document).ready(function (aa,bb) {
 			break;
 		}
 	});
-    wordArrObj = ($('#pt-server-side-data').find('.word').text().split(';;'));
-    meanArrObj = ($('#pt-server-side-data').find('.mean').text().split(';;'));
+    numberObj = ($('#pt-server-side-data').find('.number').text().replace(/ /gi,'').split(';;'));
+    wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
+    meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
+    for(var i= 0, len = wordArrObj.length ; i <len ; i++){
+        if(wordArrObj[i].replace(/ /gi,'') != '' ){
+            dbWordArr.push({
+                num : numberObj[i],
+                word : wordArrObj[i],
+                mean : meanArrObj[i]
+            });
+        }
+    }
+
 
     wordShuffleChange();
     //GetData();
@@ -104,7 +114,6 @@ function wordShuffleChange(){
     var test_random_num = Math.floor(Math.random()*4);
     if(  meanArr.indexOf(quizAnswer) > 3 ){
         meanArr[test_random_num] = quizAnswer;
-		console.log(meanArr[test_random_num] + '에넣음')
 	}
     for(var i=0 ; i<4 ; i++){
         $("#pt-word-text-"+i).text(meanArr[i]);
@@ -213,14 +222,14 @@ function addWordApi(wordText,meanText){
     var $wordList = $('.pt-word-table').find('tr').find('td:first-child+td+td+td');
     var isHaveWord = false;
     for(var i= 0,len = $wordList.length ; i < len ; i++){
-        if($wordList.eq(i).text()==wordText){
+        if($wordList.eq(i).text().replace(/ /gi, '')==wordText.replace(/ /gi, '')){
             isHaveWord = true;
         }
     }
     $('.pt-word-add-form')[0].value = '';
     $('.pt-mean-add-form')[0].value = '';
     if(isHaveWord){
-        alert('['+ wordText +']'+'이미 있는 단어입니다.');
+        alert('['+ wordText.replace(/ /gi, '') +']'+'이미 있는 단어입니다.');
 
         $('.pt-word-add-form').focus();
         return false;
@@ -257,8 +266,6 @@ function addWordApi(wordText,meanText){
             .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
         console.log(replaceHTML);
         $('.pt-word-table').find('tr:last').after(replaceHTML);
-        $('.pt-word-add-form')[0].value = '';
-        $('.pt-mean-add-form')[0].value = '';
         $('.pt-word-add-form').focus();
     });
 
@@ -309,5 +316,93 @@ function wordDelete(thisObj){
                 $wordTableTr.eq(i).remove();
             }
         }
+    });
+}
+
+function insertMode(){
+    var $wordTableTr = $('.pt-word-table').find('tr');
+
+    var html  = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean(this);  return false;"> <input type="text"> </form>';
+    for(var i= 1,len = $wordTableTr.length; i<len ; i++){
+        if( $wordTableTr.eq(i).find('td:first + td + td + td + td').html().replace(/ /gi, '') == ''){
+            $wordTableTr.eq(i).find('td:first + td + td + td + td').append(html);
+        }
+    }
+}
+
+function deleteMode(){
+    var $wordTableTr = $('.pt-word-table').find('tr');
+    $wordTableTr.find('th:last').show();
+    $wordTableTr.find('td:last').find('button').show();
+}
+
+function updateMean(thisObj){
+   console.log(thisObj);
+    var mean = $(thisObj).find('input').val();
+    var trNumber = $(thisObj).closest('tr').find('td:first + td').text();
+
+    var meanData = {
+        number : trNumber,
+        mean : mean
+    };
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(meanData),
+        contentType: 'application/json',
+        url: 'http://localhost:3000/updateMean',
+        success: function(data) {
+            console.log('success');
+        }
+    });
+
+    socket.removeListener('updateMean');
+    socket.on('updateMean',function(data){
+        result = JSON.parse(JSON.stringify(data.msg));
+        var $wordTableTr = $('.pt-word-table').find('tr');
+        for(var i= 1,len = $wordTableTr.length; i<len ; i++) {
+            if( $wordTableTr.eq(i).find('td:first + td ').text() == result.number){
+                $wordTableTr.eq(i).find('td:first + td +td +td + td').empty().text(result.mean);
+                $wordTableTr.eq(i+1).find('td:first + td +td +td + td').find('input').focus();
+            }
+        }
+    });
+}
+
+function showLevelWordView(level){
+    var data = {
+        level : level
+    };
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: 'http://localhost:3000/levelWordViews',
+        success: function(data) {
+            console.log('success');
+        }
+    });
+    socket.removeListener('levelWordViews');
+    socket.on('levelWordViews',function(data){
+        console.log('레벨별 단어 변경'+data);
+        result = JSON.parse(JSON.stringify(data.msg));
+        $('.pt-word-table').find('tbody').eq(1).empty();
+
+
+        for(var i= 0,len = result.length; i<len ; i++) {
+            var htmlElement = '';
+            htmlElement += '<tr>';
+            htmlElement += '<td scope="row">{index}</td>';
+            htmlElement += '<td class="hide">{num}</td>';
+            htmlElement += '<td >{level}</td>';
+            htmlElement += '<td>{word}</td>';
+            htmlElement += '<td>{mean}</td>';
+            htmlElement += '<td >';
+            htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
+            htmlElement += '</td>';
+            htmlElement += '</tr>';
+            htmlElement = htmlElement.replace('{index}',i+1).replace('{num}',result[i].num).replace('{level}',result[i].level).replace('{word}',result[i].word).replace('{mean}',result[i].mean);
+            $('.pt-word-table').find('tbody').eq(1).append(htmlElement);
+        }
+
     });
 }
