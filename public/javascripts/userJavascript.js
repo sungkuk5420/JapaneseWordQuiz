@@ -1,6 +1,8 @@
-var socket = io.connect('http://localhost:3000');
-//var socket = io.connect('http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000');
+//var socket = io.connect('http://localhost:3000');
+var socket = io.connect('http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000');
 
+var apiUrl = 'http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000';
+//var apiUrl = 'http://localhost:3000';
 var wordArr = new Array();
 var meanArr = new Array();
 var numberObj ="";
@@ -99,7 +101,7 @@ function changeWordLevelUp(quizAnswer){
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: 'http://localhost:3000/changeWordLevelUp',
+        url: apiUrl+'/changeWordLevelUp',
         success: function(data) {
             console.log('success');
         }
@@ -127,7 +129,7 @@ function changeWordLevelDown(quizAnswer){
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: 'http://localhost:3000/changeWordLevelDown',
+        url: apiUrl+'/changeWordLevelDown',
         success: function(data) {
             console.log('success');
         }
@@ -286,7 +288,7 @@ function searchWordApi(wordText){
                 type: 'POST',
                 data: JSON.stringify(meanData),
                 contentType: 'application/json',
-                url: 'http://localhost:3000/wordAdd',
+                url: apiUrl+'/wordAdd',
                 success: function(data) {
                     console.log('success');
                 }
@@ -342,7 +344,7 @@ function addWordApi(wordText,meanText){
         type: 'POST',
         data: JSON.stringify(wordData),
         contentType: 'application/json',
-        url: 'http://localhost:3000/wordAdd',
+        url: apiUrl+'/wordAdd',
         success: function(data) {
             console.log('success');
         }
@@ -399,7 +401,7 @@ function wordDelete(thisObj){
         type: 'POST',
         data: JSON.stringify(meanData),
         contentType: 'application/json',
-        url: 'http://localhost:3000/wordDelete',
+        url: apiUrl+'/wordDelete',
         success: function(data) {
             console.log('success');
         }
@@ -448,7 +450,7 @@ function updateMean(thisObj){
         type: 'POST',
         data: JSON.stringify(meanData),
         contentType: 'application/json',
-        url: 'http://localhost:3000/updateMean',
+        url: apiUrl+'/updateMean',
         success: function(data) {
             console.log('success');
         }
@@ -475,7 +477,7 @@ function showLevelWordView(level){
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: 'http://localhost:3000/levelWordViews',
+        url: apiUrl+'/levelWordViews',
         success: function(data) {
             console.log('success');
         }
