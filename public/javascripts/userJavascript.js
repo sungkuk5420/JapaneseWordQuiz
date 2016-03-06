@@ -190,22 +190,29 @@ function wordShuffleChange(){
     }
     var isHaveAnswer =false;
     var quizAnswer = $(".pt-left-word-div #pt-word-text-quiz-answer").text();
+    var ansewerIndex = 0;
     for(var i=0 ; i<4 ; i++){
         if(meanArr[i].replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')) {
             isHaveAnswer = true;
         }
     }
+    var test_random_num = Math.floor(Math.random()*4);
     if(isHaveAnswer == false){
-        var test_random_num = Math.floor(Math.random()*4);
+        console.log('aa');
         for(var i= 0,len=dbWordArr.length ; i <len ; i++){
             if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
                 $("#pt-word-text-"+test_random_num).text(quizAnswer);
-                var width = $("#pt-word-text-"+i).width()/2;
+                var width = $("#pt-word-text-"+test_random_num).width()/2;
                 $("#pt-word-text-"+test_random_num).css({
                     left: "calc(50% - "+ width +"px)"
                 });
             }
         }
+    }else{
+        var width = $("#pt-word-text-"+ansewerIndex).width()/2;
+        $("#pt-word-text-"+ansewerIndex).css({
+            left: "calc(50% - "+ width +"px)"
+        });
     }
 
 
