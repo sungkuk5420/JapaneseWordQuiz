@@ -91,5 +91,9 @@
     color: white;
 }
 .pt-word-delete-btn{
-    50%;
+   width : 50%;
+}
+
+.pt-word-book-index, .pt-word-book-total{
+    font-size:18px;
 }

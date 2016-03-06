@@ -169,6 +169,8 @@ function wordShuffleChange(){
     for(var i= 0, len = meanArrObj.length ; i <len ; i++){
         meanArr.push(meanArrObj[i]);
     }
+    $('.pt-word-book-index').text(wordArr.length);
+    $('.pt-word-book-total').text(meanArr.length);
     shuffle(wordArr);
     shuffle(meanArr);
     quizWordShuffleChange();
