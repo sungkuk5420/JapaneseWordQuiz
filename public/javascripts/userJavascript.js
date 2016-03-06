@@ -485,8 +485,13 @@ function showLevelWordView(level){
         console.log('레벨별 단어 변경'+data);
         result = JSON.parse(JSON.stringify(data.msg));
         $('.pt-word-table').find('tbody').eq(1).empty();
-
-
+        wordArrObj = [];
+        meanArrObj = [];
+        for(var i= 0, len = result.length ; i <len ; i++){
+            wordArrObj.push(result[i].word);
+            meanArrObj.push(result[i].mean);
+        }
+        wordShuffleChange();
         for(var i= 0,len = result.length; i<len ; i++) {
             var htmlElement = '';
             htmlElement += '<tr>';
