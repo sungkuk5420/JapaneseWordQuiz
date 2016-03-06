@@ -183,12 +183,20 @@
   <%= wordObj %>
   <%
   for(var i=0;i< wordObj.length ; i++){
+    if(i != wordObj.length -1){
   %>
-  <div class="number"> <%=wordObj[i].num %>;;</div>
-  <div class="word"> <%=wordObj[i].word %>;;</div>
-  <div class="mean"> <%=wordObj[i].mean %>;;</div>
+      <div class="number"> <%=wordObj[i].num %>;;</div>
+      <div class="word"> <%=wordObj[i].word %>;;</div>
+      <div class="mean"> <%=wordObj[i].mean %>;;</div>
+  <%
+    }else{
+    %>
+      <div class="number"> <%=wordObj[i].num %></div>
+      <div class="word"> <%=wordObj[i].word %></div>
+      <div class="mean"> <%=wordObj[i].mean %></div>
   <%
     }
+  }
   %>
 </div>
 

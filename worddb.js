@@ -105,6 +105,43 @@ var mysqlUtil = module.exports = {
                 res.end();
             }
         });
+    },
+    changeWordLevelUp : function (data, res) {
+        var selectNumber = data.number;
+        console.log(selectNumber);
+        console.log('SELECT * FROM japenWord where num = {number}'.replace('{number}',selectNumber));
+        client.query('SELECT * FROM japenWord where num = {number}'.replace('{number}',selectNumber), function (error, result, fields) {
+            if (error) {
+                console.log(error);
+                console.log('쿼리 문장에 오류가 있습니다.');
+            } else {
+                var resultData = JSON.parse(JSON.stringify(result))[0];
+                client.query("update japenWord set level='{level}' where num='{num}'".replace('{num}', selectNumber).replace('{level}', resultData.level+1), function (error, result, fields) {
+                    if (error) {
+                        console.log(error);
+                        console.log('쿼리 문장에 오류가 있습니다.');
+                    } else {
+                        io.sockets.emit('changeWordLevelUp',{msg:result});
+                        res.json(result);
+                        res.end();
+                    }
+                });
+            }
+        });
+    },
+
+    changeWordLevelDown : function (data, res) {
+        var selectNumber = data.number;
+        client.query("update japenWord set level='{level}' where num='{num}'".replace('{num}', selectNumber).replace('{level}', 1), function (error, result, fields) {
+            if (error) {
+                console.log(error);
+                console.log('쿼리 문장에 오류가 있습니다.');
+            } else {
+                io.sockets.emit('changeWordLevelDown',{msg:result});
+                res.json(result);
+                res.end();
+            }
+        });
     }
 
 };

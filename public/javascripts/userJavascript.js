@@ -7,15 +7,8 @@ var numberObj ="";
 var wordArrObj ="";
 var meanArrObj ="";
 var dbWordArr =new Array();
-wordArr = [
-    "오요메상",
-    "이",
-    "제일",
-    "좋다",
-    "결혼",
-    "해야해",
-    "愛"
-]
+var isWordAnswerFail = false;
+var isClickWordFlag = false;
 
 wordObjArr = new Array();
 
@@ -38,9 +31,12 @@ $(document).ready(function (aa,bb) {
 			break;
 		}
 	});
+    console.log($('#pt-server-side-data').find('.number').text());
     numberObj = ($('#pt-server-side-data').find('.number').text().replace(/ /gi,'').split(';;'));
     wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
     meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
+
+
     for(var i= 0, len = wordArrObj.length ; i <len ; i++){
         if(wordArrObj[i].replace(/ /gi,'') != '' ){
             dbWordArr.push({
@@ -70,16 +66,78 @@ function clickWord(data){
     var thisWord = $(data.self).find('.pt-word-text').text();
     var quizAnswer = $("#pt-word-text-quiz-answer").text();
     var quizBackgroundColor = $(".pt-left-word-div").css("background-color");
-    if(thisWord == quizAnswer){
-        wordShuffleChange();
+    if(thisWord == quizAnswer && isClickWordFlag == false){
+        isClickWordFlag = true;
+        if(isWordAnswerFail == false){
+            changeWordLevelUp(quizAnswer);
+        }
         $('.pt-right-word-div').find('.pt-word-text').css({
             color : quizBackgroundColor
         });
+        wordShuffleChange();
     }else{
+        changeWordLevelDown(quizAnswer);
+        isWordAnswerFail = true;
         $(data.self).find('.pt-word-text').css({
             color : "red"
         });
     }
+}
+
+function changeWordLevelUp(quizAnswer){
+    var thisTrNumber = -1;
+    for(var i= 0,len=dbWordArr.length ; i <len ; i++){
+        if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
+            thisTrNumber =  dbWordArr[i].num;
+        }
+    }
+    var data = {
+        number : thisTrNumber
+    };
+    console.log(data.number);
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: 'http://localhost:3000/changeWordLevelUp',
+        success: function(data) {
+            console.log('success');
+        }
+    });
+
+    socket.removeListener('changeWordLevelUp');
+    socket.on('changeWordLevelUp',function(data){
+        result = JSON.parse(JSON.stringify(data.msg));
+    });
+
+}
+
+function changeWordLevelDown(quizAnswer){
+    var thisTrNumber = -1;
+    for(var i= 0,len=dbWordArr.length ; i <len ; i++){
+        if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
+            thisTrNumber =  dbWordArr[i].num;
+        }
+    }
+    var data = {
+        number : thisTrNumber
+    };
+    console.log(data.number);
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: 'http://localhost:3000/changeWordLevelDown',
+        success: function(data) {
+            console.log('success');
+        }
+    });
+
+    socket.removeListener('changeWordLevelDown');
+    socket.on('changeWordLevelDown',function(data){
+        result = JSON.parse(JSON.stringify(data.msg));
+    });
+
 }
 
 
@@ -105,16 +163,20 @@ function shuffle(array) {
 function wordShuffleChange(){
     wordArr = [];
     meanArr = [];
-    wordArr = $('#pt-server-side-data').find('.word').text().split(';;');
-    meanArr = $('#pt-server-side-data').find('.mean').text().split(';;');
+    for(var i= 0, len = wordArrObj.length ; i <len ; i++){
+        wordArr.push(wordArrObj[i]);
+    }
+    for(var i= 0, len = meanArrObj.length ; i <len ; i++){
+        meanArr.push(meanArrObj[i]);
+    }
     shuffle(wordArr);
     shuffle(meanArr);
     quizWordShuffleChange();
-    var quizAnswer = $(".pt-left-word-div #pt-word-text-quiz-answer").text();
-    var test_random_num = Math.floor(Math.random()*4);
-    if(  meanArr.indexOf(quizAnswer) > 3 ){
-        meanArr[test_random_num] = quizAnswer;
-	}
+    isWordAnswerFail = false;
+    var quizBackgroundColor = $(".pt-left-word-div").css("background-color");
+    $('.pt-right-word-div').find('.pt-word-text').css({
+        color : quizBackgroundColor
+    });
     for(var i=0 ; i<4 ; i++){
         $("#pt-word-text-"+i).text(meanArr[i]);
         var width = $("#pt-word-text-"+i).width()/2;
@@ -122,12 +184,47 @@ function wordShuffleChange(){
             left: "calc(50% - "+ width +"px)"
         });
     }
+    var isHaveAnswer =false;
+    var quizAnswer = $(".pt-left-word-div #pt-word-text-quiz-answer").text();
+    for(var i=0 ; i<4 ; i++){
+        if(meanArr[i].replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')) {
+            isHaveAnswer = true;
+        }
+    }
+    if(isHaveAnswer == false){
+        var test_random_num = Math.floor(Math.random()*4);
+        for(var i= 0,len=dbWordArr.length ; i <len ; i++){
+            if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
+                $("#pt-word-text-"+test_random_num).text(quizAnswer);
+                var width = $("#pt-word-text-"+i).width()/2;
+                $("#pt-word-text-"+test_random_num).css({
+                    left: "calc(50% - "+ width +"px)"
+                });
+            }
+        }
+    }
+
 
 }
 
 function quizWordShuffleChange(){
     $("#pt-word-text-quiz").text(wordArr[0]);
-    $(".pt-left-word-div #pt-word-text-quiz-answer").text(meanArrObj[wordArrObj.indexOf(wordArr[0])]);
+    var quizAnswer = '';
+    var removeIndex = wordArrObj.indexOf(wordArr[0]);
+    if(removeIndex != -1){
+        Array.remove(wordArrObj,removeIndex);
+        //Array.remove(meanArrObj,removeIndex);
+    }else{
+        console.log(wordArr[0]);
+    }
+
+    isClickWordFlag = false;
+    for(var i= 0,len=dbWordArr.length ; i <len ; i++){
+        if(dbWordArr[i].word.replace(/ /gi,'') === wordArr[0].replace(/ /gi,'')){
+            quizAnswer = dbWordArr[i].mean;
+        }
+    }
+    $(".pt-left-word-div #pt-word-text-quiz-answer").text(quizAnswer);
 
     var quizWidth = $("#pt-word-text-quiz").width()/2;
     var quizHeight = $("#pt-word-text-quiz").height()/2;
@@ -333,7 +430,7 @@ function insertMode(){
 function deleteMode(){
     var $wordTableTr = $('.pt-word-table').find('tr');
     $wordTableTr.find('th:last').show();
-    $wordTableTr.find('td:last').find('button').show();
+    $wordTableTr.find('td:last').find('button').removeClass('hide').show();
 }
 
 function updateMean(thisObj){
@@ -406,3 +503,13 @@ function showLevelWordView(level){
 
     });
 }
+
+
+Array.remove = function(array, from,cb) {
+    var rest = array.slice((from) + 1 || array.length);
+    array.length = from < 0 ? array.length + from : from;
+    if(cb){
+        cb();
+    }
+    return array.push.apply(array, rest);
+};

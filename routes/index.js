@@ -67,4 +67,14 @@ router.post('/levelWordViews', function (req, res) {
   wordDB.levelWordViews(req.body,res);
 });
 
+router.post('/changeWordLevelUp', function (req, res) {
+  console.log(req.body);
+  wordDB.changeWordLevelUp(req.body,res);
+});
+
+router.post('/changeWordLevelDown', function (req, res) {
+  console.log(req.body);
+  wordDB.changeWordLevelDown(req.body,res);
+});
+
 module.exports = router;
