@@ -1,8 +1,8 @@
-//var socket = io.connect('http://localhost:3000');
-var socket = io.connect('http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000');
+var socket = io.connect('http://localhost:8000');
+var apiUrl = 'http://localhost:8000';
+//var socket = io.connect('http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000');
+//var apiUrl = 'http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000';
 
-var apiUrl = 'http://ec2-52-34-253-229.us-west-2.compute.amazonaws.com:8000';
-//var apiUrl = 'http://localhost:3000';
 var wordArr = new Array();
 var meanArr = new Array();
 var numberObj ="";
@@ -283,7 +283,7 @@ function searchWordApi(wordText){
             console.log(meanArr);
             console.log(wordText);
             if( meanArr.length == 0){
-                alert('해당 단어의 뜻을 찾을 수 없습니다.');
+                addWordApi(wordText,'');
                 return false;
             }
             var meanData = {
@@ -301,21 +301,22 @@ function searchWordApi(wordText){
                 }
             });
             socket.on('addWord',function(data){
-                console.log('등록완료'+meanData);
+                console.log('등록완료'+wordData);
                 result = JSON.parse(JSON.stringify(data.msg));
                 var dom = '<tr>'
-                    dom += '<td scope="row">{affectedRows}</td>'
-                    dom += '<td style="display : none;">{insertId}</td>'
-                    dom += '<td>恋</td>'
-                    dom += '<td>사랑</td>'
-                    dom += '<td>'
-                    dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
-                    dom += '</td>'
-                    dom += '</tr>'
-                var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
-                console.log(replaceHTML);
+                dom += '<td scope="row">{affectedRows}</td>'
+                dom += '<td style="display : none;">{insertId}</td>'
+                dom += '<td >{level}</td>'
+                dom += '<td>{word}</td>'
+                dom += '<td>{mean}</td>'
+                dom += '<td>'
+                dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
+                dom += '</td>'
+                dom += '</tr>'
+                var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
+                    .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
                 $('.pt-word-table').find('tr:last').after(replaceHTML);
-                $('.pt-word-add-form')[0].value = '';
+                $('.pt-word-add-form').focus();
             });
         }, error: function (xhr, status, error) {
             if (window.console) {
