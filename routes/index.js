@@ -16,13 +16,24 @@ router.use('/api', function (req, res) {
     port: port,
     url: url,
     method: 'GET',
+    headers: {
+      'Content-Type': 'text/javascript; charset=UTF-8'
+    }
   };
+
+  console.log(options);
     var req = https.request(options, function(res) {
+
+      //res.headers = ('Content-Type', 'text/plain');
+      console.log('statusCode: ', res.statusCode);
+      console.log('headers: ', res.headers);
+
         res.on('data', function(data) {
-          console.log( ab2str(data));
+          //console.log( JSON.stringify(ab2str(data)));
           io.sockets.emit('searchWordApi',{msg : ab2str(data)});
         });
     });
+  console.log(req);
     req.end();
 
     req.on('error', function(e){

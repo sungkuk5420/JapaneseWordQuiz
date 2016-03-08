@@ -261,6 +261,9 @@ function searchWordApi(wordText){
     };
     $.ajax({
         type: "GET",
+        beforeSend: function (request) {
+            request.setRequestHeader("content-type", 'text/javascript');
+        },
         data : {
             from : 'jpn',
             dest : 'kor',
@@ -269,7 +272,6 @@ function searchWordApi(wordText){
             phrase : data.query
         },
         scriptCharset: 'UTF-8',
-        contentType: 'application/json',
         dataType:'json',
         url: "/api",
         success: function (res) {
