@@ -264,10 +264,12 @@ function searchWordApi(wordText){
         data : {
             from : 'jpn',
             dest : 'kor',
-            format : 'json',
+            format : 'JSON',
             pretty : 'true',
             phrase : data.query
         },
+        scriptCharset: 'UTF-8',
+        contentType: 'application/json',
         dataType:'json',
         url: "/api",
         success: function (res) {
