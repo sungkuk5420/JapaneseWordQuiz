@@ -20,7 +20,8 @@ const https = require('https');
 router.use('/api', function (req, res) {
   var host = 'glosbe.com';
   var port = 443;
-  var url = 'https://glosbe.com/gapi/translate?' + qs.stringify(req.query);
+  //var url = 'https://glosbe.com/gapi/translate?' + qs.stringify(req.query);
+  var url = 'https://glosbe.com/gapi/translate?from=jpn&dest=kor&format=json&pretty=true&phrase=%E6%84%9B';
   var options = {
     host: host,
     port: port,
@@ -29,8 +30,9 @@ router.use('/api', function (req, res) {
   };
     var req = https.request(options, function(res) {
         res.on('data', function(data) {
-          console.log('11',data);
-          io.sockets.emit('addWord',{msg:data});
+          var dataParse = ab2str(data);
+          console.log('11',JSON.stringify(dataParse));
+          io.sockets.emit('searchWordApi',{msg : dataParse});
         });
     });
     req.end();
@@ -90,3 +92,16 @@ router.post('/changeWordLevelDown', function (req, res) {
 });
 
 module.exports = router;
+function ab2str(buf) {
+  var str = "";
+  var ab = new Uint16Array(buf);
+  var abLen = ab.length;
+  var CHUNK_SIZE = Math.pow(2, 16);
+  var offset, len, subab;
+  for (offset = 0; offset < abLen; offset += CHUNK_SIZE) {
+    len = Math.min(CHUNK_SIZE, abLen-offset);
+    subab = ab.subarray(offset, offset+len);
+    str += String.fromCharCode.apply(null, subab);
+  }
+  return str;
+}

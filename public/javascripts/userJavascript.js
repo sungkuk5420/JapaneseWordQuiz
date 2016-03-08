@@ -260,7 +260,7 @@ function searchWordApi(wordText){
         query : wordText //string
     };
     $.ajax({
-        type: "POST",
+        type: "GET",
         data : {
             from : 'jpn',
             dest : 'kor',
@@ -274,10 +274,14 @@ function searchWordApi(wordText){
 
         }
     });
+    socket.removeListener('toclient');
+    socket.on('toclient',function(data) {
+        toClientResult = JSON.parse(JSON.stringify(data.msg));
+    });
     socket.removeListener('searchWordApi');
     socket.on('searchWordApi',function(data){
-        console.log('등록완료'+wordData);
-        result = JSON.parse(JSON.stringify(data.msg));
+        //console.log('등록완료'+wordData);
+        result =data.msg;
 
         //var meanArr = new Array();
         //
