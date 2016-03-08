@@ -271,58 +271,61 @@ function searchWordApi(wordText){
         dataType:'json',
         url: "/api",
         success: function (res) {
-            var meanArr = new Array();
 
-            for(var i= 0,len = res.tuc.length; i<len ; i++){
-                if(res.tuc[i].phrase != undefined){
-                    meanArr.push("aaa");
-                }else{
-                    meanArr.push( res.tuc[i].phrase.text );
-                }
-            }
-            console.log(meanArr);
-            console.log(wordText);
-            if( meanArr.length == 0){
-                addWordApi(wordText,'');
-                return false;
-            }
-            var meanData = {
-                word : wordText,
-                mean : meanArr[0]
-            };
-
-            $.ajax({
-                type: 'POST',
-                data: JSON.stringify(meanData),
-                contentType: 'application/json',
-                url: apiUrl+'/wordAdd',
-                success: function(data) {
-                    console.log('success');
-                }
-            });
-            socket.on('addWord',function(data){
-                console.log('등록완료'+wordData);
-                result = JSON.parse(JSON.stringify(data.msg));
-                var dom = '<tr>'
-                dom += '<td scope="row">{affectedRows}</td>'
-                dom += '<td style="display : none;">{insertId}</td>'
-                dom += '<td >{level}</td>'
-                dom += '<td>{word}</td>'
-                dom += '<td>{mean}</td>'
-                dom += '<td>'
-                dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
-                dom += '</td>'
-                dom += '</tr>'
-                var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
-                    .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
-                $('.pt-word-table').find('tr:last').after(replaceHTML);
-                $('.pt-word-add-form').focus();
-            });
-        }, error: function (xhr, status, error) {
-            if (window.console) {
-                console.log(error);
-            }
         }
+    });
+    socket.removeListener('searchWordApi');
+    socket.on('searchWordApi',function(data){
+        console.log('등록완료'+wordData);
+        result = JSON.parse(JSON.stringify(data.msg));
+
+        //var meanArr = new Array();
+        //
+        //for(var i= 0,len = res.tuc.length; i<len ; i++){
+        //    if(res.tuc[i].phrase != undefined){
+        //        meanArr.push("aaa");
+        //    }else{
+        //        meanArr.push( res.tuc[i].phrase.text );
+        //    }
+        //}
+        //if( meanArr.length == 0){
+        //    addWordApi(wordText,'');
+        //    return false;
+        //}
+        //var meanData = {
+        //    word : wordText,
+        //    mean : meanArr[0]
+        //};
+        //
+        //$.ajax({
+        //    type: 'POST',
+        //    data: JSON.stringify(meanData),
+        //    contentType: 'application/json',
+        //    url: apiUrl+'/wordAdd',
+        //    success: function(data) {
+        //        console.log('success');
+        //    }
+        //});
+    });
+
+    socket.removeListener('addWord');
+    socket.on('addWord',function(data){
+        console.log('등록완료'+wordData);
+        result = JSON.parse(JSON.stringify(data.msg));
+        var dom = '<tr>'
+        dom += '<td scope="row">{affectedRows}</td>'
+        dom += '<td style="display : none;">{insertId}</td>'
+        dom += '<td >{level}</td>'
+        dom += '<td>{word}</td>'
+        dom += '<td>{mean}</td>'
+        dom += '<td>'
+        dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
+        dom += '</td>'
+        dom += '</tr>'
+        var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
+            .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
+        $('.pt-word-table').find('tr:last').after(replaceHTML);
+        $('.pt-word-add-form').focus();
     });
 }
 
