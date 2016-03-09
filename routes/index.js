@@ -7,10 +7,12 @@ var https = require('https');
 
 
 router.use('/api', function (req, res) {
+  //console.log( qs.stringify(req.query));
   var host = 'glosbe.com';
   var port = 443;
-  //var url = 'https://glosbe.com/gapi/translate?' + qs.stringify(req.query);
-  var url = 'https://glosbe.com/gapi/translate?from=jpn&dest=kor&format=json&pretty=true&phrase=愛';
+  var url = 'https://glosbe.com/gapi/translate?' + qs.stringify(req.query);
+  console.log(url, req.query);
+  //var url = 'https://glosbe.com/gapi/translate?from=jpn&dest=kor&format=json&pretty=true&phrase=愛';
   var options = {
     host: host,
     port: port,
@@ -18,27 +20,48 @@ router.use('/api', function (req, res) {
     method: 'GET',
     headers: {
       'Content-Type': 'text/javascript; charset=UTF-8'
-    }
+    },
+    json : true
   };
 
-  console.log(options);
-    var req = https.request(options, function(res) {
+  //console.log(options);
+  req.pipe(request(options)).pipe(res);
 
-      //res.headers = ('Content-Type', 'text/plain');
-      console.log('statusCode: ', res.statusCode);
-      console.log('headers: ', res.headers);
 
-        res.on('data', function(data) {
-          //console.log( JSON.stringify(ab2str(data)));
-          io.sockets.emit('searchWordApi',{msg : ab2str(data)});
+  /*
+    request(options, function(err, response, body) {
+
+      if(err) {
+        return res.send({
+          success : false,
+          data : {}
         });
-    });
-  console.log(req);
-    req.end();
+      }
+      response.pipe(res);
 
-    req.on('error', function(e){
-      console.error(e);
+
+        return res.send({
+          success : true,
+          data : body
+        });
+
+
+      ////res.headers = ('Content-Type', 'text/plain');
+      //console.log('statusCode: ', res.statusCode);
+      //console.log('headers: ', res.headers);
+      //
+      //  res.on('data', function(data) {
+      //    //console.log( JSON.stringify(ab2str(data)));
+      //    io.sockets.emit('searchWordApi',{msg : ab2str(data)});
+      //  });
     });
+    */
+  //console.log(req);
+  //  req.end();
+  //
+  //  req.on('error', function(e){
+  //    console.error(e);
+  //  });
 });
 
 /* GET home page. */

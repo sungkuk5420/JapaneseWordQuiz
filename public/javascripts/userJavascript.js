@@ -267,7 +267,7 @@ function searchWordApi(wordText){
         data : {
             from : 'jpn',
             dest : 'kor',
-            format : 'JSON',
+            format : 'json',
             pretty : 'true',
             phrase : data.query
         },
@@ -275,7 +275,7 @@ function searchWordApi(wordText){
         dataType:'json',
         url: "/api",
         success: function (res) {
-
+                console.log(res);
         }
     });
     socket.removeListener('toclient');
