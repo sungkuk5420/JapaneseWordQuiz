@@ -46,7 +46,7 @@ var mysqlUtil = module.exports = {
                     } else {
                         result.word = wordText;
                         result.mean = meanText;
-                        io.sockets.emit('addWord',{msg:result});
+                        io.sockets.emit('wordAdd',{msg:result});
                         res.json(result);
                         res.end();
                     }

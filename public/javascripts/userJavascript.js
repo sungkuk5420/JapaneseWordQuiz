@@ -265,8 +265,8 @@ function searchWordApi(wordText){
             request.setRequestHeader("content-type", 'text/javascript');
         },
         data : {
-            from : 'jpn',
-            dest : 'kor',
+            from : 'kor',
+            dest : 'jpn',
             format : 'json',
             pretty : 'true',
             phrase : data.query
@@ -275,50 +275,41 @@ function searchWordApi(wordText){
         dataType:'json',
         url: "/api",
         success: function (res) {
-                console.log(res);
+            console.log(res);
+            var meanArr = new Array();
+            var wordText = res.phrase;
+            for(var i= 0,len = res.tuc.length; i<len ; i++){
+                if(res.tuc[i].phrase == undefined){
+                    meanArr.push("");
+                }else{
+                    meanArr.push( res.tuc[i].phrase.text );
+                }
+            }
+            if( meanArr.length == 0){
+                addWordApi(wordText,'');
+                return false;
+            }
+            console.log(meanArr);
+            var meanData = {
+                word : wordText,
+                mean : meanArr[0]
+            };
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(meanData),
+                contentType: 'application/json',
+                url: apiUrl+'/wordAdd',
+                success: function(data) {
+                    console.log('success');
+                }
+            });
         }
     });
-    socket.removeListener('toclient');
-    socket.on('toclient',function(data) {
-        toClientResult = JSON.parse(JSON.stringify(data.msg));
-    });
-    socket.removeListener('searchWordApi');
-    socket.on('searchWordApi',function(data){
-        //console.log('등록완료'+wordData);
-        result =data.msg;
 
-        //var meanArr = new Array();
-        //
-        //for(var i= 0,len = res.tuc.length; i<len ; i++){
-        //    if(res.tuc[i].phrase != undefined){
-        //        meanArr.push("aaa");
-        //    }else{
-        //        meanArr.push( res.tuc[i].phrase.text );
-        //    }
-        //}
-        //if( meanArr.length == 0){
-        //    addWordApi(wordText,'');
-        //    return false;
-        //}
-        //var meanData = {
-        //    word : wordText,
-        //    mean : meanArr[0]
-        //};
-        //
-        //$.ajax({
-        //    type: 'POST',
-        //    data: JSON.stringify(meanData),
-        //    contentType: 'application/json',
-        //    url: apiUrl+'/wordAdd',
-        //    success: function(data) {
-        //        console.log('success');
-        //    }
-        //});
-    });
-
-    socket.removeListener('addWord');
-    socket.on('addWord',function(data){
-        console.log('등록완료'+wordData);
+    socket.removeListener('wordAdd');
+    socket.on('wordAdd',function(data){
+        console.log('등록완료'+data);
         result = JSON.parse(JSON.stringify(data.msg));
         var dom = '<tr>'
         dom += '<td scope="row">{affectedRows}</td>'
@@ -368,8 +359,8 @@ function addWordApi(wordText,meanText){
             console.log('success');
         }
     });
-    socket.removeListener('addWord');
-    socket.on('addWord',function(data){
+    socket.removeListener('wordAdd');
+    socket.on('wordAdd',function(data){
         console.log('등록완료'+wordData);
         result = JSON.parse(JSON.stringify(data.msg));
         var dom = '<tr>'
