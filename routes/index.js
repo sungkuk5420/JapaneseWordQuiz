@@ -88,6 +88,11 @@ router.post('/updateMean', function (req, res) {
   wordDB.updateMean(req.body,res);
 });
 
+router.post('/updateMean2', function (req, res) {
+  console.log(req.body);
+  wordDB.updateMean2(req.body,res);
+});
+
 router.post('/levelWordViews', function (req, res) {
   console.log(req.body);
   wordDB.levelWordViews(req.body,res);

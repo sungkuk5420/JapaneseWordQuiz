@@ -33,13 +33,14 @@ var mysqlUtil = module.exports = {
         console.log(data);
         var wordText = data.word;
         var meanText = data.mean;
+        var meanText2 = ' ';
         client.query('SELECT * FROM japenWord', function (error, result, fields) {
             if (!error) {
                 //console.log(result);
                 var wordLen = result[result.length-1] == undefined ? 1 : result[result.length-1].num+1;
-                console.log(wordLen);
-                console.log('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}", 1 )'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText));
-                client.query('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}", 1 )'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
+                //console.log(wordLen);
+                console.log('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}", 1, {meanText2})'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText));
+                client.query('insert into japenWord (num, word, mean, level) values( {wordLen}, "{wordText}", "{meanText}", 1)'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');
@@ -86,6 +87,26 @@ var mysqlUtil = module.exports = {
                 result.number = thisTrNumber;
                 result.mean = mean;
                 io.sockets.emit('updateMean',{msg:result});
+                res.json(result);
+                res.end();
+            }
+        });
+    } ,
+
+    updateMean2 : function (data, res) {
+        var thisTrNumber = data.number;
+        console.log(thisTrNumber);
+        var mean = data.mean;
+        console.log("update japenWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber));
+        client.query("update japenWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber), function (error, result, fields) {
+            if (error) {
+                console.log(error);
+                console.log('쿼리 문장에 오류가 있습니다.');
+            } else {
+                console.log(result);
+                result.number = thisTrNumber;
+                result.mean = mean;
+                io.sockets.emit('updateMean2',{msg:result});
                 res.json(result);
                 res.end();
             }

@@ -256,6 +256,8 @@ function quizWordShuffleChange(){
 }
 
 function searchWordApi(wordText){
+    $('.pt-word-add-form')[0].value = '';
+    $('.pt-mean-add-form')[0].value = '';
     var data = {
         query : wordText //string
     };
@@ -369,6 +371,7 @@ function addWordApi(wordText,meanText){
         dom += '<td >{level}</td>'
         dom += '<td>{word}</td>'
         dom += '<td>{mean}</td>'
+        dom += '<td></td>'
         dom += '<td>'
         dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
         dom += '</td>'
@@ -440,10 +443,21 @@ function insertMode(){
         }
     }
 }
+function insertMode2(){
+    var $wordTableTr = $('.pt-word-table').find('tr');
+
+    var html  = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean2(this);  return false;"> <input type="text"> </form>';
+    for(var i= 1,len = $wordTableTr.length; i<len ; i++){
+        if( $wordTableTr.eq(i).find('td:first + td + td + td + td + td ').html().replace(/ /gi, '') == ''){
+            $wordTableTr.eq(i).find('td:first + td + td + td + td + td ').append(html);
+        }
+    }
+}
 
 function deleteMode(){
     var $wordTableTr = $('.pt-word-table').find('tr');
     $wordTableTr.find('th:last').show();
+    $wordTableTr.find('td:last').show();
     $wordTableTr.find('td:last').find('button').removeClass('hide').show();
 }
 
@@ -473,7 +487,39 @@ function updateMean(thisObj){
         for(var i= 1,len = $wordTableTr.length; i<len ; i++) {
             if( $wordTableTr.eq(i).find('td:first + td ').text() == result.number){
                 $wordTableTr.eq(i).find('td:first + td +td +td + td').empty().text(result.mean);
-                $wordTableTr.eq(i+1).find('td:first + td +td +td + td').find('input').focus();
+                $('input').not('.form-control').eq(0).focus();
+            }
+        }
+    });
+}
+
+function updateMean2(thisObj){
+    console.log(thisObj);
+    var mean = $(thisObj).find('input').val();
+    var trNumber = $(thisObj).closest('tr').find('td:first + td').text();
+
+    var meanData = {
+        number : trNumber,
+        mean : mean
+    };
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(meanData),
+        contentType: 'application/json',
+        url: apiUrl+'/updateMean2',
+        success: function(data) {
+            console.log('success');
+        }
+    });
+
+    socket.removeListener('updateMean2');
+    socket.on('updateMean2',function(data){
+        result = JSON.parse(JSON.stringify(data.msg));
+        var $wordTableTr = $('.pt-word-table').find('tr');
+        for(var i= 1,len = $wordTableTr.length; i<len ; i++) {
+            if( $wordTableTr.eq(i).find('td:first + td ').text() == result.number){
+                $wordTableTr.eq(i).find('td:first + td +td +td + td + td ').empty().text(result.mean);
+                $('input').not('.form-control').eq(0).focus();
             }
         }
     });

@@ -113,6 +113,7 @@
             <th>레벨</th>
             <th>단어</th>
             <th>뜻</th>
+            <th>음독</th>
             <th style="display:none;">삭제</th>
           </tr>
           <tbody>
@@ -125,7 +126,8 @@
             <td ><%=wordObj[i].level %></td>
             <td><%=wordObj[i].word %></td>
             <td><%=wordObj[i].mean %></td>
-            <td >
+            <td><%=wordObj[i].mean2 %></td>
+            <td style="display:none;">
               <button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>
             </td>
           </tr>
@@ -194,12 +196,14 @@
       <div class="number"> <%=wordObj[i].num %>;;</div>
       <div class="word"> <%=wordObj[i].word %>;;</div>
       <div class="mean"> <%=wordObj[i].mean %>;;</div>
+      <div class="mean2"> <%=wordObj[i].mean2 %>;;</div>
   <%
     }else{
     %>
       <div class="number"> <%=wordObj[i].num %></div>
       <div class="word"> <%=wordObj[i].word %></div>
       <div class="mean"> <%=wordObj[i].mean %></div>
+      <div class="mean2"> <%=wordObj[i].mean2 %></div>
   <%
     }
   }
