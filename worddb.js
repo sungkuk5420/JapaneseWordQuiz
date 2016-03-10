@@ -18,7 +18,7 @@ var mysqlUtil = module.exports = {
 
    seletTable : function (data, res) {
        console.log("gogo");
-       client.query('SELECT * FROM japenWord', function (error, result, fields) {
+       client.query('SELECT * FROM japenWord where level=1', function (error, result, fields) {
            if (error) {
                console.log(error);
                console.log('쿼리 문장에 오류가 있습니다.');

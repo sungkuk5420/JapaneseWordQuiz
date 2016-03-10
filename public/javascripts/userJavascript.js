@@ -181,19 +181,23 @@ function wordShuffleChange(){
     $('.pt-right-word-div').find('.pt-word-text').css({
         color : quizBackgroundColor
     });
-    for(var i=0 ; i<4 ; i++){
-        $("#pt-word-text-"+i).text(meanArr[i]);
-        var width = $("#pt-word-text-"+i).width()/2;
-        $("#pt-word-text-"+i).css({
-            left: "calc(50% - "+ width +"px)"
-        });
+    if(meanArr[3] != undefined){
+        for (var i = 0; i < 4; i++) {
+            $("#pt-word-text-" + i).text(meanArr[i]);
+            var width = $("#pt-word-text-" + i).width() / 2;
+            $("#pt-word-text-" + i).css({
+                left: "calc(50% - " + width + "px)"
+            });
+        }
     }
     var isHaveAnswer =false;
     var quizAnswer = $(".pt-left-word-div #pt-word-text-quiz-answer").text();
     var ansewerIndex = 0;
-    for(var i=0 ; i<4 ; i++){
-        if(meanArr[i].replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')) {
-            isHaveAnswer = true;
+    if(meanArr[3] != undefined) {
+        for (var i = 0; i < 4; i++) {
+            if (meanArr[i].replace(/ /gi, '') === quizAnswer.replace(/ /gi, '')) {
+                isHaveAnswer = true;
+            }
         }
     }
     var test_random_num = Math.floor(Math.random()*4);
@@ -339,8 +343,6 @@ function addWordApi(wordText,meanText){
             isHaveWord = true;
         }
     }
-    $('.pt-word-add-form')[0].value = '';
-    $('.pt-mean-add-form')[0].value = '';
     if(isHaveWord){
         alert('['+ wordText.replace(/ /gi, '') +']'+'이미 있는 단어입니다.');
 
