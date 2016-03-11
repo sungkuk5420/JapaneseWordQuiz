@@ -8,6 +8,7 @@ var meanArr = new Array();
 var numberObj ="";
 var wordArrObj ="";
 var meanArrObj ="";
+var meanArrObj2 ="";
 var dbWordArr =new Array();
 var isWordAnswerFail = false;
 var isClickWordFlag = false;
@@ -37,6 +38,7 @@ $(document).ready(function (aa,bb) {
     numberObj = ($('#pt-server-side-data').find('.number').text().replace(/ /gi,'').split(';;'));
     wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
     meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
+    meanArrObj2 = ($('#pt-server-side-data').find('.mean2').text().replace(/ /gi,'').split(';;'));
 
 
     for(var i= 0, len = wordArrObj.length ; i <len ; i++){
@@ -44,7 +46,8 @@ $(document).ready(function (aa,bb) {
             dbWordArr.push({
                 num : numberObj[i],
                 word : wordArrObj[i],
-                mean : meanArrObj[i]
+                mean : meanArrObj[i],
+                mean2 : meanArrObj2[i]
             });
         }
     }
@@ -165,6 +168,7 @@ function shuffle(array) {
 function wordShuffleChange(){
     wordArr = [];
     meanArr = [];
+
     for(var i= 0, len = wordArrObj.length ; i <len ; i++){
         wordArr.push(wordArrObj[i]);
     }
@@ -218,7 +222,15 @@ function wordShuffleChange(){
             left: "calc(50% - "+ width +"px)"
         });
     }
-
+    //for(var i= 0,len=dbWordArr.length ; i <len ; i++){
+    //    if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
+    //        $(".pt-left-word-div #pt-word-text-quiz-answer").html($(".pt-left-word-div #pt-word-text-quiz-answer").text()+ ' <br> ( ' +dbWordArr[i].mean2 + ' )') ;
+    //        var width =$(".pt-left-word-div #pt-word-text-quiz-answer").width()/2;
+    //        $(".pt-left-word-div #pt-word-text-quiz-answer").css({
+    //            left: "calc(50% - "+ width +"px)"
+    //        });
+    //    }
+    //}
 
 }
 
@@ -548,17 +560,20 @@ function showLevelWordView(level){
         numberObj = [];
         wordArrObj = [];
         meanArrObj = [];
+        meanArrObj2 = [];
         for(var i= 0, len = result.length ; i <len ; i++){
             numberObj.push(result[i].num);
             wordArrObj.push(result[i].word);
             meanArrObj.push(result[i].mean);
+            meanArrObj2.push(result[i].mean2);
         }
         for(var i= 0, len = wordArrObj.length ; i <len ; i++){
             if(wordArrObj[i].replace(/ /gi,'') != '' ){
                 dbWordArr.push({
                     num : numberObj[i],
                     word : wordArrObj[i],
-                    mean : meanArrObj[i]
+                    mean : meanArrObj[i],
+                    mean2 : meanArrObj2[i]
                 });
             }
         }
@@ -579,11 +594,6 @@ function showLevelWordView(level){
             htmlElement = htmlElement.replace('{index}',i+1).replace('{num}',result[i].num).replace('{level}',result[i].level).replace('{word}',result[i].word).replace('{mean}',result[i].mean).replace('{mean2}',result[i].mean2);
             $('.pt-word-table').find('tbody').eq(1).append(htmlElement);
         }
-
-        numberObj = ($('#pt-server-side-data').find('.number').text().replace(/ /gi,'').split(';;'));
-        wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
-        meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
-
 
 
 
