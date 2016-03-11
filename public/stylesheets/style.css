@@ -14,6 +14,7 @@
     opacity: 0.8;
     /*color : #636363  ;*/
     color: #262626;
+    display:none;
 }
 .pt-word-text{
     position: absolute;

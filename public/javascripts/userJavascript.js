@@ -545,11 +545,22 @@ function showLevelWordView(level){
         console.log('레벨별 단어 변경'+data);
         result = JSON.parse(JSON.stringify(data.msg));
         $('.pt-word-table').find('tbody').eq(1).empty();
+        numberObj = [];
         wordArrObj = [];
         meanArrObj = [];
         for(var i= 0, len = result.length ; i <len ; i++){
+            numberObj.push(result[i].num);
             wordArrObj.push(result[i].word);
             meanArrObj.push(result[i].mean);
+        }
+        for(var i= 0, len = wordArrObj.length ; i <len ; i++){
+            if(wordArrObj[i].replace(/ /gi,'') != '' ){
+                dbWordArr.push({
+                    num : numberObj[i],
+                    word : wordArrObj[i],
+                    mean : meanArrObj[i]
+                });
+            }
         }
         wordShuffleChange();
         for(var i= 0,len = result.length; i<len ; i++) {
@@ -560,13 +571,21 @@ function showLevelWordView(level){
             htmlElement += '<td >{level}</td>';
             htmlElement += '<td>{word}</td>';
             htmlElement += '<td>{mean}</td>';
+            htmlElement += '<td>{mean2}</td>';
             htmlElement += '<td >';
             htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
             htmlElement += '</td>';
             htmlElement += '</tr>';
-            htmlElement = htmlElement.replace('{index}',i+1).replace('{num}',result[i].num).replace('{level}',result[i].level).replace('{word}',result[i].word).replace('{mean}',result[i].mean);
+            htmlElement = htmlElement.replace('{index}',i+1).replace('{num}',result[i].num).replace('{level}',result[i].level).replace('{word}',result[i].word).replace('{mean}',result[i].mean).replace('{mean2}',result[i].mean2);
             $('.pt-word-table').find('tbody').eq(1).append(htmlElement);
         }
+
+        numberObj = ($('#pt-server-side-data').find('.number').text().replace(/ /gi,'').split(';;'));
+        wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
+        meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
+
+
+
 
     });
 }
