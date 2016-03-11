@@ -69,7 +69,7 @@ function wordTextShow(thisObj){
 
 function clickWord(data){
     var thisWord = $(data.self).find('.pt-word-text').text();
-    var quizAnswer = $("#pt-word-text-quiz-answer").text();
+    var quizAnswer = $("#pt-word-text-quiz-answer").text().substr(0,$("#pt-word-text-quiz-answer").text().replace(/ /gi,'').indexOf('('));
     var quizBackgroundColor = $(".pt-left-word-div").css("background-color");
     if(thisWord == quizAnswer && isClickWordFlag == false){
         isClickWordFlag = true;
@@ -222,15 +222,15 @@ function wordShuffleChange(){
             left: "calc(50% - "+ width +"px)"
         });
     }
-    //for(var i= 0,len=dbWordArr.length ; i <len ; i++){
-    //    if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
-    //        $(".pt-left-word-div #pt-word-text-quiz-answer").html($(".pt-left-word-div #pt-word-text-quiz-answer").text()+ ' <br> ( ' +dbWordArr[i].mean2 + ' )') ;
-    //        var width =$(".pt-left-word-div #pt-word-text-quiz-answer").width()/2;
-    //        $(".pt-left-word-div #pt-word-text-quiz-answer").css({
-    //            left: "calc(50% - "+ width +"px)"
-    //        });
-    //    }
-    //}
+    for(var i= 0,len=dbWordArr.length ; i <len ; i++){
+        if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
+            $(".pt-left-word-div #pt-word-text-quiz-answer").html($(".pt-left-word-div #pt-word-text-quiz-answer").text()+ ' <br> ( ' +dbWordArr[i].mean2 + ' )') ;
+            var width =$(".pt-left-word-div #pt-word-text-quiz-answer").width()/2;
+            $(".pt-left-word-div #pt-word-text-quiz-answer").css({
+                left: "calc(50% - "+ width +"px)"
+            });
+        }
+    }
 
 }
 

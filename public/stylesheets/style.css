@@ -15,6 +15,7 @@
     /*color : #636363  ;*/
     color: #262626;
     display:none;
+    text-align: center;
 }
 .pt-word-text{
     position: absolute;
