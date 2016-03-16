@@ -12,6 +12,8 @@ var meanArrObj2 ="";
 var dbWordArr =new Array();
 var isWordAnswerFail = false;
 var isClickWordFlag = false;
+var isMeanShowFlag = false;
+
 
 wordObjArr = new Array();
 
@@ -20,7 +22,16 @@ $(document).ready(function (aa,bb) {
 	$(document).keydown(function(e){
 		console.log(e.keyCode);
 		switch(e.keyCode){
-			case 97: 
+			case 96:
+                if(isMeanShowFlag == false){
+                    wordTextHide($('.pt-left-word-div'));
+                    isMeanShowFlag = true;
+                }else{
+                    wordTextShow($('.pt-left-word-div'));
+                    isMeanShowFlag = false;
+                }
+			break;
+            case 97:
 				$('#pt-word-text-0').closest('.pt-right-word-div')[0].onmouseup();
 			break;
 			case 98: 
