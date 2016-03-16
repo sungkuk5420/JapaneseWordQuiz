@@ -120,7 +120,7 @@
           <%
           for(var i=0;i< wordObj.length ; i++){
           %>
-          <tr>
+          <tr onclick="if(event.target.tagName != 'INPUT'){thisWordCellUpdate(this);}">
             <td scope="row"><%= i+1%></td>
             <td class="hide"><%=wordObj[i].num %></td>
             <td ><%=wordObj[i].level %></td>

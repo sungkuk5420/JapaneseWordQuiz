@@ -580,7 +580,7 @@ function showLevelWordView(level){
         wordShuffleChange();
         for(var i= 0,len = result.length; i<len ; i++) {
             var htmlElement = '';
-            htmlElement += '<tr>';
+            htmlElement += '<tr onclick="if(event.target.tagName != \"INPUT\"){thisWordCellUpdate(this);}">';
             htmlElement += '<td scope="row">{index}</td>';
             htmlElement += '<td class="hide">{num}</td>';
             htmlElement += '<td >{level}</td>';
@@ -609,3 +609,19 @@ Array.remove = function(array, from,cb) {
     }
     return array.push.apply(array, rest);
 };
+
+
+function thisWordCellUpdate(thisObj){
+    console.log(event.target.tagName);
+    var meanText1 = $(thisObj).find('td:first + td + td + td + td').text();
+    var meanText2 = $(thisObj).find('td:first + td + td + td + td + td').text();
+    var html  = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean(this);  return false;"> <input type="text"> </form>';
+    var html2  = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean2(this);  return false;"> <input type="text"> </form>';
+
+    $(thisObj).find('td:first + td + td + td + td').empty().append(html);
+    $(thisObj).find('td:first + td + td + td + td + td').empty().append(html2);
+
+
+    $(thisObj).find('td:first + td + td + td + td').find('input').val(meanText1);
+    $(thisObj).find('td:first + td + td + td + td + td').find('input').val(meanText2);
+}
