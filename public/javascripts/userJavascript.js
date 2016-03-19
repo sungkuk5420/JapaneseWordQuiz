@@ -591,13 +591,13 @@ function showLevelWordView(level){
         wordShuffleChange();
         for(var i= 0,len = result.length; i<len ; i++) {
             var htmlElement = '';
-            htmlElement += '<tr onclick="if(event.target.tagName != \"INPUT\"){thisWordCellUpdate(this);}">';
+            htmlElement += '<tr>';
             htmlElement += '<td scope="row">{index}</td>';
             htmlElement += '<td class="hide">{num}</td>';
             htmlElement += '<td >{level}</td>';
-            htmlElement += '<td>{word}</td>';
-            htmlElement += '<td>{mean}</td>';
-            htmlElement += '<td>{mean2}</td>';
+            htmlElement += '<td　>{word}</td>';
+            htmlElement += '<td　class="mean1" onclick="if(event.target.tagName != \"INPUT\"){thisWordCellUpdate(this);}">{mean}</td>';
+            htmlElement += '<td　class="mean2" onclick="if(event.target.tagName != \"INPUT\"){thisWordCellUpdate(this);}">{mean2}</td>';
             htmlElement += '<td >';
             htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
             htmlElement += '</td>';
@@ -622,17 +622,20 @@ Array.remove = function(array, from,cb) {
 };
 
 
-function thisWordCellUpdate(thisObj){
-    console.log(event.target.tagName);
-    var meanText1 = $(thisObj).find('td:first + td + td + td + td').text();
-    var meanText2 = $(thisObj).find('td:first + td + td + td + td + td').text();
-    var html  = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean(this);  return false;"> <input type="text"> </form>';
-    var html2  = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean2(this);  return false;"> <input type="text"> </form>';
+function thisWordCellUpdate(){
+    if($(event.target).find('input').length == 0 ){
+        var meanText = $(event.target).text();
+        var html  = '';
+        if($(event.target).hasClass('mean1') == true){
+            html = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean(this);  return false;"> <input type="text"> </form>';
+        }else if($(event.target).hasClass('mean2') == true){
+            html = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean2(this);  return false;"> <input type="text"> </form>';
+        }
+        if(($(event.target).hasClass('mean1') == true ) || ($(event.target).hasClass('mean2') == true) ){
+            $(event.target).empty().append(html);
+            $(event.target).find('input').val(meanText);
+            $(event.target).find('input').focus();
+        }
+    }
 
-    $(thisObj).find('td:first + td + td + td + td').empty().append(html);
-    $(thisObj).find('td:first + td + td + td + td + td').empty().append(html2);
-
-
-    $(thisObj).find('td:first + td + td + td + td').find('input').val(meanText1);
-    $(thisObj).find('td:first + td + td + td + td + td').find('input').val(meanText2);
 }
