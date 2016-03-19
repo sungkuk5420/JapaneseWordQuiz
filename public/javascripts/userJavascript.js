@@ -285,6 +285,19 @@ function quizWordShuffleChange(){
 function searchWordApi(wordText){
     $('.pt-word-add-form')[0].value = '';
     $('.pt-mean-add-form')[0].value = '';
+    var $wordList = $('.pt-word-table').find('tr').find('td:first-child+td+td+td');
+    var isHaveWord = false;
+    for(var i= 0,len = $wordList.length ; i < len ; i++){
+        if($wordList.eq(i).text().replace(/ /gi, '')==wordText.replace(/ /gi, '')){
+            isHaveWord = true;
+        }
+    }
+    if(isHaveWord){
+        alert('['+ wordText.replace(/ /gi, '') +']'+'이미 있는 단어입니다.');
+
+        $('.pt-word-add-form').focus();
+        return false;
+    }
     var data = {
         query : wordText //string
     };
