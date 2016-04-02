@@ -293,7 +293,7 @@ function searchWordApi(wordText){
         }
     }
     if(isHaveWord){
-        alert('['+ wordText.replace(/ /gi, '') +']'+'이미 있는 단어입니다.');
+        //alert('['+ wordText.replace(/ /gi, '') +']'+'이미 있는 단어입니다.');
 
         $('.pt-word-add-form').focus();
         return false;
@@ -486,7 +486,7 @@ function insertMode2(){
 
     var html  = '<form method="post" action="#" style= " max-width : 100px;" onsubmit="updateMean2(this);  return false;"> <input type="text"> </form>';
     for(var i= 1,len = $wordTableTr.length; i<len ; i++){
-        if( $wordTableTr.eq(i).find('td:first + td + td + td + td + td ').html().replace(/ /gi, '') == ''){
+        if( $wordTableTr.eq(i).find('td:first + td + td + td + td + td ').html().replace(/null/gi, '').replace(/ /gi, '') == ''){
             $wordTableTr.eq(i).find('td:first + td + td + td + td + td ').append(html);
         }
     }
