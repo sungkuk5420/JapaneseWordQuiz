@@ -607,11 +607,11 @@ function showLevelWordView(level){
             htmlElement += '<tr>';
             htmlElement += '<td scope="row">{index}</td>';
             htmlElement += '<td class="hide">{num}</td>';
-            htmlElement += '<td >{level}</td>';
-            htmlElement += '<td　>{word}</td>';
-            htmlElement += '<td　class="mean1" onclick="if(event.target.tagName != \"INPUT\"){thisWordCellUpdate(this);}">{mean}</td>';
-            htmlElement += '<td　class="mean2" onclick="if(event.target.tagName != \"INPUT\"){thisWordCellUpdate(this);}">{mean2}</td>';
-            htmlElement += '<td >';
+            htmlElement += '<td>{level}</td>';
+            htmlElement += '<td>{word}</td>';
+            htmlElement += '<td class="mean1" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean}</td>';
+            htmlElement += '<td class="mean2" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean2}</td>';
+            htmlElement += '<td>';
             htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
             htmlElement += '</td>';
             htmlElement += '</tr>';

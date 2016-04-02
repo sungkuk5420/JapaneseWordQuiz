@@ -114,8 +114,11 @@ var mysqlUtil = module.exports = {
     } ,
     levelWordViews : function (data, res) {
         var selectLevel = data.level;
-        console.log('SELECT * FROM japenWord where level = {level}'.replace('{level}',selectLevel));
-        client.query('SELECT * FROM japenWord where level = {level}'.replace('{level}',selectLevel), function (error, result, fields) {
+        var queryText ='SELECT * FROM japenWord where level = {level}'.replace('{level}',selectLevel);
+        if(selectLevel == 0){
+            queryText = 'SELECT * FROM japenWord ';
+        }
+        client.query(queryText, function (error, result, fields) {
             if (error) {
                 console.log(error);
                 console.log('쿼리 문장에 오류가 있습니다.');
