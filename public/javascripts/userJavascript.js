@@ -22,6 +22,15 @@ $(document).ready(function (aa,bb) {
 	$(document).keydown(function(e){
 		console.log(e.keyCode);
 		switch(e.keyCode){
+            case 192:
+                if(isMeanShowFlag == false){
+                    wordTextHide($('.pt-left-word-div'));
+                    isMeanShowFlag = true;
+                }else{
+                    wordTextShow($('.pt-left-word-div'));
+                    isMeanShowFlag = false;
+                }
+                break;
 			case 96:
                 if(isMeanShowFlag == false){
                     wordTextHide($('.pt-left-word-div'));
@@ -31,6 +40,18 @@ $(document).ready(function (aa,bb) {
                     isMeanShowFlag = false;
                 }
 			break;
+            case 49:
+                $('#pt-word-text-0').closest('.pt-right-word-div')[0].onmouseup();
+                break;
+            case 50:
+                $('#pt-word-text-1').closest('.pt-right-word-div')[0].onmouseup();
+                break;
+            case 51:
+                $('#pt-word-text-2').closest('.pt-right-word-div')[0].onmouseup();
+                break;
+            case 52:
+                $('#pt-word-text-3').closest('.pt-right-word-div')[0].onmouseup();
+                break;
             case 97:
 				$('#pt-word-text-0').closest('.pt-right-word-div')[0].onmouseup();
 			break;
