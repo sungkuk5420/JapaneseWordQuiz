@@ -629,7 +629,7 @@ function showLevelWordView(level){
             meanTextArr2.push($('.pt-word-table').find('tbody').eq(1).find("tr:last").find(".mean2").text());
             $('.pt-word-table').find('tbody').eq(1).find('');
             $('.pt-word-table').find('tbody').eq(1).append(htmlElement);
-            if((meanTextArr.indexOf(result[i].mean) != -1)){
+            if((meanTextArr.indexOf(result[i].mean) != -1) || (meanTextArr2.indexOf(result[i].mean2) != -1)){
                 $('.pt-word-table').find('tbody').eq(1).find("tr:last").css({"background-color":"yellow", color : 'black'});
             }
             if((meanTextArr.indexOf(result[i].mean) != -1) && (meanTextArr2.indexOf(result[i].mean2) != -1)){
