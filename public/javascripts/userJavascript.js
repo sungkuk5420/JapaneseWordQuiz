@@ -425,7 +425,7 @@ function addWordApi(wordText,meanText){
         dom += '<td>{mean}</td>'
         dom += '<td></td>'
         dom += '<td>'
-        dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
+        //dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
         dom += '</td>'
         dom += '</tr>'
         var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
