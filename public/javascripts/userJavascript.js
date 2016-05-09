@@ -131,7 +131,6 @@ function changeWordLevelUp(quizAnswer){
     var data = {
         number : thisTrNumber
     };
-    console.log(data.number);
     $.ajax({
         type: 'POST',
         data: JSON.stringify(data),
@@ -159,7 +158,6 @@ function changeWordLevelDown(quizAnswer){
     var data = {
         number : thisTrNumber
     };
-    console.log(data.number);
     $.ajax({
         type: 'POST',
         data: JSON.stringify(data),
@@ -238,7 +236,6 @@ function wordShuffleChange(){
     }
     var test_random_num = Math.floor(Math.random()*4);
     if(isHaveAnswer == false){
-        console.log('aa');
         for(var i= 0,len=dbWordArr.length ; i <len ; i++){
             if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
                 $("#pt-word-text-"+test_random_num).text(quizAnswer);
@@ -338,7 +335,6 @@ function searchWordApi(wordText){
         dataType:'json',
         url: "/api",
         success: function (res) {
-            console.log(res);
             var meanArr = new Array();
             var wordText = res.phrase;
             for(var i= 0,len = res.tuc.length; i<len ; i++){
@@ -352,7 +348,6 @@ function searchWordApi(wordText){
                 addWordApi(wordText,'');
                 return false;
             }
-            console.log(meanArr);
             var meanData = {
                 word : wordText,
                 mean : meanArr[0]
@@ -372,7 +367,6 @@ function searchWordApi(wordText){
 
     socket.removeListener('wordAdd');
     socket.on('wordAdd',function(data){
-        console.log('등록완료'+data);
         result = JSON.parse(JSON.stringify(data.msg));
         var dom = '<tr>'
         dom += '<td scope="row">{affectedRows}</td>'
@@ -422,7 +416,6 @@ function addWordApi(wordText,meanText){
     });
     socket.removeListener('wordAdd');
     socket.on('wordAdd',function(data){
-        console.log('등록완료'+wordData);
         result = JSON.parse(JSON.stringify(data.msg));
         var dom = '<tr>'
         dom += '<td scope="row">{affectedRows}</td>'
@@ -437,7 +430,6 @@ function addWordApi(wordText,meanText){
         dom += '</tr>'
         var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
             .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
-        console.log(replaceHTML);
         $('.pt-word-table').find('tr:last').after(replaceHTML);
         $('.pt-word-add-form').focus();
     });
@@ -455,7 +447,6 @@ function quizShow(){
 }
 
 function wordDelete(thisObj){
-    console.log(thisObj);
     var thisWordNumber = parseInt( $(thisObj).closest('tr').find('td:first-child +td').text() );
     var thisWord = $(thisObj).closest('tr').find('td:first-child + td + td').text();
     var thisWordMean = $(thisObj).closest('tr').find('td:first-child + td + td + td').text();
@@ -480,8 +471,6 @@ function wordDelete(thisObj){
     });
     socket.removeListener('deleteWord');
     socket.on('deleteWord',function(data){
-        console.log('삭제완료'+meanData);
-        console.log('메세지 받앗음!'+ JSON.parse(JSON.stringify(data)));
         var $wordTableTr = $('.pt-word-table').find('tr');
 
         for(var i= 1,len = $wordTableTr.length+1; i<len ; i++){
@@ -521,7 +510,6 @@ function deleteMode(){
 }
 
 function updateMean(thisObj){
-   console.log(thisObj);
     var mean = $(thisObj).find('input').val();
     var trNumber = $(thisObj).closest('tr').find('td:first + td').text();
 
@@ -553,7 +541,6 @@ function updateMean(thisObj){
 }
 
 function updateMean2(thisObj){
-    console.log(thisObj);
     var mean = $(thisObj).find('input').val();
     var trNumber = $(thisObj).closest('tr').find('td:first + td').text();
 
@@ -599,7 +586,6 @@ function showLevelWordView(level){
     });
     socket.removeListener('levelWordViews');
     socket.on('levelWordViews',function(data){
-        console.log('레벨별 단어 변경'+data);
         result = JSON.parse(JSON.stringify(data.msg));
         $('.pt-word-table').find('tbody').eq(1).empty();
         numberObj = [];
@@ -623,6 +609,8 @@ function showLevelWordView(level){
             }
         }
         wordShuffleChange();
+        var meanTextArr = [];
+        var meanTextArr2 = [];
         for(var i= 0,len = result.length; i<len ; i++) {
             var htmlElement = '';
             htmlElement += '<tr>';
@@ -637,7 +625,16 @@ function showLevelWordView(level){
             htmlElement += '</td>';
             htmlElement += '</tr>';
             htmlElement = htmlElement.replace('{index}',i+1).replace('{num}',result[i].num).replace('{level}',result[i].level).replace('{word}',result[i].word).replace('{mean}',result[i].mean).replace('{mean2}',result[i].mean2);
+            meanTextArr.push($('.pt-word-table').find('tbody').eq(1).find("tr:last").find(".mean1").text());
+            meanTextArr2.push($('.pt-word-table').find('tbody').eq(1).find("tr:last").find(".mean2").text());
+            $('.pt-word-table').find('tbody').eq(1).find('');
             $('.pt-word-table').find('tbody').eq(1).append(htmlElement);
+            if((meanTextArr.indexOf(result[i].mean) != -1)){
+                $('.pt-word-table').find('tbody').eq(1).find("tr:last").css({"background-color":"yellow", color : 'black'});
+            }
+            if((meanTextArr.indexOf(result[i].mean) != -1) && (meanTextArr2.indexOf(result[i].mean2) != -1)){
+                $('.pt-word-table').find('tbody').eq(1).find("tr:last").css({"background-color":"red", color : 'white'});
+            }
         }
 
 
