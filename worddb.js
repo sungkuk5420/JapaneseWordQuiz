@@ -39,8 +39,8 @@ var mysqlUtil = module.exports = {
                 //console.log(result);
                 var wordLen = result[result.length-1] == undefined ? 1 : result[result.length-1].num+1;
                 //console.log(wordLen);
-                console.log('insert into japenWord values( {wordLen}, "{wordText}", "{meanText}", 1, {meanText2})'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText));
-                client.query('insert into japenWord (num, word, mean, level) values( {wordLen}, "{wordText}", "{meanText}", 1)'.replace('{wordLen}', wordLen).replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
+                console.log('insert into japenWord (word, mean, level) values( "{wordText}", "{meanText}", 1)'.replace('{wordText}', wordText).replace('{meanText}', meanText));
+                client.query('insert into japenWord (word, mean, level) values( "{wordText}", "{meanText}", 1)'.replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');
@@ -97,7 +97,7 @@ var mysqlUtil = module.exports = {
         var thisTrNumber = data.number;
         console.log(thisTrNumber);
         var mean = data.mean;
-        console.log("update japenWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber));
+        //console.log("update japenWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber));
         client.query("update japenWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber), function (error, result, fields) {
             if (error) {
                 console.log(error);

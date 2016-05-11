@@ -20,7 +20,7 @@ wordObjArr = new Array();
 $(document).ready(function (aa,bb) {
 
 	$(document).keydown(function(e){
-		console.log(e.keyCode);
+		//console.log(e.keyCode);
 		switch(e.keyCode){
             case 192:
                 if(isMeanShowFlag == false){
@@ -66,7 +66,6 @@ $(document).ready(function (aa,bb) {
 			break;
 		}
 	});
-    console.log($('#pt-server-side-data').find('.number').text());
     numberObj = ($('#pt-server-side-data').find('.number').text().replace(/ /gi,'').split(';;'));
     wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
     meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
@@ -303,7 +302,7 @@ function quizWordShuffleChange(){
 function searchWordApi(wordText){
     $('.pt-word-add-form')[0].value = '';
     $('.pt-mean-add-form')[0].value = '';
-    var $wordList = $('.pt-word-table').find('tr').find('td:first-child+td+td+td');
+    var $wordList =  $('.pt-word-table').find('.word');
     var isHaveWord = false;
     for(var i= 0,len = $wordList.length ; i < len ; i++){
         if($wordList.eq(i).text().replace(/ /gi, '')==wordText.replace(/ /gi, '')){
@@ -311,8 +310,6 @@ function searchWordApi(wordText){
         }
     }
     if(isHaveWord){
-        //alert('['+ wordText.replace(/ /gi, '') +']'+'이미 있는 단어입니다.');
-
         $('.pt-word-add-form').focus();
         return false;
     }
@@ -368,18 +365,19 @@ function searchWordApi(wordText){
     socket.removeListener('wordAdd');
     socket.on('wordAdd',function(data){
         result = JSON.parse(JSON.stringify(data.msg));
-        var dom = '<tr>'
-        dom += '<td scope="row">{affectedRows}</td>'
-        dom += '<td style="display : none;">{insertId}</td>'
-        dom += '<td >{level}</td>'
-        dom += '<td>{word}</td>'
-        dom += '<td>{mean}</td>'
-        dom += '<td>'
-        dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
-        dom += '</td>'
-        dom += '</tr>'
-        var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
-            .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
+        var htmlElement = '<tr>';
+        htmlElement += '<td scope="row">{affectedRows}</td>';
+        htmlElement += '<td class="hide">{insertId}</td>';
+        htmlElement += '<td>{level}</td>';
+        htmlElement += '<td class="word">{word}</td>';
+        htmlElement += '<td class="mean1" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean}</td>';
+        htmlElement += '<td class="mean2" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean2}</td>';
+        htmlElement += '<td>';
+        htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
+        htmlElement += '</td>';
+        htmlElement += '</tr>';
+        var replaceHTML = htmlElement.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
+            .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1).replace('{mean2}','');
         $('.pt-word-table').find('tr:last').after(replaceHTML);
         $('.pt-word-add-form').focus();
     });
@@ -417,19 +415,19 @@ function addWordApi(wordText,meanText){
     socket.removeListener('wordAdd');
     socket.on('wordAdd',function(data){
         result = JSON.parse(JSON.stringify(data.msg));
-        var dom = '<tr>'
-        dom += '<td scope="row">{affectedRows}</td>'
-        dom += '<td style="display : none;">{insertId}</td>'
-        dom += '<td >{level}</td>'
-        dom += '<td>{word}</td>'
-        dom += '<td>{mean}</td>'
-        dom += '<td></td>'
-        dom += '<td>'
-        //dom += '<button class="pt-word-delete-btn form-control btn-hover" style=" margin : auto;" onclick="wordDelete(this);"> 삭제 </button>'
-        dom += '</td>'
-        dom += '</tr>'
-        var replaceHTML = dom.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
-            .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
+        var htmlElement = '<tr>';
+        htmlElement += '<td scope="row">{affectedRows}</td>';
+        htmlElement += '<td class="hide">{insertId}</td>';
+        htmlElement += '<td>{level}</td>';
+        htmlElement += '<td class="word">{word}</td>';
+        htmlElement += '<td class="mean1" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean}</td>';
+        htmlElement += '<td class="mean2" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean2}</td>';
+        htmlElement += '<td>';
+        htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
+        htmlElement += '</td>';
+        htmlElement += '</tr>';
+        var replaceHTML = htmlElement.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
+            .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1).replace('{mean2}','');
         $('.pt-word-table').find('tr:last').after(replaceHTML);
         $('.pt-word-add-form').focus();
     });
@@ -612,12 +610,15 @@ function showLevelWordView(level){
         var meanTextArr = [];
         var meanTextArr2 = [];
         for(var i= 0,len = result.length; i<len ; i++) {
+            if(result[i].mean2 == null){
+                result[i].mean2 = "";
+            }
             var htmlElement = '';
             htmlElement += '<tr>';
             htmlElement += '<td scope="row">{index}</td>';
             htmlElement += '<td class="hide">{num}</td>';
             htmlElement += '<td>{level}</td>';
-            htmlElement += '<td>{word}</td>';
+            htmlElement += '<td class="word">{word}</td>';
             htmlElement += '<td class="mean1" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean}</td>';
             htmlElement += '<td class="mean2" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean2}</td>';
             htmlElement += '<td>';
@@ -628,13 +629,26 @@ function showLevelWordView(level){
             meanTextArr.push($('.pt-word-table').find('tbody').eq(1).find("tr:last").find(".mean1").text());
             meanTextArr2.push($('.pt-word-table').find('tbody').eq(1).find("tr:last").find(".mean2").text());
             $('.pt-word-table').find('tbody').eq(1).find('');
-            $('.pt-word-table').find('tbody').eq(1).append(htmlElement);
-            if((meanTextArr.indexOf(result[i].mean) != -1) || (meanTextArr2.indexOf(result[i].mean2) != -1)){
-                $('.pt-word-table').find('tbody').eq(1).find("tr:last").css({"background-color":"yellow", color : 'black'});
+            $('.pt-word-table').find('tbody').eq(1).append(htmlElement.replace('{mean2}',''));
+
+
+            if((meanTextArr.indexOf(result[i].mean) != -1) || ( ( result[i].mean2 != '' ) && (meanTextArr2.indexOf(result[i].mean2) != -1) )){
+                if(result[i].mean != '') {
+                    $('.pt-word-table').find('tbody').eq(1).find("tr:last").css({
+                        "background-color": "yellow",
+                        color: 'black'
+                    });
+                }
             }
             if((meanTextArr.indexOf(result[i].mean) != -1) && (meanTextArr2.indexOf(result[i].mean2) != -1)){
-                $('.pt-word-table').find('tbody').eq(1).find("tr:last").css({"background-color":"red", color : 'white'});
+                if(result[i].mean != '') {
+                    $('.pt-word-table').find('tbody').eq(1).find("tr:last").css({
+                        "background-color": "red",
+                        color: 'white'
+                    });
+                }
             }
+
         }
 
 
