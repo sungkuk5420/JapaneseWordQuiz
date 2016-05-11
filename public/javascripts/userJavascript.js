@@ -607,6 +607,7 @@ function showLevelWordView(level){
             }
         }
         wordShuffleChange();
+        var wordTextArr = [];
         var meanTextArr = [];
         var meanTextArr2 = [];
         for(var i= 0,len = result.length; i<len ; i++) {
@@ -626,13 +627,14 @@ function showLevelWordView(level){
             htmlElement += '</td>';
             htmlElement += '</tr>';
             htmlElement = htmlElement.replace('{index}',i+1).replace('{num}',result[i].num).replace('{level}',result[i].level).replace('{word}',result[i].word).replace('{mean}',result[i].mean).replace('{mean2}',result[i].mean2);
+            wordTextArr.push($('.pt-word-table').find('tbody').eq(1).find("tr:last").find(".word").text());
             meanTextArr.push($('.pt-word-table').find('tbody').eq(1).find("tr:last").find(".mean1").text());
             meanTextArr2.push($('.pt-word-table').find('tbody').eq(1).find("tr:last").find(".mean2").text());
             $('.pt-word-table').find('tbody').eq(1).find('');
             $('.pt-word-table').find('tbody').eq(1).append(htmlElement.replace('{mean2}',''));
 
 
-            if((meanTextArr.indexOf(result[i].mean) != -1) || ( ( result[i].mean2 != '' ) && (meanTextArr2.indexOf(result[i].mean2) != -1) )){
+            if((meanTextArr.indexOf(result[i].mean) != -1) || ( ( result[i].mean2 != '' ) && (meanTextArr2.indexOf(result[i].mean2) != -1) ) || (wordTextArr.indexOf(result[i].word) != -1)){
                 if(result[i].mean != '') {
                     $('.pt-word-table').find('tbody').eq(1).find("tr:last").css({
                         "background-color": "yellow",
