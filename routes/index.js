@@ -11,7 +11,6 @@ router.use('/api', function (req, res) {
   var host = 'glosbe.com';
   var port = 443;
   var url = 'https://glosbe.com/gapi/translate?' + qs.stringify(req.query);
-  console.log(url, req.query);
   //var url = 'https://glosbe.com/gapi/translate?from=jpn&dest=kor&format=json&pretty=true&phrase=愛';
   var options = {
     host: host,
@@ -20,12 +19,21 @@ router.use('/api', function (req, res) {
     method: 'GET',
     headers: {
       'Content-Type': 'text/javascript; charset=UTF-8'
-    },
-    json : true
-  };
+    }  };
 
-  //console.log(options);
-  req.pipe(request(options)).pipe(res);
+  function callback(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      console.log(info.stargazers_count + " Stars");
+      console.log(info.forks_count + " Forks");
+      res.end(JSON.stringify(response.body));
+
+    }else{
+      console.log(error)}
+  }
+
+  request(options, callback);
+
 
 
   /*

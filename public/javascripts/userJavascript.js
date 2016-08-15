@@ -252,7 +252,7 @@ function wordShuffleChange(){
     }
     for(var i= 0,len=dbWordArr.length ; i <len ; i++){
         if(dbWordArr[i].mean.replace(/ /gi,'') === quizAnswer.replace(/ /gi,'')){
-            $(".pt-left-word-div #pt-word-text-quiz-answer").html($(".pt-left-word-div #pt-word-text-quiz-answer").text()+ ' <br> ( ' +dbWordArr[i].mean2 + ' )') ;
+            $(".pt-left-word-div #pt-word-text-quiz-answer").html(quizAnswer+ ' <br> ( ' +dbWordArr[i].mean2 + ' )') ;
             var width =$(".pt-left-word-div #pt-word-text-quiz-answer").width()/2;
             $(".pt-left-word-div #pt-word-text-quiz-answer").css({
                 left: "calc(50% - "+ width +"px)"
@@ -332,6 +332,7 @@ function searchWordApi(wordText){
         dataType:'json',
         url: "/api",
         success: function (res) {
+            var res = JSON.parse(res);
             var meanArr = new Array();
             var wordText = res.phrase;
             for(var i= 0,len = res.tuc.length; i<len ; i++){
