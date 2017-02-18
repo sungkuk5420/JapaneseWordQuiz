@@ -9,6 +9,7 @@ var numberObj ="";
 var wordArrObj ="";
 var meanArrObj ="";
 var meanArrObj2 ="";
+var meanArrDate ="";
 var dbWordArr =new Array();
 var isWordAnswerFail = false;
 var isClickWordFlag = false;
@@ -70,6 +71,7 @@ $(document).ready(function (aa,bb) {
     wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
     meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
     meanArrObj2 = ($('#pt-server-side-data').find('.mean2').text().replace(/ /gi,'').split(';;'));
+    meanArrDate = ($('#pt-server-side-data').find('.date').text().replace(/ /gi,'').split(';;'));
 
 
     for(var i= 0, len = wordArrObj.length ; i <len ; i++){
@@ -78,7 +80,8 @@ $(document).ready(function (aa,bb) {
                 num : numberObj[i],
                 word : wordArrObj[i],
                 mean : meanArrObj[i],
-                mean2 : meanArrObj2[i]
+                mean2 : meanArrObj2[i],
+                date : meanArrDate
             });
         }
     }

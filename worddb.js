@@ -39,8 +39,40 @@ var mysqlUtil = module.exports = {
                 //console.log(result);
                 var wordLen = result[result.length-1] == undefined ? 1 : result[result.length-1].num+1;
                 //console.log(wordLen);
-                console.log('insert into japenWord (word, mean, level) values( "{wordText}", "{meanText}", 1)'.replace('{wordText}', wordText).replace('{meanText}', meanText));
-                client.query('insert into japenWord (word, mean, level) values( "{wordText}", "{meanText}", 1)'.replace('{wordText}', wordText).replace('{meanText}', meanText), function (error, result, fields) {
+
+                //var date  = new Date();
+                //    date = (date.getMonth() < 10 ? '0' + (date.getMonth()+ 1) : date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
+                function getTimeStamp() {
+                    var d = new Date();
+
+                    var s =
+                        leadingZeros(d.getFullYear(), 4) + '-' +
+                        leadingZeros(d.getMonth() + 1, 2) + '-' +
+                        leadingZeros(d.getDate(), 2) + ' ' +
+
+                        leadingZeros(d.getHours(), 2) + ':' +
+                        leadingZeros(d.getMinutes(), 2) + ':' +
+                        leadingZeros(d.getSeconds(), 2);
+
+                    return s;
+                }
+
+
+
+                function leadingZeros(n, digits) {
+                    var zero = '';
+                    n = n.toString();
+
+                    if (n.length < digits) {
+                        for (i = 0; i < digits - n.length; i++)
+                            zero += '0';
+                    }
+                    return zero + n;
+                }
+
+                var date = getTimeStamp();
+                //console.log('insert into japenWord (word, mean, level, addDate) values( "{wordText}", "{meanText}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{date}','\''+date+'\''));
+                client.query('insert into japenWord (word, mean, level, addDate) values( "{wordText}", "{meanText}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{date}','\''+date+'\''), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');
