@@ -74,6 +74,10 @@ router.use('/api', function (req, res) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  wordDB.seletTable2({},res);
+});
+
+router.get('/index', function(req, res, next) {
   wordDB.seletTable({},res);
 });
 
