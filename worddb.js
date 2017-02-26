@@ -24,7 +24,7 @@ var mysqlUtil = module.exports = {
                console.log('쿼리 문장에 오류가 있습니다.');
            } else {
                console.log(result);
-               res.render('index', { title : "aaa",wordObj: result });
+               res.render('fakePage', { title : "aaa",wordObj: result });
 
            }
        })

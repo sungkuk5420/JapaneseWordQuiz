@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>TypeScriptを使った方がいいケースとは？</title>
+  <link href="/stylesheets/bootstrap.css" rel="stylesheet">
+  <!--<link href="/stylesheets/style.css" rel="stylesheet">-->
+  <link href="/stylesheets/fakeStyle.css" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+
+
+</head>
+
+<body id="page-top" class="single single-post postid-6584 single-format-standard">
+
+  <div id="page">
+    <div class="navigation-wrap clearfix">
+      <div class="navigation-wrap-inside clearfix">
+        <nav role="navigation" class="site-navigation main-navigation">
+          <div class="assistive-text site-navigation-menu"><i class="fa fa-bars"></i> Menu</div>
+          <div class="assistive-text skip-link"><a href="#content">Skip to content</a></div>
+          <div class="menu-menu-container"><ul id="menu-menu" class="menu"><li id="menu-item-94" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-94"><a href="http://postd.cc/about/">About</a>
+                <ul class="sub-menu">
+                  <li id="menu-item-104" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-104"><a href="/about/">POSTDについて</a></li>
+                  <li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="http://postd.cc/about/terms/">利用規約</a></li>
+                  <li id="menu-item-102" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-102"><a href="http://postd.cc/about/contact/">お問い合わせ</a></li>
+                </ul>
+              </li>
+              <li id="menu-item-93" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-93"><a href="/">Category</a>
+                <ul class="sub-menu">
+                  <li id="menu-item-3723" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-3723"><a href="http://postd.cc/category/programming/">プログラミング</a></li>
+                  <li id="menu-item-3726" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3726"><a href="http://postd.cc/category/infrastructure/">インフラ・ミドルウェア</a></li>
+                  <li id="menu-item-3724" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3724"><a href="http://postd.cc/category/system-development/">開発手法・プロジェクト管理</a></li>
+                  <li id="menu-item-3727" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3727"><a href="http://postd.cc/category/careers/">キャリア・働き方</a></li>
+                  <li id="menu-item-3730" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3730"><a href="http://postd.cc/category/computer-science/">コンピュータサイエンス</a></li>
+                  <li id="menu-item-3725" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3725"><a href="http://postd.cc/category/startups/">スタートアップ</a></li>
+                  <li id="menu-item-3728" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3728"><a href="http://postd.cc/category/design/">デザイン</a></li>
+                  <li id="menu-item-3729" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3729"><a href="http://postd.cc/category/products/">プロダクト・サービス</a></li>
+                  <li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3729 levelChangeDiv" onclick="showLevelWordView(1);"><a href="">1</a></li>
+                  <li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3729 levelChangeDiv" onclick="showLevelWordView(2);"><a href="">2</a></li>
+                  <li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3729 levelChangeDiv" onclick="showLevelWordView(3);"><a href="">3</a></li>
+                  <li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3729 levelChangeDiv" onclick="showLevelWordView(4);"><a href="">4</a></li>
+                  <li id="" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3729 levelChangeDiv" onclick="showLevelWordView(0);"><a href="">all</a></li>
+                </ul>
+              </li>
+            </ul></div>			</nav><!-- .site-navigation .main-navigation -->
+
+        <!-- Grab header icons template -->
+
+        <div class="header-search">
+          <ul class="toggle-icons">
+            <li><a class="toggle-search current" href="#" title="検索">検索</a></li>
+          </ul>
+
+          <div class="toggle-boxes">
+            <div class="toggle-box toggle-box-social">
+              <div class="icons">
+                <div class="icons-widget">
+                  <div class="icon-links">
+                    <a href="https://twitter.com/POSTDcc" class="twitter-icon ext-link" title="Twitter" rel="nofollow"><i class="fa fa-twitter-square"></i></a>
+
+                    <a href="https://www.facebook.com/postdcc" class="facebook-icon ext-link" title="Facebook" rel="nofollow"><i class="fa fa-facebook-square"></i></a>
+
+                    <a href="http://postd.cc/feed/" class="feed-icon" title="RSS"><i class="fa fa-rss-square"></i></a>
+
+                  </div><!-- .icon-links -->
+                </div><!-- .icons-widget -->
+              </div><!-- .icons -->
+            </div><!-- .toggle-box -->
+
+            <div class="toggle-box toggle-box-search">
+              <form method="get" action="http://postd.cc/" role="search">
+                <label for="header-search-submit" class="assistive-text">Search</label>
+                <input type="text" class="field" name="s" value="" placeholder="Type here and press enter.">
+              </form>
+            </div><!-- .toggle-box -->
+
+          </div><!-- .toggle-boxes -->
+        </div><!-- .header-search -->		</div><!-- .navigation-wrap-inside -->
+    </div><!-- .navigation-wrap -->
+
+    <header id="masthead" class="site-header" role="banner">
+
+      <div class="header-wrap">
+        <div class="hgroup">
+          <div class="logo-image">
+            <a href="http://postd.cc/" class="animated a-alpha flipInY">
+              <img src="http://postd.cc/wp/wp-content/themes/publisher-custom/images/postd_logo@2x.png" srcset="http://postd.cc/wp/wp-content/themes/publisher-custom/images/postd_logo.png 1x, http://postd.cc/wp/wp-content/themes/publisher-custom/images/postd_logo@2x.png 1.5x" alt="POSTD" width="200" height="90" class="transition">
+              <p class="site-title">POSTD</p>
+            </a>
+          </div>
+
+          <p class="site-description animated fadeIn">プログラミングするエンジニアに向けたトレンドメディア</p>
+
+        </div>
+      </div><!-- .header-wrap -->
+    </header><!-- #masthead .site-header -->
+
+
+    <aside class="block-subscribe">
+      <div class="block-subscribe-inner">
+        <p>POSTDから最新エントリを受け取る</p>
+        <ul>
+          <li class="twitter">
+            <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-follow-button twitter-follow-button-rendered" title="Twitter Follow Button" src="http://platform.twitter.com/widgets/follow_button.a0ec3119d8db2bc5422f2144c89ad7a9.ja.html#dnt=false&amp;id=twitter-widget-0&amp;lang=ja&amp;screen_name=POSTDcc&amp;show_count=false&amp;show_screen_name=false&amp;size=m&amp;time=1487995645899" style="position: static; visibility: visible; width: 97px; height: 20px;" data-screen-name="POSTDcc"></iframe>
+          </li>
+          <li class="facebook">
+            <div class="fb-like fb_iframe_widget" data-href="https://www.facebook.com/postdcc" data-layout="button" data-action="like" data-show-faces="false" data-share="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=1442963845953594&amp;container_width=82&amp;href=https%3A%2F%2Fwww.facebook.com%2Fpostdcc&amp;layout=button&amp;locale=ja_JP&amp;sdk=joey&amp;share=false&amp;show_faces=false"><span style="vertical-align: bottom; width: 72px; height: 20px;"><iframe name="f3b1528328cc2e" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="https://www.facebook.com/v2.0/plugins/like.php?action=like&amp;app_id=1442963845953594&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2Fao6eUeuGXQq.js%3Fversion%3D42%23cb%3Df1eb73933d36ac4%26domain%3Dpostd.cc%26origin%3Dhttp%253A%252F%252Fpostd.cc%252Ff22a97e197f4cd%26relation%3Dparent.parent&amp;container_width=82&amp;href=https%3A%2F%2Fwww.facebook.com%2Fpostdcc&amp;layout=button&amp;locale=ja_JP&amp;sdk=joey&amp;share=false&amp;show_faces=false" style="border: none; visibility: visible; width: 72px; height: 20px;" class=""></iframe></span></div>
+          </li>
+          <li class="feedly">
+            <a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fpostd.cc%2Ffeed%2F" target="_blank" class="track-me" data-ga-category="social" data-ga-action="click" data-ga-label="feedly"><img src="http://s3.feedly.com/img/follows/feedly-follow-rectangle-volume-small_2x.png" alt="follow us in feedly" width="66" height="20"></a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+    <div id="main" class="site-main clearfix">
+      <div id="primary">
+
+        <article id="content" class="site-content container clearfix" role="main">
+
+
+          <!-- Get post format -->
+
+          <div class="block-standard post-6584 post type-post status-publish format-standard has-post-thumbnail category-programming tag-javascript tag-typescript tag-programming-language-comparison">
+
+
+
+            <div class="block-titles-wrap" itemscope="" itemtype="http://schema.org/BlogPosting">
+              <div class="block-titles">
+
+                <div class="block-date" itemprop="datePublished">2016年4月21日</div>
+
+
+                <div class="block-entry-tags clearfix">
+                  <div class="tagcloud" itemprop="keywords"><a href="http://postd.cc/tag/javascript/" rel="tag">JavaScript</a><a href="http://postd.cc/tag/typescript/" rel="tag">TypeScript</a><a href="http://postd.cc/tag/programming-language-comparison/" rel="tag">プログラミング言語比較</a></div>
+                </div>
+
+                <h1 class="block-entry-title" itemprop="name">TypeScriptを使った方がいいケースとは？</h1>
+
+
+              </div><!-- .block-titles -->
+
+              <div class="block-text">
+
+                <!-- social -->
+                <div class="block-social">
+                  <ul>
+                    <li class="block-social-hatena">
+                      <iframe class="hatena-bookmark-button-frame" title="このエントリーをはてなブックマークに追加" frameborder="0" scrolling="no" width="84" height="40" src="javascript:false" style="width: 84px; height: 40px;"></iframe>
+                    </li>
+                    <li class="block-social-facebook">
+                      <div class="fb-like fb_iframe_widget" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=1442963845953594&amp;container_width=0&amp;href=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;layout=box_count&amp;locale=ja_JP&amp;sdk=joey&amp;share=false&amp;show_faces=false"><span style="vertical-align: bottom; width: 72px; height: 40px;"><iframe name="f31af60f6613e1" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="https://www.facebook.com/v2.0/plugins/like.php?action=like&amp;app_id=1442963845953594&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2Fao6eUeuGXQq.js%3Fversion%3D42%23cb%3Df28058d570decc4%26domain%3Dpostd.cc%26origin%3Dhttp%253A%252F%252Fpostd.cc%252Ff22a97e197f4cd%26relation%3Dparent.parent&amp;container_width=0&amp;href=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;layout=box_count&amp;locale=ja_JP&amp;sdk=joey&amp;share=false&amp;show_faces=false" style="border: none; visibility: visible; width: 72px; height: 40px;" class=""></iframe></span></div>
+                    </li>
+                    <li class="block-social-twitter">
+                      <iframe id="twitter-widget-2" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="Twitter Tweet Button" src="http://platform.twitter.com/widgets/tweet_button.a0ec3119d8db2bc5422f2144c89ad7a9.ja.html#dnt=false&amp;id=twitter-widget-2&amp;lang=ja&amp;original_referer=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;size=m&amp;text=TypeScript%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E6%96%B9%E3%81%8C%E3%81%84%E3%81%84%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%AF%EF%BC%9F%20%7C%20%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%20%7C%20POSTD&amp;time=1487995645901&amp;type=share&amp;url=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;via=POSTDcc" style="position: static; visibility: visible; width: 75px; height: 20px;"></iframe>
+                    </li>
+                    <li class="block-social-pocket">
+                      <div class="pocket-btn"><iframe width="60" height="63" id="pocket-button-0" frameborder="0" allowtransparency="true" scrolling="NO" src="https://widgets.getpocket.com/v1/button?label=pocket&amp;count=vertical&amp;v=1&amp;url=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;title=TypeScript%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E6%96%B9%E3%81%8C%E3%81%84%E3%81%84%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%AF%EF%BC%9F%20%7C%20%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%20%7C%20POSTD&amp;src=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;r=0.08789485490177373"></iframe></div>
+                    </li>
+                    <li class="block-social-googleplus">
+                      <div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 50px; height: 60px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 50px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 60px;" tabindex="0" vspace="0" width="100%" id="I0_1487995645427" name="I0_1487995645427" src="https://apis.google.com/u/0/se/0/_/+1/fastbutton?usegapi=1&amp;size=tall&amp;hl=ja&amp;origin=http%3A%2F%2Fpostd.cc&amp;url=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;gsrc=3p&amp;ic=1&amp;jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.ko.lvLi4DaOEWs.O%2Fm%3D__features__%2Fam%3DEQ%2Frt%3Dj%2Fd%3D1%2Frs%3DAGLTcCNh9WxyLbNgT_362375nmmOmYNP1w#_methods=onPlusOne%2C_ready%2C_close%2C_open%2C_resizeMe%2C_renderstart%2Concircled%2Cdrefresh%2Cerefresh%2Conload&amp;id=I0_1487995645427&amp;parent=http%3A%2F%2Fpostd.cc&amp;pfname=&amp;rpctoken=41516402" data-gapiattached="true" title="+1"></iframe></div>
+                    </li>
+                  </ul>
+                </div>
+                <!-- // social -->
+
+                <!-- post-meta -->
+                <aside>
+                  <div class="post-meta">
+
+                    <!-- post-meta-original -->
+                    <div class="block-text-original clearfix">
+                      <div class="block-lineTitle"><span><em>Source</em></span></div>
+                      <div>
+                        <div class="block-text-original-image">
+                          <img src="http://postd.cc/wp/wp-content/uploads/2016/04/26ca772f79f6b31d6f03b6de5bc5bd3d-150x150.jpg">
+                        </div>
+                        <div class="block-text-original-text">
+                          <div class="markdown-content">
+                            <p><a href="https://medium.com/@alexewerlof/when-should-i-use-typescript-311cb5fe801b#.d262pe5cg" rel="nofollow" title="" class="ext-link">When should I use TypeScript?</a> （2016-05-24） by <a href="https://twitter.com/alexewerlof" rel="nofollow" title="" class="ext-link">Alex Ewerlöf</a></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- //post-meta-original -->
+
+                    <!-- post-meta-product -->
+                    <!-- //post-meta-product -->
+
+                    <!-- post-meta-licence -->
+                    <div class="block-text-licence" itemprop="license">
+                      本記事は、原著者の許諾のもとに翻訳・掲載しております。						</div>
+                    <!-- //post-meta-licence -->
+                  </div>
+                </aside>
+                <!-- //post-meta -->
+
+
+                <div class="block-text-content" itemprop="articleBody">
+
+                  <div class="markdown-content">
+                    <p>去年の夏、私たちは大量のコードベース（18,000行以上の<a href="https://ja.wikipedia.org/wiki/LOC" rel="nofollow" title="" class="ext-link">コード行数</a>）をJavaScriptからTypeScriptへと変更しました。この移行作業を通じて、両者の相違点や類似点について大いに学び、TypeScriptの優れたユースケースや、TypeScriptを使うべきではないケースなどについて考えてみました。</p>
+                    <p><img class="progressiveMedia-image js-progressiveMedia-image" data-src="https://cdn-images-1.medium.com/max/900/1*IkUwv_lceATY-tP7Pf5TeQ.jpeg" src="https://cdn-images-1.medium.com/max/900/1*IkUwv_lceATY-tP7Pf5TeQ.jpeg"><br>
+                      型システムとは補助輪のようなものです。転倒防止してくれる代わりに、遅くなり、操作性が制限されます。</p>
+                    <h2 id="gfm-1">TypeScriptのユースケース</h2>
+                    <ol>
+                      <li>
+                        <p><strong>コードサイズ</strong>：ソースコードが膨大である場合、また複数の人がプロジェクトに従事している場合、型システムは明らかなエラーを防ぐのに役立ちます。 特に<a href="https://en.wikipedia.org/wiki/Single-page_application" rel="nofollow" title="" class="ext-link">SPA</a>の場合は当てはまります。誰かが変更したコードが他の人のコードを破損させてしまう可能性があるなら、何らかの安全機構を持つ方がいいでしょう。TypeScriptの<a href="https://www.stevefenton.co.uk/2012/11/compiling-vs-transpiling/" rel="nofollow" title="" class="ext-link">トランスパイラ</a>は明白な誤りを暴いてくれますし、ある程度賢いものです（もちろん、デバッグの必要性を排除できるということではありません）。ソースコードが巨大でなければ、型アノテーションを追加してコードを長くする意味はおそらくないでしょう。私は180以上のファイルをJavaScriptからTypeScriptに変更しましたが、多くの場合、コードサイズの増加はおよそ30パーセントほどでした。</p>
+                      </li>
+                      <li>
+                        <p><strong>過去の経験</strong>：チームメンバやあなた自身がC#やJavaのような強い型付き言語のバックグラウンドを持ち、JavaScriptをとことん学ぶ気はないという場合、TSはいい代替案だと思われます。この機会にJavaScriptを学習することをお勧めはしますが、JavaScriptを知らないままTypeScriptを使うことを妨げるものはありません。実際TypeScriptはC#と<a href="https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%B3%E3%83%80%E3%83%BC%E3%82%B9%E3%83%BB%E3%83%98%E3%83%AB%E3%82%B9%E3%83%90%E3%83%BC%E3%82%B0" rel="nofollow" title="" class="ext-link">同じ作者</a>によるものですから、シンタックスは似ています。当社ではC#の開発チームがC#/WPF（デスクトップ界のフロントエンド）で、洗練されたデスクトップアプリケーションをコーディングしていましたが、その後、フルスタックエンジニアとしてWebプロジェクトにアサインされました。彼らにとってはフロントエンドのTypeScriptを学習することは比較的近道であり、バックエンドのC#の知識を生かせるものだったようです。</p>
+                      </li>
+                      <li>
+                        <p><strong>Babelの代替として</strong>：昔Microsoftでは標準の言語（例えばJava）に非標準のプロプライエタリ（例えばJ++）を付加して、開発者に選ばせるということをしていました。TypeScriptは、まさにこれのJavaScript版だと言えます（1996年にはJavaScriptから<a href="https://ja.wikipedia.org/wiki/JScript" rel="nofollow" title="" class="ext-link">JScript</a>を派生させる試みをしていました）。いずれにせよ、ES6はTypeScriptのサブセットであり、TypeScriptの<a href="https://www.stevefenton.co.uk/2012/11/compiling-vs-transpiling/" rel="nofollow" title="" class="ext-link">トランスパイラ</a>はES5のコードを生成するので、TypeScriptのトランスパイラを使って実質的にES6のコードをES5にトランスパイル（<a href="https://babeljs.io/" rel="nofollow" title="" class="ext-link">Babel</a>のように）することもできます。これは私見ですが強力なユースケースではなさそうです。TypeScriptのトランスパイラは出力結果としてかなり読みやすいES5のコードを生成するのですが、Angular2チームがGoogle独自のDart言語ではなくTSを選択したのはこれが1つの理由でもありました。他にもTSにはEnumや、コンストラクタでメンバ変数を初期化する機能など、ES6には備わっていないクールな機能があります。私はさほど継承が好きではありませんが、<em>public</em>、<em>private</em>、<em>protected</em>、<em>abstract</em>などのキーワードがクラスに備わっているのは大変便利です。これはTSにはあってES6にはありません。C#の開発者は、メソッドのボディとしてLambda関数を書けることがすごいと言っていました（キーワードthisに伴う頭痛のタネを排除してくれるため）。</p>
+                      </li>
+                      <li>
+                        <p><strong>ライブラリあるいはフレームワークによる推進</strong>：Angular2、またはTypeScriptの使用によって面白くなるようなライブラリを使っている人は、ぜひ使いましょう。アップデート：Angular2を6カ月使ってみた後の<a href="http://m12.io/blog/we-launched-angular-2-project" rel="nofollow" title="" class="ext-link">開発者たちの感想</a>を読んでみてください。TypeScriptは全てのJavaScriptのライブラリを設定なしで使うことができますが、適切なシンタックスエラーを望む場合は、これらのライブラリの外部に型定義を付加する必要があります。幸運なことに<a href="http://definitelytyped.org/" rel="nofollow" title="" class="ext-link">DefinitelyTyped</a>のステキな皆さんがコミュニティ主導のリポジトリとツールを用意してくれました。しかしプロジェクトをセットアップする時は1つ余分なステップとなります（ひと言：JSXのファン向けには<a href="http://www.typescriptlang.org/docs/handbook/jsx.html" rel="nofollow" title="" class="ext-link">TSX</a>について説明するべきですね）。</p>
+                      </li>
+                    </ol>
+                    <h2 id="gfm-2">TypeScriptを使わないほうが良いケース</h2>
+                    <ol>
+                      <li>
+                        <p><strong>追加のトランスパイルにかかる負荷</strong>: TypeScriptをブラウザでネイティブにサポートする計画は存在しません。（Chromeで<a href="https://developers.google.com/v8/experiments#soundscript" rel="nofollow" title="" class="ext-link">実験していたこともありました</a>が、その後<a href="https://groups.google.com/forum/embed/?place=forum/strengthen-js#!topic/strengthen-js/ojj3TDxbHpQ" rel="nofollow" title="" class="ext-link">やめてしまいました</a>）。不要なランタイムオーバーヘッドに対して、何か関係があるのでしょう。例えば、誰かが自転車に補助輪を取り付けたいと思った場合、補助輪を取り付けることは可能でも、永続的に取り付けたままにすべきものでもないですよね？　つまり、ブラウザ上で実行する前に、常にTypeScriptのコードをトランスパイルしなければならなくなります。標準的なES6とは全く別次元の話です。<a href="https://kangax.github.io/compat-table/es6/" rel="nofollow" title="" class="ext-link">ES6がほとんどのブラウザでサポートされれば</a>、現在行っているES6からES5へのトランスパイルは不要となるでしょう。JavaScriptにおいてES6は最大の変化であり、ほとんどのプログラマが利用するようになると思います。しかし、プログラマが次バージョンのベータ版を使いたいと思った場合や、全てのブラウザには実装されていない機能を利用する場合は、どちらにしてもトランスパイルすることになります。トランスパイルしないとすれば、ファイルを修正しブラウザをリフレッシュするだけです。それが全てであり、<em>監視したりオンデマンドでトランスパイルしたりシステムをビルドしたりする</em>必要はありません。TypeScriptを選ぶとすれば、JavaScriptのライブラリやフレームワークのために（DefinitelyTypedを使ったり独自の型アノテーションを書いたりしながら）型の定義を記録する羽目になります。このようなことは、ピュアなJavaScriptを使っているプロジェクトでは、必要のない作業です。</p>
+                      </li>
+                      <li>
+                        <p><strong>変わったデバッグのエッジケース</strong>: SourceMapを使うとTypeScriptのデバッグが簡単になりますが、そのまま使うには不完全な上に、面倒で分かりづらいエッジケースがあります。実際には実行しているコードがないにもかかわらず、コードの特定の行を実行しているとブラウザが判断してしまうというようなことです。また、<code>this</code>というキーワードやそれに付随するプロパティ（ちなみに、大抵の場合、<code>_this</code>は問題なく動きます）をデバッグする際に問題が発生するパターンがあります。この問題が起こるのは、現状のSourceMapに、変数に対する十分なサポートがないためです。（ただし、将来的にこの状況は変わる可能性があります）。</p>
+                      </li>
+                      <li>
+                        <p><strong>パフォーマンスペナルティ</strong>: 我々のプロジェクトでは、9,000行以上の古き良きES5 JavaScriptのコードがありました。WebGLによる3Dのcanvasに動力を与えるだけのものでしたが、我々はその方法をそのまま使っていました。TypeScriptのトランスパイラ（Babelと同じようなもの）の機能には、特別なコード（継承やEnum等）を生成する必要のあるものがあります。どんなにトランスパイラが素晴らしくても、腕の良いプログラマの最適化レベルを上回ることはできません。そのため、我々はそのままのES5を維持することにしました。デバッグやデプロイを簡単にするためです。（何があってもトランスパイルはしません）。そうは言っても、多くのプロジェクトにとっては、型システムやよりモダンなシンタックスの利点に比べれば、パフォーマンスペナルティは恐らく取るに足らないものでしょう。しかし、ミリ秒が問題になる場合もあり、その場合はどんな種類のトランスパイルも推奨できません（BabelやCoffeeScriptやDart等でさえもです）。一方で、TypeScriptは実行時の型チェックのためにコードを加えるようなことはありません。型チェックは全てトランスパイルする時に行われ、生成されたJavaScriptのコードからは型アノテーションが削除されます。</p>
+                      </li>
+                      <li>
+                        <p><strong>迅速性</strong>: 何かを設定する時はJavaScriptを使った方が早くできます。型システムでないことで、非常に軽く、内容を簡単に変更することも可能です。もちろんコードは簡単に壊れてしまうものでもありますが、自分が何をしているのかが分かっていれば、JavaScriptの方が柔軟性を備えていると言えます。型システムのユースケースの中には、コードを壊れにくくするということがあるのを思い出してください。<em>例えるならTypeScriptはWindowsで、JavaScriptはLinuxのようなものです。</em>JSの世界には、型システムの”補助輪”はありませんし、自分が何をしているか分かっているのが当然とされます。しかし、より速く、より簡単に操作できます。特にプロトタイプ制作の段階にいるのなら、TypeScriptで時間を無駄にしないでください。JSはより機敏で融通がきくからです。TSはJSのスーパーセットです。つまり、後から簡単にJSをTSに変換できるのです。もしも型付き言語を使っているのなら、IDEでコードを書く/最適化するのも速くなるかもしれません。型システムは機械が構文を理解するのを手助けするからです。</p>
+                      </li>
+                    </ol>
+                    <h2 id="gfm-3">私自身の個人的な好み</h2>
+                    <p>全てにとって最良の言語というものはありませんが、特定のプロジェクトにおいては、それに適した言語やライブラリ、フレームワーク、データベース、OS、その他諸々があります。</p>
+                    <p>私たちのプロジェクトには、TypeScriptを使うのが理に適っていました。私は趣味で行っているプロジェクトのうちのいくつかをTypeScriptにリファクタリングしようとしましたが、それはとても大変でした。個人的には、TSに関して気に入っているのは、以下に挙げる4つのことです。</p>
+                    <ul>
+                      <li>
+                        <p>ES6と完全に互換性があること。Microsoft製品が他のブラウザでもきちんと機能するのを見るのは気分がいいものです。私たちのエコシステムはGoogle、Mozilla、Apple以外の強いライバルから恩恵を受けることができます。Microsoftはこれに、かなりの労力を注ぎ込んでいます（例えば、全てのプラットフォームの<em>Google Chrome</em>でTSを使って<a href="https://code.visualstudio.com/" rel="nofollow" title="" class="ext-link">Visual Studio Code</a>を一から書く、ということまでしています！）。</p>
+                      </li>
+                      <li>
+                        <p>型システムはオプショナルなものですです。私のバックグラウンドはC言語やJavaだったので、JSに型システムがないことを「開放的」だと思いました。しかし、実行時の単純でくだらないバグのせいで時間を無駄にしたくありません。TSによって、多くのバグと、実に難しいバグによって時間を浪費することを回避できます。いいバランスで、これが好きなのです。私に合っています。私はいつでも、可能な限り型を使います。心に平穏をもたらしてくれるからです。しかし、これは私の個人的な感想です。私はTSを使うなら、ES6の限られた機能で自分に制限を課したくないのです。</p>
+                      </li>
+                      <li>
+                        <p>トランスパイラのアウトプットは、かなり読みやすいです。私はSourceMapのファンではないので、生成されたJavaScript上でデバッグしますし、それはとても素晴らしいものです。なぜAngular 2が<a href="https://jaxenter.com/angular-typescript-dart-115426.html" rel="nofollow" title="" class="ext-link">DartよりもTSを選んだ</a>のか、納得です。</p>
+                      </li>
+                      <li>
+                        <p>ツールはとても優れています。WebStormは、JavaScriptの扱いに長けています（最も賢いJSのIDEはこれだと言う人もいるでしょう）。しかしTypeScriptは、できることの幅を全く新しいレベルにまで広げてくれます。オートコンプリーションとリファクタリング機能は、（VSCodeにおいて）かなり正確に機能します。でも<em>それはIDEが特別賢いからというわけではないのです。</em></p>
+                      </li>
+                    </ul>
+                    <h2 id="gfm-4">で、結局？</h2>
+                    <p>TypeScriptは全てを解決するものではありません。これを使っても、<a href="https://medium.com/@alexewerlof/what-is-shitty-code-handwriting-ae7c00708b#.pworfj5om" rel="nofollow" title="" class="ext-link">ひどいコードを書く</a>可能性はあります。TSを嫌う人たちは、変化に対する恐怖のせいで、あるいは知り合いの知り合いが変化を恐れているせいで嫌うのでしょう。それでも地球は周り、TSはどのみち、<a href="https://github.com/Microsoft/TypeScript" rel="nofollow" title="" class="ext-link">コミュニティ</a>に<a href="https://github.com/Microsoft/TypeScript/wiki/What%27s-new-in-TypeScript" rel="nofollow" title="" class="ext-link">新しい機能</a>を導入します。しかしReactと同様に、私たちの業界の境界をプッシュする有力なテクノロジの1つです。そしてあなたがこれを使おうと使うまいと、あなた自身の考えを発展させるために使ってみることは害にはなりません。学習曲線はありますが、JSに馴染みがあれば学習もスムーズに進むでしょう。</p>
+                    <p>等価なJSのコードの例が見られる<a href="http://www.typescriptlang.org/play/" rel="nofollow" title="" class="ext-link">オンライン上のリアルタイムのトランスパイラ</a>もあります。</p>
+                    <p>こちらは簡単な<a href="http://www.typescriptlang.org/docs/tutorial.html" rel="nofollow" title="" class="ext-link">チュートリアル</a>と、<a href="http://www.typescriptlang.org/docs/tutorial.html" rel="nofollow" title="" class="ext-link">とても優れたガイド</a>です。しかし私自身はどちらかと言えば<a href="https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md" rel="nofollow" title="" class="ext-link">言語リファレンス</a>を好むタイプの人間です。もしも動画の方がお好みなら、<a href="https://www.udemy.com/typescript/" rel="nofollow" title="" class="ext-link">Udemyのコース</a>もあります。</p>
+                    <p>John Papaによる、ES5とTSに関する<a href="http://johnpapa.net/es5-es2015-typescript/" rel="nofollow" title="" class="ext-link">簡潔な記事</a>もあります。</p>
+                    <p>おまけ：<a href="https://medium.com/@alexewerlof/what-s-cool-about-being-a-programmer-5a1e58efeee6#.3oxtoylxg" rel="nofollow" title="" class="ext-link">programming is the best job ever</a>も読んでみてください。</p>
+                  </div>
+
+
+                </div>
+                <!-- //block-text-content -->
+
+
+                <!-- social -->
+                <div class="block-social">
+                  <ul>
+                    <li class="block-social-hatena">
+                      <iframe class="hatena-bookmark-button-frame" title="このエントリーをはてなブックマークに追加" frameborder="0" scrolling="no" width="115" height="20" src="javascript:false" style="width: 115px; height: 20px;"></iframe>
+                    </li>
+                    <li class="block-social-facebook">
+                      <div class="fb-like fb_iframe_widget" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=1442963845953594&amp;container_width=0&amp;href=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;layout=button_count&amp;locale=ja_JP&amp;sdk=joey&amp;share=false&amp;show_faces=false"><span style="vertical-align: bottom; width: 88px; height: 20px;"><iframe name="f56c073bbebdc4" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="https://www.facebook.com/v2.0/plugins/like.php?action=like&amp;app_id=1442963845953594&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2Fao6eUeuGXQq.js%3Fversion%3D42%23cb%3Df3227846ef2fda8%26domain%3Dpostd.cc%26origin%3Dhttp%253A%252F%252Fpostd.cc%252Ff22a97e197f4cd%26relation%3Dparent.parent&amp;container_width=0&amp;href=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;layout=button_count&amp;locale=ja_JP&amp;sdk=joey&amp;share=false&amp;show_faces=false" style="border: none; visibility: visible; width: 88px; height: 20px;" class=""></iframe></span></div>
+                    </li>
+                    <li class="block-social-twitter">
+                      <iframe id="twitter-widget-3" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="Twitter Tweet Button" src="http://platform.twitter.com/widgets/tweet_button.a0ec3119d8db2bc5422f2144c89ad7a9.ja.html#dnt=false&amp;id=twitter-widget-3&amp;lang=ja&amp;original_referer=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;size=m&amp;text=TypeScript%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E6%96%B9%E3%81%8C%E3%81%84%E3%81%84%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%AF%EF%BC%9F%20%7C%20%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%20%7C%20POSTD&amp;time=1487995645902&amp;type=share&amp;url=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;via=POSTDcc" style="position: static; visibility: visible; width: 75px; height: 20px;"></iframe>
+                    </li>
+                    <li class="block-social-googleplus">
+                      <div id="___plusone_1" style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 90px; height: 20px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I1_1487995645755" name="I1_1487995645755" src="https://apis.google.com/u/0/se/0/_/+1/fastbutton?usegapi=1&amp;size=medium&amp;hl=ja&amp;origin=http%3A%2F%2Fpostd.cc&amp;url=http%3A%2F%2Fpostd.cc%2Fwhen-should-i-use-typescript%2F&amp;gsrc=3p&amp;ic=1&amp;jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.ko.lvLi4DaOEWs.O%2Fm%3D__features__%2Fam%3DEQ%2Frt%3Dj%2Fd%3D1%2Frs%3DAGLTcCNh9WxyLbNgT_362375nmmOmYNP1w#_methods=onPlusOne%2C_ready%2C_close%2C_open%2C_resizeMe%2C_renderstart%2Concircled%2Cdrefresh%2Cerefresh%2Conload&amp;id=I1_1487995645755&amp;parent=http%3A%2F%2Fpostd.cc&amp;pfname=&amp;rpctoken=11950660" data-gapiattached="true" title="+1"></iframe></div>
+                    </li>
+                  </ul>
+                </div>
+                <!-- // social -->
+
+                <aside class="block-feedback last">
+                  翻訳に対するフィードバックがございましたら、<a href="mailto:hello+feedback@postd.cc?subject=%5B%E7%BF%BB%E8%A8%B3%E3%83%95%E3%82%A3%E3%83%BC%E3%83%89%E3%83%90%E3%83%83%E3%82%AF%5D%20TypeScript%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E6%96%B9%E3%81%8C%E3%81%84%E3%81%84%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%AF%EF%BC%9F">メール</a>または<a href="https://github.com/postdcc/feedback/issues/new?title=%5B%E7%BF%BB%E8%A8%B3%E3%83%95%E3%82%A3%E3%83%BC%E3%83%89%E3%83%90%E3%83%83%E3%82%AF%5D%20TypeScript%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E6%96%B9%E3%81%8C%E3%81%84%E3%81%84%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%AF%EF%BC%9F" rel="nofollow" title="" class="ext-link">GitHubのIssue</a>よりお寄せください。
+                </aside>
+
+              </div><!-- .block-text -->
+            </div><!-- .block-titles-wrap -->
+          </div>
+          <div id="content-wrap">
+
+            <!-- 関連した投稿 -->
+            <div id="single-related" class="related-section clearfix">
+              <div class="block-text">
+
+                <div id="single-related-section">
+                  <p class="single-related-title"><i class="fa fa-list-ul"></i> 関連した投稿</p>
+                  <div class="single-related-posts">
+
+                    <section class="single-related-posts-post">
+                      <h3>
+                        <a href="http://postd.cc/bezier-curves/" class="track-me" data-ga-category="related-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/bezier-curves/">一から学ぶベジェ曲線</a>
+                      </h3>
+                      <span>2017.02.23</span>
+                      <figure>
+                        <a href="http://postd.cc/bezier-curves/" class="track-me" data-ga-category="related-posts" data-ga-action="click - img" data-ga-label="http://postd.cc/bezier-curves/">
+                          <img src="http://postd.cc/wp/wp-content/uploads/2017/02/d_bezier15-150x150.png" alt="" class="transition">
+                        </a>
+                      </figure>
+
+
+                      <div class="block-meta-social">
+                        <a href="http://b.hatena.ne.jp/add?mode=confirm&amp;url=http%3A%2F%2Fpostd.cc%2Fbezier-curves%2F&amp;title=%E4%B8%80%E3%81%8B%E3%82%89%E5%AD%A6%E3%81%B6%E3%83%99%E3%82%B8%E3%82%A7%E6%9B%B2%E7%B7%9A+%7C+POSTD" title="このエントリーをはてなブックマークに追加" onclick="window.open(this.href,'hatena', 'width=500, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-hatena-square"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share.php?u=http%3A%2F%2Fpostd.cc%2Fbezier-curves%2F" onclick="window.open(this.href,'facebook', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-facebook-square"></i>
+                        </a>
+                        <a href="https://twitter.com/share?url=http%3A%2F%2Fpostd.cc%2Fbezier-curves%2F&amp;text=%E4%B8%80%E3%81%8B%E3%82%89%E5%AD%A6%E3%81%B6%E3%83%99%E3%82%B8%E3%82%A7%E6%9B%B2%E7%B7%9A+%7C+POSTD&amp;via=POSTDcc" onclick="window.open(this.href,'twitter', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-twitter-square"></i>
+                        </a>
+                        <a href="https://plus.google.com/share?url=http%3A%2F%2Fpostd.cc%2Fbezier-curves%2F" onclick="window.open(this.href,'googleplus', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-google-plus"></i>
+                        </a>
+                      </div>
+
+                    </section>
+
+
+                    <section class="single-related-posts-post">
+                      <h3>
+                        <a href="http://postd.cc/numerical-optimization/" class="track-me" data-ga-category="related-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/numerical-optimization/">数値最適化のインタラクティブ・チュートリアル</a>
+                      </h3>
+                      <span>2017.02.16</span>
+                      <figure>
+                        <a href="http://postd.cc/numerical-optimization/" class="track-me" data-ga-category="related-posts" data-ga-action="click - img" data-ga-label="http://postd.cc/numerical-optimization/">
+                          <img src="http://postd.cc/wp/wp-content/uploads/2017/02/numerical-optimization5-150x150.png" alt="" class="transition">
+                        </a>
+                      </figure>
+
+
+                      <div class="block-meta-social">
+                        <a href="http://b.hatena.ne.jp/add?mode=confirm&amp;url=http%3A%2F%2Fpostd.cc%2Fnumerical-optimization%2F&amp;title=%E6%95%B0%E5%80%A4%E6%9C%80%E9%81%A9%E5%8C%96%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%A9%E3%82%AF%E3%83%86%E3%82%A3%E3%83%96%E3%83%BB%E3%83%81%E3%83%A5%E3%83%BC%E3%83%88%E3%83%AA%E3%82%A2%E3%83%AB+%7C+POSTD" title="このエントリーをはてなブックマークに追加" onclick="window.open(this.href,'hatena', 'width=500, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-hatena-square"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share.php?u=http%3A%2F%2Fpostd.cc%2Fnumerical-optimization%2F" onclick="window.open(this.href,'facebook', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-facebook-square"></i>
+                        </a>
+                        <a href="https://twitter.com/share?url=http%3A%2F%2Fpostd.cc%2Fnumerical-optimization%2F&amp;text=%E6%95%B0%E5%80%A4%E6%9C%80%E9%81%A9%E5%8C%96%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%A9%E3%82%AF%E3%83%86%E3%82%A3%E3%83%96%E3%83%BB%E3%83%81%E3%83%A5%E3%83%BC%E3%83%88%E3%83%AA%E3%82%A2%E3%83%AB+%7C+POSTD&amp;via=POSTDcc" onclick="window.open(this.href,'twitter', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-twitter-square"></i>
+                        </a>
+                        <a href="https://plus.google.com/share?url=http%3A%2F%2Fpostd.cc%2Fnumerical-optimization%2F" onclick="window.open(this.href,'googleplus', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-google-plus"></i>
+                        </a>
+                      </div>
+
+                    </section>
+
+
+                    <section class="single-related-posts-post">
+                      <h3>
+                        <a href="http://postd.cc/the-inner-workings-of-virtual-dom/" class="track-me" data-ga-category="related-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/the-inner-workings-of-virtual-dom/">仮想DOMの内部の動き</a>
+                      </h3>
+                      <span>2017.02.09</span>
+                      <figure>
+                        <a href="http://postd.cc/the-inner-workings-of-virtual-dom/" class="track-me" data-ga-category="related-posts" data-ga-action="click - img" data-ga-label="http://postd.cc/the-inner-workings-of-virtual-dom/">
+                          <img src="http://postd.cc/wp/wp-content/uploads/2017/02/1-TF0TZszVwpYc1Pba7Dbk7Q-150x150.png" alt="" class="transition">
+                        </a>
+                      </figure>
+
+
+                      <div class="block-meta-social">
+                        <a href="http://b.hatena.ne.jp/add?mode=confirm&amp;url=http%3A%2F%2Fpostd.cc%2Fthe-inner-workings-of-virtual-dom%2F&amp;title=%E4%BB%AE%E6%83%B3DOM%E3%81%AE%E5%86%85%E9%83%A8%E3%81%AE%E5%8B%95%E3%81%8D+%7C+POSTD" title="このエントリーをはてなブックマークに追加" onclick="window.open(this.href,'hatena', 'width=500, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-hatena-square"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share.php?u=http%3A%2F%2Fpostd.cc%2Fthe-inner-workings-of-virtual-dom%2F" onclick="window.open(this.href,'facebook', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-facebook-square"></i>
+                        </a>
+                        <a href="https://twitter.com/share?url=http%3A%2F%2Fpostd.cc%2Fthe-inner-workings-of-virtual-dom%2F&amp;text=%E4%BB%AE%E6%83%B3DOM%E3%81%AE%E5%86%85%E9%83%A8%E3%81%AE%E5%8B%95%E3%81%8D+%7C+POSTD&amp;via=POSTDcc" onclick="window.open(this.href,'twitter', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-twitter-square"></i>
+                        </a>
+                        <a href="https://plus.google.com/share?url=http%3A%2F%2Fpostd.cc%2Fthe-inner-workings-of-virtual-dom%2F" onclick="window.open(this.href,'googleplus', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-google-plus"></i>
+                        </a>
+                      </div>
+
+                    </section>
+
+
+                    <section class="single-related-posts-post">
+                      <h3>
+                        <a href="http://postd.cc/making-less-dart-faster/" class="track-me" data-ga-category="related-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/making-less-dart-faster/">部分文字列とRegExpの領域の冒険</a>
+                      </h3>
+                      <span>2017.01.30</span>
+                      <figure>
+                        <a href="http://postd.cc/making-less-dart-faster/" class="track-me" data-ga-category="related-posts" data-ga-action="click - img" data-ga-label="http://postd.cc/making-less-dart-faster/">
+                          <img src="http://postd.cc/wp/wp-content/uploads/2017/01/0caaf3b36b9f09c0b63ed5337a4b469d-150x150.png" alt="" class="transition">
+                        </a>
+                      </figure>
+
+
+                      <div class="block-meta-social">
+                        <a href="http://b.hatena.ne.jp/add?mode=confirm&amp;url=http%3A%2F%2Fpostd.cc%2Fmaking-less-dart-faster%2F&amp;title=%E9%83%A8%E5%88%86%E6%96%87%E5%AD%97%E5%88%97%E3%81%A8RegExp%E3%81%AE%E9%A0%98%E5%9F%9F%E3%81%AE%E5%86%92%E9%99%BA+%7C+POSTD" title="このエントリーをはてなブックマークに追加" onclick="window.open(this.href,'hatena', 'width=500, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-hatena-square"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share.php?u=http%3A%2F%2Fpostd.cc%2Fmaking-less-dart-faster%2F" onclick="window.open(this.href,'facebook', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-facebook-square"></i>
+                        </a>
+                        <a href="https://twitter.com/share?url=http%3A%2F%2Fpostd.cc%2Fmaking-less-dart-faster%2F&amp;text=%E9%83%A8%E5%88%86%E6%96%87%E5%AD%97%E5%88%97%E3%81%A8RegExp%E3%81%AE%E9%A0%98%E5%9F%9F%E3%81%AE%E5%86%92%E9%99%BA+%7C+POSTD&amp;via=POSTDcc" onclick="window.open(this.href,'twitter', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-twitter-square"></i>
+                        </a>
+                        <a href="https://plus.google.com/share?url=http%3A%2F%2Fpostd.cc%2Fmaking-less-dart-faster%2F" onclick="window.open(this.href,'googleplus', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-google-plus"></i>
+                        </a>
+                      </div>
+
+                    </section>
+
+
+                    <section class="single-related-posts-post">
+                      <h3>
+                        <a href="http://postd.cc/why-we-chose-vuejs-over-react/" class="track-me" data-ga-category="related-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/why-we-chose-vuejs-over-react/">私たちはなぜReactではなくVue.jsを選んだのか</a>
+                      </h3>
+                      <span>2016.12.29</span>
+                      <figure>
+                        <a href="http://postd.cc/why-we-chose-vuejs-over-react/" class="track-me" data-ga-category="related-posts" data-ga-action="click - img" data-ga-label="http://postd.cc/why-we-chose-vuejs-over-react/">
+                          <img src="http://postd.cc/wp/wp-content/uploads/2016/12/why-we-chose-vuejs-over-react-282-compressor-150x150-1.png" alt="" class="transition">
+                        </a>
+                      </figure>
+
+
+                      <div class="block-meta-social">
+                        <a href="http://b.hatena.ne.jp/add?mode=confirm&amp;url=http%3A%2F%2Fpostd.cc%2Fwhy-we-chose-vuejs-over-react%2F&amp;title=%E7%A7%81%E3%81%9F%E3%81%A1%E3%81%AF%E3%81%AA%E3%81%9CReact%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8FVue.js%E3%82%92%E9%81%B8%E3%82%93%E3%81%A0%E3%81%AE%E3%81%8B+%7C+POSTD" title="このエントリーをはてなブックマークに追加" onclick="window.open(this.href,'hatena', 'width=500, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-hatena-square"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share.php?u=http%3A%2F%2Fpostd.cc%2Fwhy-we-chose-vuejs-over-react%2F" onclick="window.open(this.href,'facebook', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-facebook-square"></i>
+                        </a>
+                        <a href="https://twitter.com/share?url=http%3A%2F%2Fpostd.cc%2Fwhy-we-chose-vuejs-over-react%2F&amp;text=%E7%A7%81%E3%81%9F%E3%81%A1%E3%81%AF%E3%81%AA%E3%81%9CReact%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8FVue.js%E3%82%92%E9%81%B8%E3%82%93%E3%81%A0%E3%81%AE%E3%81%8B+%7C+POSTD&amp;via=POSTDcc" onclick="window.open(this.href,'twitter', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-twitter-square"></i>
+                        </a>
+                        <a href="https://plus.google.com/share?url=http%3A%2F%2Fpostd.cc%2Fwhy-we-chose-vuejs-over-react%2F" onclick="window.open(this.href,'googleplus', 'width=550, height=450, personalbar=0, toolbar=0, scrollbars=1, resizable=1'); return false;">
+                          <i class="fa fa-google-plus"></i>
+                        </a>
+                      </div>
+
+                    </section>
+
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!-- //関連した投稿 -->
+
+
+            <div class="single-paging">
+              <div class="block-text">
+                <section class="single-paging-prev">
+                  <h3 class="block-lineTitle"><span><em>Next Post</em></span></h3>
+                  <a href="http://postd.cc/tools-of-blind-programmer/" rel="next">視覚障碍者プログラマのためのツール</a>										</section>
+                <section class="single-paging-next">
+                  <h3 class="block-lineTitle"><span><em>Previous Post</em></span></h3>
+                  <a href="http://postd.cc/secure-web-deployment-with-lets-encrypt-and-nginx/" rel="prev">Let’s EncryptとNginx : セキュアなWebデプロイメントの現状</a>										</section>
+              </div>
+            </div>
+
+
+          </div><!-- #content-wrap -->
+
+        </article><!-- #content .site-content -->
+      </div><!-- #primary .content-area -->
+
+
+      <div id="secondary" class="widget-area" role="complementary">
+        <aside class="widget">
+          <ul>
+            <li>
+              <a href="/request" class="request-button track-me" data-ga-category="request-form" data-ga-action="click - button" data-ga-label="sidebar" target="_blank">翻訳リクエストを送る</a>
+            </li>
+            <li>
+              翻訳フィードバック
+              <ul>
+                <li><a href="mailto:hello+feedback@postd.cc?subject=%5B%E7%BF%BB%E8%A8%B3%E3%83%95%E3%82%A3%E3%83%BC%E3%83%89%E3%83%90%E3%83%83%E3%82%AF%5D%20TypeScript%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E6%96%B9%E3%81%8C%E3%81%84%E3%81%84%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%AF%EF%BC%9F" class="feedback-button track-me" data-ga-category="feedback-form" data-ga-action="click - button" data-ga-label="sidebar">メール</a></li>
+                <li><a href="https://github.com/postdcc/feedback/issues/new?title=%5B%E7%BF%BB%E8%A8%B3%E3%83%95%E3%82%A3%E3%83%BC%E3%83%89%E3%83%90%E3%83%83%E3%82%AF%5D%20TypeScript%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E6%96%B9%E3%81%8C%E3%81%84%E3%81%84%E3%82%B1%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%AF%EF%BC%9F" class="feedback-button track-me ext-link" data-ga-category="feedback-form" data-ga-action="click - button" data-ga-label="sidebar" rel="nofollow" title="">GitHub Issue</a></li>
+              </ul>
+
+            </li>
+          </ul>
+        </aside>
+
+
+
+        <!-- 最近の投稿 -->
+        <aside id="recent-posts-2" class="widget widget_recent_entries">
+          <h3 class="widget-title">最近の投稿</h3>
+          <ul>
+            <li><a href="http://postd.cc/how-we-caught-the-circle-line-rogue-train-with-data/" class="track-me" data-ga-category="recent-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/how-we-caught-the-circle-line-rogue-train-with-data/">私たちはいかにして環状線で"悪さをする列車"を捕まえたか</a></li>
+            <li><a href="http://postd.cc/bezier-curves/" class="track-me" data-ga-category="recent-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/bezier-curves/">一から学ぶベジェ曲線</a></li>
+            <li><a href="http://postd.cc/how_do_type_classes_differ_from_interfaces/" class="track-me" data-ga-category="recent-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/how_do_type_classes_differ_from_interfaces/">型クラスはインターフェースとどう違うのか</a></li>
+            <li><a href="http://postd.cc/how-quickly-can-you-remove-spaces-from-a-string/" class="track-me" data-ga-category="recent-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/how-quickly-can-you-remove-spaces-from-a-string/">どれだけ速く文字列からスペースを削除できるのか</a></li>
+            <li><a href="http://postd.cc/how-to-find-node-js-performance-optimization-killers/" class="track-me" data-ga-category="recent-posts" data-ga-action="click - txt" data-ga-label="http://postd.cc/how-to-find-node-js-performance-optimization-killers/">Node.jsのパフォーマンス最適化を阻むものの見つけ方</a></li>
+          </ul>
+        </aside>
+        <!-- //最近の投稿 -->
+
+
+        <!-- タグ -->
+        <aside id="tag_cloud-2" class="widget widget_tag_cloud">
+          <h3 class="widget-title">タグ</h3>
+          <div class="tagcloud">
+            <a href="/tag/ab-testing/" data-tag-count="5">ABテスト</a>
+            <a href="/tag/angularjs/" data-tag-count="11">AngularJS</a>
+            <a href="/tag/aws/" data-tag-count="8">AWS</a>
+            <a href="/tag/cplusplus/" data-tag-count="17">C++</a>
+            <a href="/tag/clojure/" data-tag-count="7">Clojure</a>
+            <a href="/tag/css/" data-tag-count="19">CSS</a>
+            <a href="/tag/clang/" data-tag-count="13">C言語</a>
+            <a href="/tag/docker/" data-tag-count="16">Docker</a>
+            <a href="/tag/dlang/" data-tag-count="3">D言語</a>
+            <a href="/tag/edtech/" data-tag-count="4">EdTech</a>
+            <a href="/tag/elm/" data-tag-count="4">Elm</a>
+            <a href="/tag/erlang/" data-tag-count="3">Erlang</a>
+            <a href="/tag/git/" data-tag-count="12">Git</a>
+            <a href="/tag/github/" data-tag-count="7">Github</a>
+            <a href="/tag/google/" data-tag-count="10">Google</a>
+            <a href="/tag/golang/" data-tag-count="19">Go言語</a>
+            <a href="/tag/haskell/" data-tag-count="19">Haskell</a>
+            <a href="/tag/ios/" data-tag-count="3">iOS</a>
+            <a href="/tag/java/" data-tag-count="12">Java</a>
+            <a href="/tag/javascript/" data-tag-count="101">JavaScript</a>
+            <a href="/tag/jquery/" data-tag-count="4">jQuery</a>
+            <a href="/tag/lisp/" data-tag-count="5">Lisp</a>
+            <a href="/tag/mysql/" data-tag-count="3">MySQL</a>
+            <a href="/tag/nodejs/" data-tag-count="24">NodeJS</a>
+            <a href="/tag/nosql/" data-tag-count="3">NoSQL</a>
+            <a href="/tag/objective-c/" data-tag-count="3">Objective-C</a>
+            <a href="/tag/ocaml/" data-tag-count="6">OCaml</a>
+            <a href="/tag/php/" data-tag-count="9">PHP</a>
+            <a href="/tag/podcast/" data-tag-count="4">podcast</a>
+            <a href="/tag/postgresql/" data-tag-count="5">PostgreSQL</a>
+            <a href="/tag/python/" data-tag-count="54">Python</a>
+            <a href="/tag/react/" data-tag-count="22">React</a>
+            <a href="/tag/ruby/" data-tag-count="23">Ruby</a>
+            <a href="/tag/rust/" data-tag-count="6">Rust</a>
+            <a href="/tag/scala/" data-tag-count="6">Scala</a>
+            <a href="/tag/seo/" data-tag-count="3">SEO</a>
+            <a href="/tag/ssl/" data-tag-count="7">SSL</a>
+            <a href="/tag/stack-overflow/" data-tag-count="3">Stack Overflow</a>
+            <a href="/tag/swift/" data-tag-count="3">Swift</a>
+            <a href="/tag/tdd/" data-tag-count="12">TDD</a>
+            <a href="/tag/typescript/" data-tag-count="5">TypeScript</a>
+            <a href="/tag/ui-design/" data-tag-count="37">UIデザイン</a>
+            <a href="/tag/linux/" data-tag-count="20">Unix/Linux</a>
+            <a href="/tag/web-server/" data-tag-count="25">webサーバ</a>
+            <a href="/tag/y-combinator/" data-tag-count="8">Y Combinator</a>
+            <a href="/tag/agile/" data-tag-count="7">アジャイル</a>
+            <a href="/tag/algorithm/" data-tag-count="58">アルゴリズム</a>
+            <a href="/tag/ecosystem/" data-tag-count="5">エコシステム</a>
+            <a href="/tag/engineer-employment/" data-tag-count="13">エンジニア採用</a>
+            <a href="/tag/open-source/" data-tag-count="11">オープンソース</a>
+            <a href="/tag/career-path/" data-tag-count="5">キャリアパス</a>
+            <a href="/tag/growthhack/" data-tag-count="11">グロースハック</a>
+            <a href="/tag/game-development/" data-tag-count="11">ゲーム開発</a>
+            <a href="/tag/code-review/" data-tag-count="4">コードレビュー</a>
+            <a href="/tag/security/" data-tag-count="31">セキュリティ</a>
+            <a href="/tag/software-architecture/" data-tag-count="19">ソフトウェアアーキテクチャ</a>
+            <a href="/tag/data-science/" data-tag-count="27">データサイエンス</a>
+            <a href="/tag/database/" data-tag-count="11">データベース</a>
+            <a href="/tag/debugging/" data-tag-count="5">デバッグ</a>
+            <a href="/tag/joke/" data-tag-count="3">ネタ</a>
+            <a href="/tag/hackathon/" data-tag-count="3">ハッカソン</a>
+            <a href="/tag/performance/" data-tag-count="45">パフォーマンス</a>
+            <a href="/tag/business-model/" data-tag-count="14">ビジネスモデル</a>
+            <a href="/tag/visualization/" data-tag-count="5">ビジュアライゼーション</a>
+            <a href="/tag/visual-design/" data-tag-count="22">ビジュアルデザイン</a>
+            <a href="/tag/freelancer/" data-tag-count="3">フリーランス</a>
+            <a href="/tag/framework/" data-tag-count="21">フレームワーク</a>
+            <a href="/tag/programming-language-comparison/" data-tag-count="13">プログラミング言語比較</a>
+            <a href="/tag/project-management/" data-tag-count="3">プロジェクト管理</a>
+            <a href="/tag/best-practices/" data-tag-count="30">ベストプラクティス</a>
+            <a href="/tag/microservice/" data-tag-count="6">マイクロサービス</a>
+            <a href="/tag/summary/" data-tag-count="38">まとめ</a>
+            <a href="/tag/refactoring/" data-tag-count="26">リファクタリング</a>
+            <a href="/tag/for-beginners/" data-tag-count="18">入門</a>
+            <a href="/tag/type-system/" data-tag-count="5">型システム</a>
+            <a href="/tag/machine-learning/" data-tag-count="25">機械学習</a>
+            <a href="/tag/productivity/" data-tag-count="30">生産性</a>
+            <a href="/tag/organization/" data-tag-count="3">経営組織論</a>
+            <a href="/tag/statistic/" data-tag-count="5">統計</a>
+            <a href="/tag/ideation/" data-tag-count="4">起業アイデア</a>
+            <a href="/tag/entrepreneur/" data-tag-count="4">起業家</a>
+            <a href="/tag/functional-programming/" data-tag-count="16">関数型プログラミング</a>
+            <a href="/tag/customer-development/" data-tag-count="3">顧客開発</a>
+
+            <div class=" pt-right-word-div" onmouseup="clickWord({ self : this});">
+              <a href="#" class="portfolio-link pt-word-div" >
+                <span id="pt-word-text-0" class="pt-word-text img-responsive"></span>
+              </a>
+            </div>
+            <div class=" pt-right-word-div" onmouseup="clickWord({ self : this});">
+              <a href="#" class="portfolio-link pt-word-div" >
+                <span id="pt-word-text-1" class="pt-word-text img-responsive"></span>
+              </a>
+            </div>
+            <div class=" pt-right-word-div" onmouseup="clickWord({ self : this});">
+              <a href="#" class="portfolio-link pt-word-div" >
+                <span id="pt-word-text-2" class="pt-word-text img-responsive"></span>
+              </a>
+            </div>
+            <div class=" pt-right-word-div" onmouseup="clickWord({ self : this});">
+              <a href="#" class="portfolio-link pt-word-div" >
+                <span id="pt-word-text-3" class="pt-word-text img-responsive"></span>
+              </a>
+            </div>
+
+            <div class="pt-left-word-div" >
+              <a href="#" class="portfolio-link "  data-toggle="modal">
+                <span id="pt-word-text-quiz-answer" class="">사랑</span>
+                <span id="pt-word-text-quiz" class="pt-word-text img-responsive">愛</span>
+              </a>
+            </div>
+            <div class="countDiv">
+              <a href="#" class="portfolio-link "  data-toggle="modal">
+                <span class="pt-word-book-index"> </span> / <span class="pt-word-book-total"></span>
+              </a>
+            </div>
+          </div>
+        </aside>
+        <!-- //タグ -->
+
+
+        <!-- 月別アーカイブ -->
+        <aside id="archives-2" class="widget widget_archive">
+          <h3 class="widget-title">アーカイブ</h3>
+          <ul>
+            <li><a href="/2017/02/">2017年02月</a></li>
+            <li><a href="/2017/01/">2017年01月</a></li>
+            <li><a href="/2016/12/">2016年12月</a></li>
+            <li><a href="/2016/11/">2016年11月</a></li>
+            <li><a href="/2016/10/">2016年10月</a></li>
+            <li><a href="/2016/09/">2016年09月</a></li>
+            <li><a href="/2016/08/">2016年08月</a></li>
+            <li><a href="/2016/07/">2016年07月</a></li>
+            <li><a href="/2016/06/">2016年06月</a></li>
+            <li><a href="/2016/05/">2016年05月</a></li>
+            <li><a href="/2016/04/">2016年04月</a></li>
+            <li><a href="/2016/03/">2016年03月</a></li>
+            <li><a href="/2016/02/">2016年02月</a></li>
+            <li><a href="/2016/01/">2016年01月</a></li>
+            <li><a href="/2015/12/">2015年12月</a></li>
+            <li><a href="/2015/11/">2015年11月</a></li>
+            <li><a href="/2015/10/">2015年10月</a></li>
+            <li><a href="/2015/09/">2015年09月</a></li>
+            <li><a href="/2015/08/">2015年08月</a></li>
+            <li><a href="/2015/07/">2015年07月</a></li>
+            <li><a href="/2015/06/">2015年06月</a></li>
+            <li><a href="/2015/05/">2015年05月</a></li>
+            <li><a href="/2015/04/">2015年04月</a></li>
+            <li><a href="/2015/03/">2015年03月</a></li>
+            <li><a href="/2015/02/">2015年02月</a></li>
+            <li><a href="/2015/01/">2015年01月</a></li>
+            <li><a href="/2014/12/">2014年12月</a></li>
+            <li><a href="/2014/11/">2014年11月</a></li>
+            <li><a href="/2014/10/">2014年10月</a></li>
+            <li><a href="/2014/09/">2014年09月</a></li>
+            <li><a href="/2014/08/">2014年08月</a></li>
+            <li><a href="/2014/07/">2014年07月</a></li>
+            <li><a href="/2014/06/">2014年06月</a></li>
+          </ul>
+        </aside>
+        <!-- //月別アーカイブ -->
+
+
+        <aside class="widget widget-subscribe">
+          <h3 class="widget-title">フォロー</h3>
+          <ul>
+            <li>
+              <a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fpostd.cc%2Ffeed%2F" target="blank" class="track-me" data-ga-category="social" data-ga-action="click" data-ga-label="feedly"><img id="feedlyFollow" src="http://s3.feedly.com/img/follows/feedly-follow-rectangle-volume-medium_2x.png" alt="follow us in feedly" width="71" height="28"></a>
+            </li>
+            <li>
+              <iframe id="twitter-widget-1" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-follow-button twitter-follow-button-rendered" title="Twitter Follow Button" src="http://platform.twitter.com/widgets/follow_button.a0ec3119d8db2bc5422f2144c89ad7a9.ja.html#dnt=false&amp;id=twitter-widget-1&amp;lang=ja&amp;screen_name=POSTDcc&amp;show_count=false&amp;show_screen_name=true&amp;size=m&amp;time=1487995645900" style="position: static; visibility: visible; width: 169px; height: 20px;" data-screen-name="POSTDcc"></iframe>
+            </li>
+            <li>
+              <div class="fb-like fb_iframe_widget" data-href="https://www.facebook.com/postdcc" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=1442963845953594&amp;container_width=222&amp;href=https%3A%2F%2Fwww.facebook.com%2Fpostdcc&amp;layout=button_count&amp;locale=ja_JP&amp;sdk=joey&amp;share=true&amp;show_faces=false"><span style="vertical-align: bottom; width: 150px; height: 20px;"><iframe name="f143d0b3861b928" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="https://www.facebook.com/v2.0/plugins/like.php?action=like&amp;app_id=1442963845953594&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2Fao6eUeuGXQq.js%3Fversion%3D42%23cb%3Df3da361d3807c98%26domain%3Dpostd.cc%26origin%3Dhttp%253A%252F%252Fpostd.cc%252Ff22a97e197f4cd%26relation%3Dparent.parent&amp;container_width=222&amp;href=https%3A%2F%2Fwww.facebook.com%2Fpostdcc&amp;layout=button_count&amp;locale=ja_JP&amp;sdk=joey&amp;share=true&amp;show_faces=false" style="border: none; visibility: visible; width: 150px; height: 20px;" class=""></iframe></span></div>
+            </li>
+          </ul>
+        </aside>
+
+        <aside class="fb-like">
+          <h3 class="assistive-text">Facebook</h3>
+          <div class="fb-like-box clearfix fb_iframe_widget" data-href="https://www.facebook.com/postdcc" data-width="100%" data-height="400px" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=1442963845953594&amp;color_scheme=light&amp;container_width=290&amp;header=true&amp;height=400&amp;href=https%3A%2F%2Fwww.facebook.com%2Fpostdcc&amp;locale=ja_JP&amp;sdk=joey&amp;show_border=false&amp;show_faces=true&amp;stream=false&amp;width=100%25"><span style="vertical-align: top; width: 0px; height: 0px; overflow: hidden;"><iframe name="f2392180c6b9c98" height="400px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like_box Facebook Social Plugin" src="https://www.facebook.com/v2.0/plugins/like_box.php?app_id=1442963845953594&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2Fao6eUeuGXQq.js%3Fversion%3D42%23cb%3Df31d9d0b8d0a3a%26domain%3Dpostd.cc%26origin%3Dhttp%253A%252F%252Fpostd.cc%252Ff22a97e197f4cd%26relation%3Dparent.parent&amp;color_scheme=light&amp;container_width=290&amp;header=true&amp;height=400&amp;href=https%3A%2F%2Fwww.facebook.com%2Fpostdcc&amp;locale=ja_JP&amp;sdk=joey&amp;show_border=false&amp;show_faces=true&amp;stream=false&amp;width=100%25" style="border: none; visibility: visible; width: 0px; height: 0px;"></iframe></span></div>
+        </aside>
+
+      </div><!-- #secondary .widget-area -->
+
+    </div><!-- #main .site-main -->
+
+
+
+  </div>
+
+<div id="pt-server-side-data" style="display:none;">
+  <%= wordObj %>
+  <%
+  for(var i=0;i< wordObj.length ; i++){
+    if(i != wordObj.length -1){
+  %>
+      <div class="number"> <%=wordObj[i].num %>;;</div>
+      <div class="word"> <%=wordObj[i].word %>;;</div>
+      <div class="mean2"> <%=wordObj[i].mean %>;;</div> <!-- 바꿈 -->
+      <div class="mean"> <%=wordObj[i].mean2 %>;;</div>
+      <div class="date"> <%=wordObj[i].addDate %>;;</div>
+  <%
+    }else{
+    %>
+      <div class="number"> <%=wordObj[i].num %></div>
+      <div class="word"> <%=wordObj[i].word %></div>
+      <div class="mean2"> <%=wordObj[i].mean %></div> <!-- 바꿈 -->
+      <div class="mean"> <%=wordObj[i].mean2 %></div>
+      <div class="date"> <%=wordObj[i].addDate %></div>
+  <%
+    }
+  }
+  %>
+<!-- jQuery -->
+<script src="/javascripts/jquery.js"></script>
+<script src="/javascripts/bootstrap.js"></script>
+<script src="/javascripts/userJavascript2.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92186889-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+
+</html>
