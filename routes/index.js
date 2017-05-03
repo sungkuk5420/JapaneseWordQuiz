@@ -74,11 +74,11 @@ router.use('/api', function (req, res) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  wordDB.seletTable2({},res);
+  wordDB.seletTable({},res);
 });
 
 router.get('/index', function(req, res, next) {
-  wordDB.seletTable({},res);
+  wordDB.seletTable2({},res);
 });
 
 router.get('/word', function (req, res) {
