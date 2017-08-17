@@ -386,8 +386,8 @@ function searchWordApi(wordText){
             request.setRequestHeader("content-type", 'text/javascript');
         },
         data : {
-            from : 'kor',
-            dest : 'jpn',
+            from : 'jpn',
+            dest : 'kor',
             format : 'json',
             pretty : 'true',
             phrase : data.query
