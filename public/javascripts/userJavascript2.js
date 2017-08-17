@@ -53,8 +53,9 @@ $(document).ready(function (aa,bb) {
                     break;
             }
         }else{
+            console.log(e.keyCode);
             switch(e.keyCode){
-                case 192:
+                case 53:
                     if(isMeanShowFlag == false){
                         wordTextHide($('.pt-left-word-div'));
                         isMeanShowFlag = true;
@@ -72,7 +73,7 @@ $(document).ready(function (aa,bb) {
                         isMeanShowFlag = false;
                     }
                     break;
-                case 109:
+                case 17:
                     if(!$('.levelChangeDiv').hasClass('show')){
                         $('.levelChangeDiv').addClass('show');
                     }else{
@@ -255,7 +256,7 @@ function wordShuffleChange(){
     quizWordShuffleChange();
     isWordAnswerFail = false;
     //var quizBackgroundColor = $(".pt-left-word-div").css("background-color");
-    var quizBackgroundColor = '#777';
+    var quizBackgroundColor = '#048ec6';
     $('.pt-right-word-div').find('.pt-word-text').css({
         color : quizBackgroundColor
     });
@@ -332,16 +333,16 @@ function quizWordShuffleChange(){
     var height = $("#pt-word-text-quiz-answer").height()/2;
 
 
-    $("#pt-word-text-quiz").css({
-        left: "calc(50% - "+ quizWidth +"px)",
-        top:"calc(50% - "+ quizHeight +"px)"
-    });
-
-    $(".pt-left-word-div #pt-word-text-quiz-answer").css({
-        left: "calc(50% - "+ width +"px)",
-        top:"calc(50% - "+ height +"px)",
-        position: "absolute"
-    });
+    // $("#pt-word-text-quiz").css({
+    //     left: "calc(50% - "+ quizWidth +"px)",
+    //     top:"calc(50% - "+ quizHeight +"px)"
+    // });
+    //
+    // $(".pt-left-word-div #pt-word-text-quiz-answer").css({
+    //     left: "calc(50% - "+ width +"px)",
+    //     top:"calc(50% - "+ height +"px)",
+    //     position: "absolute"
+    // });
 }
 
 function searchWordApi(wordText){
