@@ -1,7 +1,7 @@
 //var socket = io.connect('http://localhost:9000');
 //var apiUrl = 'http://localhost:9000/index';
 var socket = io.connect('http://ec2-52-68-168-194.ap-northeast-1.compute.amazonaws.com:9000');
-var apiUrl = 'http://ec2-52-68-168-194.ap-northeast-1.compute.amazonaws.com:9000/index';
+var apiUrl = 'http://ec2-52-68-168-194.ap-northeast-1.compute.amazonaws.com:9000';
 
 var wordArr = new Array();
 var meanArr = new Array();
