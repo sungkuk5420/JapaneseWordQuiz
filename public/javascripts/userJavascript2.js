@@ -109,8 +109,8 @@ $(document).ready(function (aa,bb) {
 
 	});
     numberObj = ($('#pt-server-side-data').find('.number').text().replace(/ /gi,'').split(';;'));
-    wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
-    meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
+    wordArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
+    meanArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
     meanArrObj2 = ($('#pt-server-side-data').find('.mean2').text().replace(/ /gi,'').split(';;'));
     meanArrDate = ($('#pt-server-side-data').find('.date').text().replace(/ /gi,'').split(';;'));
 
