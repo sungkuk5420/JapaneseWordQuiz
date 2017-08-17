@@ -151,11 +151,13 @@ function wordTextShow(thisObj){
 function levelupWord(){
     var quizAnswer = $("#pt-word-text-quiz-answer").text().replace(/ /gi,'').substr(0,$("#pt-word-text-quiz-answer").text().replace(/ /gi,'').indexOf('('));
     changeWordLevelUp(quizAnswer);
+    wordShuffleChange();
 }
 
 function leveldownWord(){
     var quizAnswer = $("#pt-word-text-quiz-answer").text().replace(/ /gi,'').substr(0,$("#pt-word-text-quiz-answer").text().replace(/ /gi,'').indexOf('('));
     changeWordLevelDown(quizAnswer);
+    wordShuffleChange();
 }
 
 function clickWord(data){
