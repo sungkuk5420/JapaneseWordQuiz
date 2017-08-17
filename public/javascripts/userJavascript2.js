@@ -104,6 +104,12 @@ $(document).ready(function (aa,bb) {
                 case 100:
                     $('#pt-word-text-3').closest('.pt-right-word-div')[0].onmouseup();
                     break;
+                case 90:
+                    levelupWord();
+                    break;
+                case 88:
+                    leveldownWord();
+                    break;
             }
         }
 
@@ -140,6 +146,16 @@ function wordTextHide(thisObj){
 function wordTextShow(thisObj){
     $(thisObj).parent().find('#pt-word-text-quiz-answer').hide();
     $(thisObj).parent().find('#pt-word-text-quiz').show();
+}
+
+function levelupWord(){
+    var quizAnswer = $("#pt-word-text-quiz-answer").text().replace(/ /gi,'').substr(0,$("#pt-word-text-quiz-answer").text().replace(/ /gi,'').indexOf('('));
+    changeWordLevelUp(quizAnswer);
+}
+
+function leveldownWord(){
+    var quizAnswer = $("#pt-word-text-quiz-answer").text().replace(/ /gi,'').substr(0,$("#pt-word-text-quiz-answer").text().replace(/ /gi,'').indexOf('('));
+    changeWordLevelDown(quizAnswer);
 }
 
 function clickWord(data){
