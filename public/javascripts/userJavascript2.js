@@ -639,8 +639,8 @@ function showLevelWordView(level){
         meanArrObj2 = [];
         for(var i= 0, len = result.length ; i <len ; i++){
             numberObj.push(result[i].num);
-            wordArrObj.push(result[i].mean);
-            meanArrObj.push(result[i].word);
+            wordArrObj.push(result[i].word);
+            meanArrObj.push(result[i].mean);
             meanArrObj2.push(result[i].mean2);
         }
         for(var i= 0, len = wordArrObj.length ; i <len ; i++){
