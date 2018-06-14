@@ -104,13 +104,19 @@ $(document).ready(function (aa,bb) {
                 case 100:
                     $('#pt-word-text-3').closest('.pt-right-word-div')[0].onmouseup();
                     break;
+                case 90:
+                    levelupWord();
+                    break;
+                case 88:
+                    leveldownWord();
+                    break;
             }
         }
 
 	});
     numberObj = ($('#pt-server-side-data').find('.number').text().replace(/ /gi,'').split(';;'));
-    wordArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
-    meanArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
+    wordArrObj = ($('#pt-server-side-data').find('.mean').text().replace(/ /gi,'').split(';;'));
+    meanArrObj = ($('#pt-server-side-data').find('.word').text().replace(/ /gi,'').split(';;'));
     meanArrObj2 = ($('#pt-server-side-data').find('.mean2').text().replace(/ /gi,'').split(';;'));
     meanArrDate = ($('#pt-server-side-data').find('.date').text().replace(/ /gi,'').split(';;'));
 
@@ -140,6 +146,18 @@ function wordTextHide(thisObj){
 function wordTextShow(thisObj){
     $(thisObj).parent().find('#pt-word-text-quiz-answer').hide();
     $(thisObj).parent().find('#pt-word-text-quiz').show();
+}
+
+function levelupWord(){
+    var quizAnswer = $("#pt-word-text-quiz-answer").text().replace(/ /gi,'').substr(0,$("#pt-word-text-quiz-answer").text().replace(/ /gi,'').indexOf('('));
+    changeWordLevelUp(quizAnswer);
+    wordShuffleChange();
+}
+
+function leveldownWord(){
+    var quizAnswer = $("#pt-word-text-quiz-answer").text().replace(/ /gi,'').substr(0,$("#pt-word-text-quiz-answer").text().replace(/ /gi,'').indexOf('('));
+    changeWordLevelDown(quizAnswer);
+    wordShuffleChange();
 }
 
 function clickWord(data){
@@ -639,9 +657,9 @@ function showLevelWordView(level){
         meanArrObj2 = [];
         for(var i= 0, len = result.length ; i <len ; i++){
             numberObj.push(result[i].num);
-            wordArrObj.push(result[i].word);
-            meanArrObj.push(result[i].mean2); // 바꿈
-            meanArrObj2.push(result[i].mean);
+            wordArrObj.push(result[i].mean);
+            meanArrObj.push(result[i].word);
+            meanArrObj2.push(result[i].mean2);
         }
         for(var i= 0, len = wordArrObj.length ; i <len ; i++){
             if(wordArrObj[i].replace(/ /gi,'') != '' ){

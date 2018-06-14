@@ -1,5 +1,5 @@
-//var socket = io.connect('http://localhost:9000');
-//var apiUrl = 'http://localhost:9000/index';
+//var socket = io.connect('http://localhost:8000');
+//var apiUrl = 'http://localhost:8000/index';
 var socket = io.connect('http://13.125.125.39:8000');
 var apiUrl = 'http://13.125.125.39:8000/index';
 
