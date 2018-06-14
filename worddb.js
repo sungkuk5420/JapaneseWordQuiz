@@ -1,24 +1,22 @@
 
 var mysql = require('mysql')
-    , DATABASE = 'japenWord'
-    , word_TABLE = 'japenWord'
+    , DATABASE = 'japanWord'
+    , word_TABLE = 'japanWord'
     , NUM = 1
     , client = mysql.createConnection({
-    host: '52.34.253.229'
+    host: '13.125.125.39'
     , port: '3306'
-    , user: 'sungkuk.kim'
-    , password: '165112'
+    , user: 'user'
+    , password: 'password'
 });
 client.connect();
 client.query('USE ' + DATABASE);
-
-
 
 var mysqlUtil = module.exports = {
 
    seletTable : function (data, res) {
        console.log("gogo");
-       client.query('SELECT * FROM japenWord where level=1', function (error, result, fields) {
+       client.query('SELECT * FROM japanWord where level=1', function (error, result, fields) {
            if (error) {
                console.log(error);
                console.log('쿼리 문장에 오류가 있습니다.');
@@ -31,7 +29,7 @@ var mysqlUtil = module.exports = {
   },
     seletTable2 : function (data, res) {
         console.log("gogo");
-        client.query('SELECT * FROM japenWord where level=1', function (error, result, fields) {
+        client.query('SELECT * FROM japanWord where level=1', function (error, result, fields) {
             if (error) {
                 console.log(error);
                 console.log('쿼리 문장에 오류가 있습니다.');
@@ -47,7 +45,7 @@ var mysqlUtil = module.exports = {
         var wordText = data.word;
         var meanText = data.mean;
         var meanText2 = ' ';
-        client.query('SELECT * FROM japenWord', function (error, result, fields) {
+        client.query('SELECT * FROM japanWord', function (error, result, fields) {
             if (!error) {
                 //console.log(result);
                 var wordLen = result[result.length-1] == undefined ? 1 : result[result.length-1].num+1;
@@ -84,8 +82,8 @@ var mysqlUtil = module.exports = {
                 }
 
                 var date = getTimeStamp();
-                //console.log('insert into japenWord (word, mean, level, addDate) values( "{wordText}", "{meanText}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{date}','\''+date+'\''));
-                client.query('insert into japenWord (word, mean, level, addDate) values( "{wordText}", "{meanText}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{date}','\''+date+'\''), function (error, result, fields) {
+                //console.log('insert into japanWord (word, mean, level, addDate) values( "{wordText}", "{meanText}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{date}','\''+date+'\''));
+                client.query('insert into japanWord (word, mean, level, addDate) values( "{wordText}", "{meanText}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{date}','\''+date+'\''), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');
@@ -107,7 +105,7 @@ var mysqlUtil = module.exports = {
     deleteWord : function (data, res) {
         console.log(data);
         var thisTrNumber = data.number;
-        client.query('delete FROM japenWord where num={num}'.replace('{num}',thisTrNumber), function (error, result, fields) {
+        client.query('delete FROM japanWord where num={num}'.replace('{num}',thisTrNumber), function (error, result, fields) {
             if (!error) {
                 io.sockets.emit('deleteWord',{msg:'삭제완료', number : data.number});
                 res.end();
@@ -122,8 +120,8 @@ var mysqlUtil = module.exports = {
         var thisTrNumber = data.number;
         console.log(thisTrNumber);
         var mean = data.mean;
-        console.log("update japenWord set mean='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber));
-        client.query("update japenWord set mean='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber), function (error, result, fields) {
+        console.log("update japanWord set mean='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber));
+        client.query("update japanWord set mean='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber), function (error, result, fields) {
             if (error) {
                 console.log(error);
                 console.log('쿼리 문장에 오류가 있습니다.');
@@ -142,8 +140,8 @@ var mysqlUtil = module.exports = {
         var thisTrNumber = data.number;
         console.log(thisTrNumber);
         var mean = data.mean;
-        //console.log("update japenWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber));
-        client.query("update japenWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber), function (error, result, fields) {
+        //console.log("update japanWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber));
+        client.query("update japanWord set mean2='{mean}' where num='{num}'".replace('{mean}', mean).replace('{num}', thisTrNumber), function (error, result, fields) {
             if (error) {
                 console.log(error);
                 console.log('쿼리 문장에 오류가 있습니다.');
@@ -159,9 +157,9 @@ var mysqlUtil = module.exports = {
     } ,
     levelWordViews : function (data, res) {
         var selectLevel = data.level;
-        var queryText ='SELECT * FROM japenWord where level = {level}'.replace('{level}',selectLevel);
+        var queryText ='SELECT * FROM japanWord where level = {level}'.replace('{level}',selectLevel);
         if(selectLevel == 0){
-            queryText = 'SELECT * FROM japenWord ';
+            queryText = 'SELECT * FROM japanWord ';
         }
         client.query(queryText, function (error, result, fields) {
             if (error) {
@@ -178,14 +176,14 @@ var mysqlUtil = module.exports = {
     changeWordLevelUp : function (data, res) {
         var selectNumber = data.number;
         console.log(selectNumber);
-        console.log('SELECT * FROM japenWord where num = {number}'.replace('{number}',selectNumber));
-        client.query('SELECT * FROM japenWord where num = {number}'.replace('{number}',selectNumber), function (error, result, fields) {
+        console.log('SELECT * FROM japanWord where num = {number}'.replace('{number}',selectNumber));
+        client.query('SELECT * FROM japanWord where num = {number}'.replace('{number}',selectNumber), function (error, result, fields) {
             if (error) {
                 console.log(error);
                 console.log('쿼리 문장에 오류가 있습니다.');
             } else {
                 var resultData = JSON.parse(JSON.stringify(result))[0];
-                client.query("update japenWord set level='{level}' where num='{num}'".replace('{num}', selectNumber).replace('{level}', resultData.level+1), function (error, result, fields) {
+                client.query("update japanWord set level='{level}' where num='{num}'".replace('{num}', selectNumber).replace('{level}', resultData.level+1), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');
@@ -201,7 +199,7 @@ var mysqlUtil = module.exports = {
 
     changeWordLevelDown : function (data, res) {
         var selectNumber = data.number;
-        client.query("update japenWord set level='{level}' where num='{num}'".replace('{num}', selectNumber).replace('{level}', 1), function (error, result, fields) {
+        client.query("update japanWord set level='{level}' where num='{num}'".replace('{num}', selectNumber).replace('{level}', 1), function (error, result, fields) {
             if (error) {
                 console.log(error);
                 console.log('쿼리 문장에 오류가 있습니다.');
