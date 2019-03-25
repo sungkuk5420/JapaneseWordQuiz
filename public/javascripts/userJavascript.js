@@ -19,7 +19,6 @@ var isMeanShowFlag = false;
 wordObjArr = new Array();
 
 $(document).ready(function (aa,bb) {
-
 	$(document).keydown(function(e){
 		//console.log(e.keyCode);
 		switch(e.keyCode){
@@ -56,13 +55,13 @@ $(document).ready(function (aa,bb) {
             case 97:
 				$('#pt-word-text-0').closest('.pt-right-word-div')[0].onmouseup();
 			break;
-			case 98: 
+			case 98:
 				$('#pt-word-text-1').closest('.pt-right-word-div')[0].onmouseup();
 			break;
-			case 99: 
+			case 99:
 				$('#pt-word-text-2').closest('.pt-right-word-div')[0].onmouseup();
-			break;			
-			case 100: 
+			break;
+			case 100:
 				$('#pt-word-text-3').closest('.pt-right-word-div')[0].onmouseup();
 			break;
 		}
@@ -302,13 +301,14 @@ function quizWordShuffleChange(){
     });
 }
 
-function searchWordApi(wordText){
+function searchWordApi(parameterWordText){
+    console.log('search!!');
     $('.pt-word-add-form')[0].value = '';
     $('.pt-mean-add-form')[0].value = '';
     var $wordList =  $('.pt-word-table').find('.word');
     var isHaveWord = false;
     for(var i= 0,len = $wordList.length ; i < len ; i++){
-        if($wordList.eq(i).text().replace(/ /gi, '')==wordText.replace(/ /gi, '')){
+        if($wordList.eq(i).text().replace(/ /gi, '')==parameterWordText.replace(/ /gi, '')){
             isHaveWord = true;
         }
     }
@@ -316,8 +316,9 @@ function searchWordApi(wordText){
         $('.pt-word-add-form').focus();
         return false;
     }
+    console.log('ajax!!');
     var data = {
-        query : wordText //string
+        query : parameterWordText //string
     };
     $.ajax({
         type: "GET",
@@ -335,9 +336,10 @@ function searchWordApi(wordText){
         dataType:'json',
         url: "/api",
         success: function (res) {
-            var res = JSON.parse(res);
-            var meanArr = new Array();
             var wordText = res.phrase;
+            var meanArr = new Array();
+            var res = JSON.parse(res);
+            wordText = res.phrase;
             for(var i= 0,len = res.tuc.length; i<len ; i++){
                 if(res.tuc[i].phrase == undefined){
                     meanArr.push("");
@@ -363,6 +365,13 @@ function searchWordApi(wordText){
                     console.log('success');
                 }
             });
+        },
+        error : function( res ) {
+            console.log(res.parameterWordText);
+            if(res.responseText === 'error'){
+                var wordText = parameterWordText;
+                addWordApi(wordText,'');
+            }
         }
     });
 
