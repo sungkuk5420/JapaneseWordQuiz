@@ -1,21 +1,40 @@
 
-var mysql = require('mysql')
-    , DATABASE = 'heroku_8440cf98a79afed'
-    , word_TABLE = 'japanWord'
-    , NUM = 1
-    , client = mysql.createConnection({
-    host: 'us-cdbr-iron-east-03.cleardb.net'
-    , port: '3306'
-    , user: 'b240f3022f197a'
-    , password: ''
-});
-client.connect();
-client.query('USE ' + DATABASE);
+var mysql = require('mysql'),
+    DATABASE = 'heroku_8440cf98a79afed';
+
+handleDisconnect();
+
+function handleDisconnect() {
+  // Recreate the connection, since
+  // the old one cannot be reused.
+  client = mysql.createConnection({
+    host: 'us-cdbr-iron-east-03.cleardb.net',
+    port: '3306',
+    user: 'b240f3022f197a',
+    password: ''
+  });
+
+  client.connect(function(err) {
+    if (err) {
+      console.log("error when connecting to db:", err);
+      setTimeout(handleDisconnect, 2000);
+    }
+  });
+  client.on("error", function(err) {
+    console.log("db error", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+  client.query("USE " + DATABASE);
+}
+
 
 var mysqlUtil = module.exports = {
 
    seletTable : function (data, res) {
-       console.log("gogo");
        client.query('SELECT * FROM japanWord where level=1', function (error, result, fields) {
            if (error) {
                console.log(error);
@@ -41,7 +60,6 @@ var mysqlUtil = module.exports = {
         })
     },
     addWord : function (data, res) {
-        console.log(data);
         var wordText = data.word;
         var meanText = data.mean;
         var meanText2 = ' ';
