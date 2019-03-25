@@ -1,13 +1,13 @@
 
 var mysql = require('mysql')
-    , DATABASE = 'japanWord'
+    , DATABASE = 'heroku_8440cf98a79afed'
     , word_TABLE = 'japanWord'
     , NUM = 1
     , client = mysql.createConnection({
-    host: '13.125.125.39'
+    host: 'us-cdbr-iron-east-03.cleardb.net'
     , port: '3306'
-    , user: 'user'
-    , password: 'password'
+    , user: 'b240f3022f197a'
+    , password: ''
 });
 client.connect();
 client.query('USE ' + DATABASE);
