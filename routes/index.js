@@ -7,7 +7,7 @@ var https = require('https');
 
 
 router.use('/api', function (req, res) {
-  //console.log( qs.stringify(req.query));
+  console.log( qs.stringify(req.query));
   var host = 'glosbe.com';
   var port = 443;
   var url = 'https://glosbe.com/gapi/translate?' + qs.stringify(req.query);
@@ -27,9 +27,10 @@ router.use('/api', function (req, res) {
       console.log(info.stargazers_count + " Stars");
       console.log(info.forks_count + " Forks");
       res.end(JSON.stringify(response.body));
-
     }else{
-      console.log(error)}
+      console.log(error);
+      res.end('error');
+    }
   }
 
   request(options, callback);
