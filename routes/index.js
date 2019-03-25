@@ -4,6 +4,8 @@ var wordDB = require('../worddb');
 var request = require('request');
 var qs = require('querystring');
 var https = require('https');
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 
 router.use('/api', function (req, res) {
@@ -71,6 +73,28 @@ router.use('/api', function (req, res) {
   //  req.on('error', function(e){
   //    console.error(e);
   //  });
+});
+
+router.use('/crawler', function (req, res) {
+  console.log( 'https://hanja.dict.naver.com/search/keyword?'+qs.stringify(req.query));
+  const crawler = async () => {
+    const response = await axios.get('https://hanja.dict.naver.com/search/keyword?'+qs.stringify(req.query));
+    if (response.status === 200) {
+      const html = response.data;
+      // console.log(html);
+      const $ = cheerio.load(html);
+      const $content = $('#content');
+      const $resultLink = $content.find('.result_chn_chr dl dt>a');
+      if($resultLink.length !== 0){
+        var $hanjaText = $resultLink.eq(0).text();
+        res.send($hanjaText);
+      }else{
+        res.end('error');
+      }
+    }
+  };
+
+  crawler();
 });
 
 /* GET home page. */

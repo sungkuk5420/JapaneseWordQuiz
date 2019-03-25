@@ -1,7 +1,7 @@
-var socket = io.connect('http://localhost:8000');
-var apiUrl = 'http://localhost:8000';
-// var socket = io.connect('http://13.125.125.39:8000');
-// var apiUrl = 'http://13.125.125.39:8000/index';
+var socket = io.connect('http://localhost:7000');
+var apiUrl = 'http://localhost:7000';
+// var socket = io.connect('http://13.125.125.39:7000');
+// var apiUrl = 'http://13.125.125.39:7000';
 
 var wordArr = new Array();
 var meanArr = new Array();
@@ -326,15 +326,17 @@ function searchWordApi(parameterWordText){
             request.setRequestHeader("content-type", 'text/javascript');
         },
         data : {
-            from : 'kor',
-            dest : 'jpn',
-            format : 'json',
-            pretty : 'true',
-            phrase : data.query
+            // from : 'kor',
+            // dest : 'jpn',
+            // format : 'json',
+            // pretty : 'true',
+            // phrase : data.query
+            query : data.query,
+            direct : false
         },
         scriptCharset: 'UTF-8',
         dataType:'json',
-        url: "/api",
+        url: "/crawler",
         success: function (res) {
             var wordText = res.phrase;
             var meanArr = new Array();
@@ -368,10 +370,9 @@ function searchWordApi(parameterWordText){
         },
         error : function( res ) {
             console.log(res.parameterWordText);
-            if(res.responseText === 'error'){
-                var wordText = parameterWordText;
-                addWordApi(wordText,'');
-            }
+            var wordText = parameterWordText;
+            var responseText = res.responseText === 'error' ? '' :res.responseText;
+            addWordApi(wordText,responseText);
         }
     });
 
