@@ -71,8 +71,9 @@ app.get('/', function (req, res) {
 //  console.log('Example app listening on port 3000!');
 //})
 
-var httpServer =http.createServer(app).listen(8000, function(req,res){
-  console.log('Socket IO server has been started 3000!');
+var port = 7000;
+var httpServer =http.createServer(app).listen(port, function(req,res){
+  console.log('Socket IO server has been started '+port+'!');
 });
 // upgrade http server to socket.io server
 io = require('socket.io').listen(httpServer);
