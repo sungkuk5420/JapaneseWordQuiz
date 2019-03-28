@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
+var cors = require('cors')
+
 var routes = require('./routes/index');
 //var routes = require('./routes/index2');
 var users = require('./routes/users');
@@ -15,6 +17,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(cors())
  //uncomment after placing your favicon in /public
 
 //import packages
