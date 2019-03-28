@@ -331,8 +331,7 @@ function searchWordApi(parameterWordText){
             // format : 'json',
             // pretty : 'true',
             // phrase : data.query
-            query : data.query,
-            direct : false
+            q : data.query
         },
         scriptCharset: 'UTF-8',
         dataType:'json',

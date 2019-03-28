@@ -76,16 +76,16 @@ router.use('/api', function (req, res) {
 });
 
 router.use('/crawler', function (req, res) {
-  console.log( 'https://hanja.dict.naver.com/search/keyword?'+qs.stringify(req.query));
+  console.log( 'https://ja.dict.naver.com/search.nhn?range=all&'+qs.stringify(req.query)+'&sm=jpd_hty');
   const crawler = async () => {
-    const response = await axios.get('https://hanja.dict.naver.com/search/keyword?'+qs.stringify(req.query));
+    const response = await axios.get('https://ja.dict.naver.com/search.nhn?range=all&'+qs.stringify(req.query)+'&sm=jpd_hty');
     //한자 검색후 자동 입력.
     if (response.status === 200) {
       const html = response.data;
       // console.log(html);
       const $ = cheerio.load(html);
       const $content = $('#content');
-      const $resultLink = $content.find('.result_chn_chr dl dt>a');
+      const $resultLink = $content.find('.section.all.section_word .srch_box .entry.type_hj span.jp');
       if($resultLink.length !== 0){
         var hanjaText = $resultLink.eq(0).text();
         var queryString = {q:hanjaText};
