@@ -46,19 +46,6 @@ var mysqlUtil = module.exports = {
            }
        })
   },
-    seletTable2 : function (data, res) {
-        console.log("gogo");
-        client.query('SELECT * FROM japanWord where level=1', function (error, result, fields) {
-            if (error) {
-                console.log(error);
-                console.log('쿼리 문장에 오류가 있습니다.');
-            } else {
-                console.log(result);
-                res.render('fakePage', { title : "aaa",wordObj: result });
-
-            }
-        })
-    },
     addWord : function (data, res) {
         var wordText = data.word;
         var meanText = data.mean;
