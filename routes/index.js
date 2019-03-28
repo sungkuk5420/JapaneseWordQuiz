@@ -79,6 +79,7 @@ router.use('/crawler', function (req, res) {
   console.log( 'https://hanja.dict.naver.com/search/keyword?'+qs.stringify(req.query));
   const crawler = async () => {
     const response = await axios.get('https://hanja.dict.naver.com/search/keyword?'+qs.stringify(req.query));
+    //한자 검색후 자동 입력.
     if (response.status === 200) {
       const html = response.data;
       // console.log(html);
@@ -86,10 +87,40 @@ router.use('/crawler', function (req, res) {
       const $content = $('#content');
       const $resultLink = $content.find('.result_chn_chr dl dt>a');
       if($resultLink.length !== 0){
-        var $hanjaText = $resultLink.eq(0).text();
-        res.send($hanjaText);
+        var hanjaText = $resultLink.eq(0).text();
+        var queryString = {q:hanjaText};
+        console.log('https://ja.dict.naver.com/search.nhn?range=all&'+qs.stringify(queryString)+'&sm=jpd_hty?');
+        const response2 = await axios.get('https://ja.dict.naver.com/search.nhn?range=all&'+qs.stringify(queryString)+'&sm=jpd_hty?');
+        //한자를 찾은후 그 한자로 음독훈독 검색
+        if (response2.status === 200) {
+          const html2 = response2.data;
+          // console.log(html2);
+          const $2 = cheerio.load(html2);
+          const $content2 = $2('#content');
+          // const $resultLink2 = $content2.find('.section_word');
+          const $resultLink2 = $content2.find('.section.all.section_word .srch_box').eq(0).find('.top_dn>dd.jp span');
+          console.log($resultLink2.length);
+          var undokuArr = [];
+          for(var i = 0,len = $resultLink2.length ; i < len ; i++){
+            var element = $resultLink2.eq(i);
+            if(element.hasClass('bar')){
+              break;
+            }
+            undokuArr.push($resultLink2.eq(i).text());
+          }
+          console.log(undokuArr);
+          if($resultLink2.length !== 0){
+            var hanjaUndoku = undokuArr.join().replace(/,/gi,'');//음독 검색
+            res.send(JSON.stringify({'kanji':hanjaText,'undoku':hanjaUndoku}));
+            res.end();
+          }else{
+            res.send('error');
+            res.end();
+          }
+        }
       }else{
-        res.end('error');
+        res.send('error');
+        res.end();
       }
     }
   };
@@ -111,7 +142,7 @@ router.get('/word', function (req, res) {
 });
 
 router.post('/wordAdd', function (req, res) {
-  //console.log(req.body);
+  console.log(req.body);
   wordDB.addWord(req.body,res);
 });
 

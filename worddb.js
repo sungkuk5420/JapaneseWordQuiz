@@ -62,7 +62,8 @@ var mysqlUtil = module.exports = {
     addWord : function (data, res) {
         var wordText = data.word;
         var meanText = data.mean;
-        var meanText2 = ' ';
+        var meanText2 = data.mean2;
+        console.log(meanText2);
         client.query('SELECT * FROM japanWord', function (error, result, fields) {
             if (!error) {
                 //console.log(result);
@@ -101,13 +102,14 @@ var mysqlUtil = module.exports = {
 
                 var date = getTimeStamp();
                 //console.log('insert into japanWord (word, mean, level, addDate) values( "{wordText}", "{meanText}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{date}','\''+date+'\''));
-                client.query('insert into japanWord (word, mean, level, addDate) values( "{wordText}", "{meanText}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{date}','\''+date+'\''), function (error, result, fields) {
+                client.query('insert into japanWord (word, mean, mean2, level, addDate) values( "{wordText}", "{meanText}", "{meanText2}", 1, {date})'.replace('{wordText}', wordText).replace('{meanText}', meanText).replace('{meanText2}', meanText2).replace('{date}','\''+date+'\''), function (error, result, fields) {
                     if (error) {
                         console.log(error);
                         console.log('쿼리 문장에 오류가 있습니다.');
                     } else {
                         result.word = wordText;
                         result.mean = meanText;
+                        result.mean2 = meanText2;
                         io.sockets.emit('wordAdd',{msg:result});
                         res.json(result);
                         res.end();

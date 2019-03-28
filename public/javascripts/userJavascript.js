@@ -338,41 +338,47 @@ function searchWordApi(parameterWordText){
         dataType:'json',
         url: "/crawler",
         success: function (res) {
-            var wordText = res.phrase;
-            var meanArr = new Array();
-            var res = JSON.parse(res);
-            wordText = res.phrase;
-            for(var i= 0,len = res.tuc.length; i<len ; i++){
-                if(res.tuc[i].phrase == undefined){
-                    meanArr.push("");
-                }else{
-                    meanArr.push( res.tuc[i].phrase.text );
-                }
-            }
-            if( meanArr.length == 0){
-                addWordApi(wordText,'');
-                return false;
-            }
-            var meanData = {
-                word : wordText,
-                mean : meanArr[0]
-            };
+            console.log('success');
+            var wordText = parameterWordText;
+            var response = res === 'error' ? '' :res;
+            console.log(response);
+            addWordApi(wordText,response.kanji,response.undoku);
+            // var wordText = res.phrase;
+            // var meanArr = new Array();
+            // var res = JSON.parse(res);
+            // wordText = res.phrase;
+            // for(var i= 0,len = res.tuc.length; i<len ; i++){
+            //     if(res.tuc[i].phrase == undefined){
+            //         meanArr.push("");
+            //     }else{
+            //         meanArr.push( res.tuc[i].phrase.text );
+            //     }
+            // }
+            // if( meanArr.length == 0){
+            //     addWordApi(wordText,'');
+            //     return false;
+            // }
+            // var meanData = {
+            //     word : wordText,
+            //     mean : meanArr[0]
+            // };
 
-            $.ajax({
-                type: 'POST',
-                data: JSON.stringify(meanData),
-                contentType: 'application/json',
-                url: apiUrl+'/wordAdd',
-                success: function(data) {
-                    console.log('success');
-                }
-            });
+            // $.ajax({
+            //     type: 'POST',
+            //     data: JSON.stringify(meanData),
+            //     contentType: 'application/json',
+            //     url: apiUrl+'/wordAdd',
+            //     success: function(data) {
+            //         console.log('success');
+            //     }
+            // });
         },
         error : function( res ) {
-            console.log(res.parameterWordText);
+            console.log('error!!!',res);
             var wordText = parameterWordText;
-            var responseText = res.responseText === 'error' ? '' :res.responseText;
-            addWordApi(wordText,responseText);
+            var response = res.responseText === 'error' ? {kanji:'',undoku:''} :JSON.parse(res);
+            console.log(response);
+            addWordApi(wordText,response.kanji,response.undoku);
         }
     });
 
@@ -397,7 +403,7 @@ function searchWordApi(parameterWordText){
     });
 }
 
-function addWordApi(wordText,meanText){
+function addWordApi(wordText,meanText,meanText2){
 
     var $wordList = $('.pt-word-table').find('tr').find('td:first-child+td+td+td');
     var isHaveWord = false;
@@ -414,9 +420,11 @@ function addWordApi(wordText,meanText){
     }
     var wordData = {
         word : wordText,
-        mean : meanText
+        mean : meanText,
+        mean2 : meanText2
     };
 
+    console.log(wordData);
     $.ajax({
         type: 'POST',
         data: JSON.stringify(wordData),
@@ -440,8 +448,8 @@ function addWordApi(wordText,meanText){
         htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
         htmlElement += '</td>';
         htmlElement += '</tr>';
-        var replaceHTML = htmlElement.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{level}',1)
-            .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1).replace('{mean2}','');
+        var replaceHTML = htmlElement.replace('{insertId}',result.insertId).replace('{word}',result.word).replace('{mean}',result.mean).replace('{mean2}',result.mean2).replace('{level}',1)
+            .replace('{affectedRows}',parseInt($('tr:last').find('td:first').text())+1);
         $('.pt-word-table').find('tr:last').after(replaceHTML);
         $('.pt-word-add-form').focus();
     });
