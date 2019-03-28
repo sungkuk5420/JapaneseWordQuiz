@@ -1,7 +1,7 @@
-var socket = io.connect('http://localhost:7000');
-var apiUrl = 'http://localhost:7000';
-// var socket = io.connect('http://13.125.125.39:7000');
-// var apiUrl = 'http://13.125.125.39:7000';
+// var socket = io.connect('http://localhost:7000');
+// var apiUrl = 'http://localhost:7000';
+var socket = io.connect('http://54.64.84.165:7000');
+var apiUrl = 'http://54.64.84.165:7000';
 
 var wordArr = new Array();
 var meanArr = new Array();
