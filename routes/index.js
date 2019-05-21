@@ -145,8 +145,11 @@ router.use('/crawlerJLPT', function (req, res) {
       const $ = cheerio.load(html);
       const $content = $('#content');
       const $resultLink = $content.find('.section.all.section_word .srch_box .srch_top .entry a.mw'); // 음독
-      const $resultLink2 = $content.find('.section.all.section_word .srch_box .pin span.lst_txt'); //뜻
-      if ($resultLink.length !== 0) {
+      let $resultLink2 = $content.find('.section.all.section_word .srch_box .lst.lst_v3'); //뜻
+      if ($resultLink2.length === 0) {
+        $resultLink2 = $content.find('.section.all.section_word .srch_box .pin span.lst_txt'); //뜻
+      }
+      if ($resultLink2.length !== 0) {
         var hanjaUndoku = $resultLink.eq(0).text();
         var mean = $resultLink2.eq(0).text();
         if (hanjaUndoku.length !== "") {
