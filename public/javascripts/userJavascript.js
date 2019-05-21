@@ -102,7 +102,7 @@ function wordTextShow(thisObj) {
 
 function clickWord(data) {
     var thisWord = $(data.self).find('.pt-word-text').text().replace(/ /gi, '');
-    var quizAnswer = $("#pt-word-text-quiz-answer").text().replace(/ /gi, '').substr(0, $("#pt-word-text-quiz-answer").text().replace(/ /gi, '').indexOf('('));
+    var quizAnswer = $("#pt-word-text-quiz-answer").text().replace(/ /gi, '').substr(0, $("#pt-word-text-quiz-answer").text().replace(/ /gi, '').lastIndexOf('('));
     var quizBackgroundColor = $(".pt-left-word-div").css("background-color");
     if (thisWord == quizAnswer && isClickWordFlag == false) {
         isClickWordFlag = true;
