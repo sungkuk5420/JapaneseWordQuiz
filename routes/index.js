@@ -144,14 +144,46 @@ router.use('/crawlerJLPT', function (req, res) {
       // console.log(html);
       const $ = cheerio.load(html);
       const $content = $('#content');
-      const $resultLink = $content.find('.section.all.section_word .srch_box .srch_top .entry a.mw'); // 음독
-      let $resultLink2 = $content.find('.section.all.section_word .srch_box .lst.lst_v3'); //뜻
+      let $resultLink = $content.find('.section.all.section_word .srch_box:nth-child(2) .srch_top .entry a.mw'); // 음독
+      let $resultLinkHasATag = $content.find('.section.all.section_word .srch_box:nth-child(2) .srch_top>a'); // 음독
+      console.log($resultLinkHasATag.length);
+      let $resultLink2 = $content.find('.section.all.section_word .srch_box:nth-child(2) .lst.lst_v3'); //뜻
       if ($resultLink2.length === 0) {
-        $resultLink2 = $content.find('.section.all.section_word .srch_box .pin span.lst_txt'); //뜻
+        $resultLink2 = $content.find('.section.all.section_word .srch_box:nth-child(2) .pin span.lst_txt'); //뜻
       }
+      if(($resultLinkHasATag.length === 0) || ($resultLink2.length === 0)){//첫번째행에 음독이 안나올경우 두번째행부터 탐색.
+        $resultLinkHasATag = $content.find('.section.all.section_word .srch_box:nth-child(4) .srch_top>a'); // 음독
+        if($resultLinkHasATag.length !== 0){
+          $resultLink = $content.find('.section.all.section_word .srch_box:nth-child(4) .entry a.mw'); //음독
+          $resultLink2 = $content.find('.section.all.section_word .srch_box:nth-child(4) .lst.lst_v3'); //뜻
+          if ($resultLink2.length === 0) {
+            $resultLink2 = $content.find('.section.all.section_word .srch_box:nth-child(4) .pin span.lst_txt'); //뜻
+          }
+        }else{
+          $resultLink = $content.find('.section.all.section_word .srch_box:nth-child(6) .entry a.mw'); //음독
+          $resultLink2 = $content.find('.section.all.section_word .srch_box:nth-child(6) .lst.lst_v3'); //뜻
+          if ($resultLink2.length === 0) {
+            $resultLink2 = $content.find('.section.all.section_word .srch_box:nth-child(6) .pin span.lst_txt'); //뜻
+          }
+        }
+      }
+      if(($resultLink.length === 0) || ($resultLink2.length === 0)){
+        $resultLink = $content.find('.section.all.section_word .srch_box .srch_top .entry a.mw');
+        $resultLink2 = $content.find('.section.all.section_word .srch_box .lst.lst_v3'); //뜻
+        if ($resultLink2.length === 0) {
+          $resultLink2 = $content.find('.section.all.section_word .srch_box .pin span.lst_txt'); //뜻
+        }
+        if ($resultLink2.length === 0) {
+          $resultLink2 = $content.find('.section.all.section_word .srch_box span.lst_txt'); //뜻
+        }
+      }
+      console.log($resultLink.length);
+      console.log($resultLink2.length);
       if ($resultLink2.length !== 0) {
         var hanjaUndoku = $resultLink.eq(0).text();
         var mean = $resultLink2.eq(0).text();
+        console.log(hanjaUndoku);
+        console.log(mean);
         if (hanjaUndoku.length !== "") {
           res.send(JSON.stringify({
             'kanji': mean,
