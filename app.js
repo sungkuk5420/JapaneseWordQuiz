@@ -74,7 +74,7 @@ app.get('/', function (req, res) {
 //  console.log('Example app listening on port 3000!');
 //})
 
-var port = 7000;
+var port = 9000;
 var httpServer =http.createServer(app).listen(port, function(req,res){
   console.log('Socket IO server has been started '+port+'!');
 });

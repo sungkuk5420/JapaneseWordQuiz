@@ -1,7 +1,7 @@
-// var socket = io.connect('http://localhost:7000');
-// var apiUrl = 'http://localhost:7000';
-var socket = io.connect('http://54.64.84.165:7000');
-var apiUrl = 'http://54.64.84.165:7000';
+var socket = io.connect('http://localhost:9000');
+var apiUrl = 'http://localhost:9000';
+// var socket = io.connect('http://54.64.84.165:9000');
+// var apiUrl = 'http://54.64.84.165:9000';
 
 var wordArr = new Array();
 var meanArr = new Array();
@@ -331,7 +331,7 @@ function searchWordApi(parameterWordText){
             // format : 'json',
             // pretty : 'true',
             // phrase : data.query
-            q : data.query
+            query : data.query
         },
         scriptCharset: 'UTF-8',
         dataType:'json',
