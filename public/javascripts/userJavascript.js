@@ -1,7 +1,7 @@
-var socket = io.connect('http://localhost:9000');
-var apiUrl = 'http://localhost:9000';
-// var socket = io.connect('http://54.64.84.165:9000');
-// var apiUrl = 'http://54.64.84.165:9000';
+// var socket = io.connect('http://localhost:9000');
+// var apiUrl = 'http://localhost:9000';
+var socket = io.connect('http://54.64.84.165:9000');
+var apiUrl = 'http://54.64.84.165:9000';
 
 var wordArr = new Array();
 var meanArr = new Array();
@@ -390,7 +390,7 @@ function searchWordApi(parameterWordText){
         htmlElement += '<td>{level}</td>';
         htmlElement += '<td class="word">{word}</td>';
         htmlElement += '<td class="mean1" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean}</td>';
-        htmlElement += '<td class="mean2" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean2}</td>';
+        htmlElement += '<td class="mean2" style="display:none;"  onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean2}</td>';
         htmlElement += '<td>';
         htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
         htmlElement += '</td>';
@@ -442,8 +442,8 @@ function addWordApi(wordText,meanText,meanText2){
         htmlElement += '<td>{level}</td>';
         htmlElement += '<td class="word">{word}</td>';
         htmlElement += '<td class="mean1" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean}</td>';
-        htmlElement += '<td class="mean2" onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean2}</td>';
-        htmlElement += '<td>';
+        htmlElement += '<td class="mean2" style="display:none;"  onclick="if(event.target.tagName != \'INPUT\'){thisWordCellUpdate(this);}">{mean2}</td>';
+        htmlElement += '<td style="display:none;" >';
         htmlElement += '<button class="pt-word-delete-btn form-control btn-hover hide" style=" margin : auto; " onclick="wordDelete(this);"> 삭제 </button>';
         htmlElement += '</td>';
         htmlElement += '</tr>';
